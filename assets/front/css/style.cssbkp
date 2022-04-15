@@ -1,0 +1,489 @@
+/*logo-header*/
+
+.logo img {
+	max-width: 100%;
+	height: 48px;
+}
+
+
+/*logo-footer*/
+
+.footer-logo img {
+	max-width: 100%;
+	height: 35px;
+}
+
+
+/*Login CSS*/
+
+ul {
+	list-style-type: none;
+	padding: 0px;
+}
+
+.float-form input[type=number]::-webkit-inner-spin-button,
+.float-form input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.float-form input[type=number] {
+	-moz-appearance: textfield;
+}
+
+.form-control:focus {
+	box-shadow: none;
+	border: none;
+}
+
+.user-page .row [class*="col-"] {
+	min-height: 100vh;
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+}
+
+.login-bg {
+	background: #cdcdcd url(../images/bg-login.jpg) no-repeat;
+	background-size: cover;
+}
+
+.form-control {
+	border: 1px solid #E4E4E4 !important;
+}
+
+.form-group {
+	margin-bottom: 25px;
+}
+
+.float-form .form-group {
+	position: relative;
+}
+
+.float-form .form-group label {
+	color: #161212;
+	font-weight: 400;
+	font-size: 22px;
+	position: absolute;
+	pointer-events: none;
+	transition: 0.2s ease all;
+	-moz-transition: 0.2s ease all;
+	-webkit-transition: 0.2s ease all;
+	margin-bottom: 0px;
+	left: 21px;
+	top: 9px;
+	padding: 0 10px;
+}
+
+.float-form .form-control {
+	height: 55px;
+	border-radius: 10px;
+	padding: 0 31px;
+	font-size: 22px;
+	color: #161212;
+	letter-spacing: 0.02em;
+}
+
+.float-form input.form-control[type="password"] {
+	letter-spacing: 0.15em;
+}
+
+.float-form .form-control:focus~label {
+	top: -16px;
+	font-size: 22px;
+	color: #ffb300;
+	font-weight: 700;
+	background-color: #fff;
+}
+
+.float-form .form-control:not(:placeholder-shown)~label {
+	top: -16px;
+	font-size: 22px;
+	color: #ffb300;
+	font-weight: 700;
+	background-color: #fff;
+}
+
+.user-page h3 {
+    font-size: calc(28px + 22 * ((100vw - 300px) / (1920 - 300)));
+    font-weight: 700;
+    margin-bottom: 2.7rem;
+    padding-bottom: 28px;
+    position: relative;
+}
+
+.user-page h3::after {
+	content: "";
+	width: 100px;
+	height: 6px;
+	background: #ffb300;
+	border-radius: 2px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
+
+.user-page .user-form .content-wrapper {
+	max-width: 530px;
+	width: 100%;
+	margin-left: auto;
+	margin-right: 13.2rem;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.user-form .logo {
+	margin-bottom: 3.8rem;
+}
+
+.user-form .logo a {
+	display: block;
+}
+
+.user-form .logo a>img {
+	max-width: 175px;
+	width: 100%;
+	height: auto;
+}
+
+.links {
+	margin: 1.2rem 0 4rem;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.link {
+	font-size: 20px;
+	font-weight: 400;
+	color: #161212;
+	margin: 0 0 0 auto;
+}
+
+.btn {
+	padding: 0.42rem 2.6rem;
+	font-weight: 500;
+}
+
+.btn.btn-secondary {
+	background-color: #F6F6F6;
+	color: #919191;
+	border-color: #F6F6F6;
+}
+
+.btn.btn-secondary:hover {
+	background-color: #919191;
+	color: #F6F6F6;
+	border-color: #919191;
+}
+
+.action-button .btn {
+	margin-right: 17px;
+}
+
+.action-button .btn:last-child {
+	margin-right: 0px;
+}
+
+.form-body .check-box {
+	display: flex;
+}
+
+.form-body .check-box label span {
+	font-size: 20px;
+	font-weight: 400;
+	color: #161212;
+	position: relative;
+	padding-left: 35px;
+}
+
+.form-body .check-box label span::before {
+	content: "\e91d";
+	width: 20px;
+	height: 20px;
+	border: 2px solid #ffb300;
+	position: absolute;
+	left: 0;
+	top: 3px;
+	font-family: 'eatance';
+	font-size: 0;
+	text-align: center;
+	line-height: 16px;
+	cursor: pointer;
+}
+
+.form-body .check-box label input:checked+span::before {
+	font-size: 12px;
+}
+
+
+/*forgot password*/
+
+.modal-form .form-group textarea {
+	height: 180px;
+	border-radius: 10px;
+	resize: none;
+	padding: 15px;
+}
+
+.modal-form .form-group label {
+	top: 12px;
+	font-size: 18px;
+	left: 13px;
+}
+
+.modal-form button.btn {
+	font-weight: 700;
+}
+
+.modal-form {
+	padding: 40px 0;
+	background-color: #fff;
+}
+
+.modal-form h2 {
+	margin-bottom: 1rem;
+	font-size: 25px;
+	font-weight: 700;
+}
+
+.modal-form {
+	max-width: 568px;
+}
+
+.modal-form .float-form .form-control {
+	font-size: 17px;
+}
+
+.modal-form .float-form .form-control:not(textarea) {
+	height: 50px;
+	padding: 0 23px;
+}
+
+.modal-form .float-form .form-control:not(:placeholder-shown)~label {
+	top: -12px;
+	font-size: 16px;
+}
+
+.modal-form .float-form .form-control:focus~label {
+	top: -12px;
+	font-size: 16px;
+}
+
+.modal-form .float-form .form-group {
+	margin-top: 30px;
+}
+
+.std-modal .modal-content {
+	padding: 0 20px;
+}
+
+
+/*Modal CSS*/
+
+.std-modal .close {
+	position: absolute;
+	top: 20px;
+	right: 0;
+	opacity: 1;
+	width: 36px;
+	height: 36px;
+	background-color: #ffb300;
+	color: #fff;
+	padding: 0px;
+	line-height: 36px;
+	text-align: center;
+	margin: 0px;
+}
+
+.std-modal .close:hover {
+	opacity: 1 !important;
+}
+
+.std-modal .modal-header {
+	border-bottom: 0px;
+	justify-content: center;
+	position: relative;
+}
+
+.std-modal .modal-header .modal-title {
+	font-size: 30px;
+	font-weight: 500;
+	text-align: center;
+	color: #ffb300;
+}
+
+.std-modal .modal-body p {
+	font-size: 25px;
+	font-weight: 400;
+	line-height: 40px;
+	margin-top: 2rem;
+	margin-bottom: 0px;
+}
+
+
+/*Contact Us Page*/
+
+.page-wrapper {
+	padding: 5rem 0 4.38rem;
+}
+
+.widget-title {
+	font-size: 20px;
+	font-weight: 700;
+	color: #161212;
+	margin-bottom: 14px;
+}
+
+.widgets p {
+	font-size: 17px;
+	font-weight: 400;
+	color: #161212;
+	line-height: 40px;
+}
+
+.widgets li {
+	margin-bottom: 20px;
+}
+
+.widgets li:last-child {
+	margin-bottom: 0px;
+}
+
+.widgets li>a {
+	color: #161212;
+	font-size: 17px;
+}
+
+.widgets li>a:hover {
+	color: #ffb300;
+}
+
+.widgets li>a>i {
+	color: #ffb300;
+	margin-right: 4px;
+}
+
+.contact-us-image {
+	margin-top: 30px;
+}
+
+.contact-us-wrapper .widgets {
+	margin-top: 4rem;
+}
+
+.contact-form {
+	padding: 30px;
+	background-color: #fff;
+	box-shadow: 0px 10px 40px rgba(180, 180, 180, 0.3);
+}
+
+.contact-form h2 {
+	margin-bottom: 2rem;
+	font-size: 25px;
+	font-weight: 700;
+}
+
+.contact-form {
+	max-width: 568px;
+	margin-left: auto;
+}
+
+.contact-form .float-form .form-control {
+	font-size: 17px;
+}
+
+.contact-form .float-form .form-control:not(textarea) {
+	height: 45px;
+	padding: 0 23px;
+}
+
+.contact-form .float-form .form-control:not(:placeholder-shown)~label {
+	top: -12px;
+	font-size: 16px;
+}
+
+.contact-form .float-form .form-control:focus~label {
+	top: -12px;
+	font-size: 16px;
+}
+
+.contact-form .form-group textarea {
+	height: 154px;
+	border-radius: 10px;
+	resize: none;
+	padding: 15px;
+}
+
+.contact-form .form-group label {
+	top: 9px;
+	font-size: 16px;
+	left: 13px;
+}
+
+.contact-form button.btn {
+	font-weight: 700;
+}
+
+.error {
+	color: red;
+}
+
+
+/*New css*/
+
+.modal_body_map .location-map {
+	margin-bottom: 2rem;
+}
+
+.wait-loader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9999;
+	background: rgba(255, 255, 255, 0.72);
+}
+
+.wait-loader img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+
+/*
+notification button animation*/
+
+.notification .notification-btn:hover {
+	animation: shake 1s;
+	animation-iteration-count: 1;
+}
+
+@keyframes shake {
+	0% {
+		transform: rotate(30deg);
+	}
+	12.5% {
+		transform: rotate(-30deg);
+	}
+	25% {
+		transform: rotate(25deg);
+	}
+	37.5% {
+		transform: rotate(-20deg);
+	}
+	50% {
+		transform: rotate(15deg);
+	}
+	62.5% {
+		transform: rotate(-10deg);
+	}
+	75% {
+		transform: rotate(5deg);
+	}
+	100% {
+		transform: rotate(0deg);
+	}
+}

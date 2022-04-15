@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33">
+  <g id="Group_1450" data-name="Group 1450" transform="translate(-276 -1628)">
+    <rect id="Rectangle_1696" data-name="Rectangle 1696" width="33" height="33" rx="5" transform="translate(276 1628)" fill="#fff2d4"/>
+    <g id="gps-fixed-indicator" transform="translate(277.305 1639.304)">
+      <g id="gps-fixed">
+        <path id="Path_1411" data-name="Path 1411" d="M8.2,5.216a2.98,2.98,0,1,0,2.98,2.98A2.989,2.989,0,0,0,8.2,5.216Zm6.631,2.235A6.655,6.655,0,0,0,8.941,1.565V0H7.451V1.565A6.519,6.519,0,0,0,1.565,7.451H0v1.49H1.565a6.655,6.655,0,0,0,5.886,5.886v1.565h1.49V14.827a6.655,6.655,0,0,0,5.886-5.886h1.565V7.451ZM8.2,13.411A5.216,5.216,0,1,1,13.411,8.2,5.183,5.183,0,0,1,8.2,13.411Z" transform="translate(6.696 -3.304)" fill="#ffb300"/>
+      </g>
+    </g>
+  </g>
+</svg>

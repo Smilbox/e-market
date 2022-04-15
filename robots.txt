@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Sitemap: https://e-market.mg/sitemap.xml
+Sitemap: https://e-market.mg/sitemap0.xml
+Sitemap: https://e-market.mg/sitemap1.xml
+Sitemap: https://e-market.mg/sitemap2.xml
+Sitemap: https://e-market.mg/sitemap3.xml
+Sitemap: https://e-market.mg/sitemap4.xml
+Sitemap: https://e-market.mg/sitemap5.xml
+Sitemap: https://e-market.mg/sitemap6.xml
