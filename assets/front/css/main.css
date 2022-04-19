@@ -1,5 +1,10 @@
 /* Document ========================================================================== */
 
+:root {
+	--main-color: #0706A9;
+}
+
+
 html {
 	font-family: sans-serif;
 	line-height: 1.15;

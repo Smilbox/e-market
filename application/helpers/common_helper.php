@@ -89,24 +89,60 @@ function generateEmailBody($body,$arrayVal){
     $body = str_replace("#Company_Name#",$CI->session->userdata('site_title'),$body);  
   }
 
-  $body = str_replace("#firstname#",$arrayVal['FirstName'],$body);  
-  $body = str_replace("#lastname#",$arrayVal['LastName'],$body);
-  $body = str_replace("#s_firstname#",$arrayVal['SFirstName'],$body);  
-  $body = str_replace("#s_lastname#",$arrayVal['SLastName'],$body);
-  $body = str_replace("#forgotlink#",$arrayVal['ForgotPasswordLink'],$body);  
-  $body = str_replace("#email#",$arrayVal['Email'],$body);  
-  $body = str_replace("#password#",$arrayVal['Password'],$body);  
-  $body = str_replace("#s_email#",$arrayVal['Sender_Email'],$body);
-  $body = str_replace("#s_utype#",$arrayVal['Sender_Utype'],$body);
-  $body = str_replace("#Site_Name#",$arrayVal['Site_Name'],$body);
-  $body = str_replace("#loginlink#",$arrayVal['LoginLink'],$body);
-  $body = str_replace("#restaurant#",$arrayVal['restaurant_name'],$body);
-  $body = str_replace("#status#",$arrayVal['Status'],$body);
-  $body = str_replace("#message#",$arrayVal['Message'],$body);
-  $body = str_replace("#number#",$arrayVal['Number'],$body);
-  $body = str_replace("#password#",$arrayVal['Password'],$body);
-  $body = str_replace("#question#",$arrayVal['Question'],$body);
-  $body = str_replace("#order_id#",$arrayVal['Order_ID'],$body);
+  if(isset($arrayVal['FirstName']))
+    $body = str_replace("#firstname#",$arrayVal['FirstName'],$body);
+    
+  if(isset($arrayVal['LastName']))
+    $body = str_replace("#lastname#",$arrayVal['LastName'],$body);
+
+  if(isset($arrayVal['SFirstName']))
+    $body = str_replace("#s_firstname#",$arrayVal['SFirstName'],$body);
+    
+  if(isset($arrayVal['SLastName']))
+    $body = str_replace("#s_lastname#",$arrayVal['SLastName'],$body);
+
+  if(isset($arrayVal['ForgotPasswordLink']))
+    $body = str_replace("#forgotlink#",$arrayVal['ForgotPasswordLink'],$body);  
+
+  if(isset($arrayVal['Email']))
+    $body = str_replace("#email#",$arrayVal['Email'],$body); 
+    
+  if(isset($arrayVal['Password']))
+    $body = str_replace("#password#",$arrayVal['Password'],$body);
+    
+  if(isset($arrayVal['Sender_Email']))
+    $body = str_replace("#s_email#",$arrayVal['Sender_Email'],$body);
+
+  if(isset($arrayVal['Sender_Utype'])) 
+    $body = str_replace("#s_utype#",$arrayVal['Sender_Utype'],$body);
+
+  if(isset($arrayVal['Site_Name']))
+    $body = str_replace("#Site_Name#",$arrayVal['Site_Name'],$body);
+  
+  if(isset($arrayVal['LoginLink']))
+    $body = str_replace("#loginlink#",$arrayVal['LoginLink'],$body);
+
+  if(isset($arrayVal['restaurant_name']))
+    $body = str_replace("#restaurant#",$arrayVal['restaurant_name'],$body);
+
+  if(isset($arrayVal['Status']))
+    $body = str_replace("#status#",$arrayVal['Status'],$body);
+
+  if(isset($arrayVal['Message']))
+    $body = str_replace("#message#",$arrayVal['Message'],$body);
+
+  if(isset($arrayVal['Number']))
+    $body = str_replace("#number#",$arrayVal['Number'],$body);
+
+  if(isset($arrayVal['Password']))
+    $body = str_replace("#password#",$arrayVal['Password'],$body);
+
+  if(isset($arrayVal['Question']))
+    $body = str_replace("#question#",$arrayVal['Question'],$body);
+  
+  if(isset($arrayVal['Order_ID']))
+    $body = str_replace("#order_id#",$arrayVal['Order_ID'],$body);
+  
   $body = str_replace("#year#",date('Y'),$body);
   return $body;
 }

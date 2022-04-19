@@ -106,8 +106,7 @@ class Cart extends CI_Controller {
 				}
 	            $arrayDetails[] = $cookie;
 				if (empty($cart_details) && empty($cart_restaurant)) {
-		            $this->input->set_cookie('',json_encode($arrayDetails),60*60*24*1); // 1 day 
-		            $this->input->set_cookie('cart_details',json_encode($arrayDetails),60*60*24*1); // 1 day
+ 		            $this->input->set_cookie('cart_details',json_encode($arrayDetails),60*60*24*1); // 1 day
 		            $this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day
 		            $data['cart_details'] = $this->getcookie('cart_details');
 					$data['cart_restaurant'] = $this->getcookie('cart_restaurant');
@@ -247,7 +246,7 @@ class Cart extends CI_Controller {
 						'subtotal' => $subtotal,
 						'totalPrice' => ($subtotal * $value->quantity),
 						'cartTotalPrice' => $cartTotalPrice,
-						'addons_category_list' => $details[0]['items'][0]['addons_category_list'],
+						'addons_category_list' => isset($details[0]['items'][0]['addons_category_list']) ? $details[0]['items'][0]['addons_category_list'] : array(),
 					);
 				}
 			}

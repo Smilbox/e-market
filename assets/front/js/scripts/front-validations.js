@@ -253,10 +253,10 @@ function checkCartRestaurant(entity_id,restaurant_id,is_addon,item_id) {
       }
       if (response == 1) {
         // same restaurant
-        if (is_addon == '') {
+        if (is_addon == '') { // When no addon
           AddToCart(entity_id,restaurant_id,item_id);
         }
-        else
+        else // When there is addon
         {
           checkMenuItem(entity_id,restaurant_id,item_id);
         }

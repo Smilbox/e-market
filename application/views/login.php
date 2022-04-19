@@ -29,11 +29,11 @@ parse_str(get_cookie('adminAuth'), $adminCook); // get Cookies ?>
                             </div>
                             <?php } ?>
                             <div class="form-group">
-                                <input type="number" name="phone_number" id="phone_number" class="form-control" placeholder=" " value="<?php echo $adminCook['usr'];?>">
+                                <input type="number" name="phone_number" id="phone_number" class="form-control" placeholder=" " value="<?php echo isset($adminCook['usr']) ? $adminCook['usr'] : '' ?>">
                                 <label><?php echo $this->lang->line('phone_number') ?></label>
                             </div>
                             <div class="form-group mb-0">
-                                <input type="password" name="password" id="password" class="form-control" placeholder=" " value="<?php echo $adminCook['hash'];?>" >
+                                <input type="password" name="password" id="password" class="form-control" placeholder=" " value="<?php echo isset($adminCook['hash']) ? $adminCook['hash']: '';?>" >
                                 <label><?php echo $this->lang->line('password') ?></label>
                             </div>
                             <div class="links text-right">

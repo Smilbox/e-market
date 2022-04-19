@@ -132,11 +132,14 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                                 <div class="col-md-12">
                                                     <input type="checkbox" class="category_checkbox" <?php echo (in_array($value->entity_id, $add_ons))?'checked':'' ?> name="addons_category_id[]" id="addons_category_id<?php echo $value->entity_id ?>" value="<?php echo $value->entity_id ?>" onchange="addAddons('<?php echo $j ?>','<?php echo $value->entity_id ?>',this.id)"> <?php echo $value->name ?>
                                                     
+                                                    <?php $iteration = is_countable($addons_detail) ? count($addons_detail) : 1; ?>
                                                     <div id="add_ons_category<?php echo $j; ?>" class="repeater_wrap add_ons_category<?php echo $value->entity_id ?> <?php echo (in_array($value->entity_id, $add_ons))?'display-yes':'display-no' ?>" >
                                                          <input type="checkbox" class="is_multiple" name="is_multiple[<?php echo $value->entity_id ?>]" id="is_multiple<?php echo $value->entity_id ?>" value="1" <?php echo ($is_multiple)?'checked':'' ?>> <?php echo $this->lang->line('is_multiple') ?>
-                                                        <div data-repeater-list="add_ons_list[<?php echo $value->entity_id ?>]" class="add_ons_detail<?php echo $value->entity_id ?>"> 
+                                                        
+                                                         
+                                                         <div data-repeater-list="add_ons_list[<?php echo $value->entity_id ?>]" class="add_ons_detail<?php echo $value->entity_id ?>"> 
                                                             <?php
-                                                            for ($i=0;$i < count($addons_detail);$i++) { 
+                                                            for ($i=0;$i < $iteration;$i++) { 
                                                                 $is_multiple = (array_key_exists($value->entity_id, $add_ons_detail))?$addons_detail[$i]->is_multiple:'';
                                                                 ?> 
                                                             <div data-repeater-item class="outer-repeater">
@@ -155,8 +158,8 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                                                     </div>
                                                                 </div>
                                                             </div> 
-                                                            <?php } ?>  
                                                         </div> 
+                                                        <?php } ?>
                                                         <?php //if($i == 0){ ?>
                                                         <div class="form-group">
                                                             <div class="col-md-12 add_ons_detail<?php echo $value->entity_id ?>">
@@ -164,7 +167,8 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                                             </div> 
                                                         </div>
                                                         <?php //} ?>
-                                                    </div>  
+                                                    </div>    
+
                                                 </div>
                                             </div>
                                            

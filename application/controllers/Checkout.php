@@ -306,7 +306,7 @@ class Checkout extends CI_Controller {
 						'subtotal' => $subtotal,
 						'totalPrice' => ($subtotal * $value->quantity),
 						'cartTotalPrice' => $cartTotalPrice,
-						'addons_category_list' => $details[0]['items'][0]['addons_category_list'],
+						'addons_category_list' => isset($details[0]['items'][0]['addons_category_list']) ? $details[0]['items'][0]['addons_category_list'] : array(),
 					);
 				}
 			}

@@ -17,7 +17,6 @@
 	    <link rel='stylesheet' href='<?php echo base_url(); ?>assets/front/css/animate.min.css'>
 	    <link rel='stylesheet' href='<?php echo base_url(); ?>assets/front/css/owl.carousel.min.css'>
 	    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/bootstrap.min.css" type="text/css">
-	    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/style.php" type="text/css">
 	    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/main.css?<?php echo random_string()?>" type="text/css">
 	    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/style.css" type="text/css">
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/responsive.css" type="text/css">
@@ -56,7 +55,7 @@
 	<body class="<?php echo $lang_class; ?>">
 		<?php if ($current_page != "Login" && $current_page != "Registration") { ?>
 			<header class="header-area">
-			<?php if($banner_settings->show_banner == '1') {?>
+			<?php if(isset($banner_settings) && $banner_settings->show_banner == '1') {?>
 				<div class="header-notif">
 					<?php echo $lang_slug == 'en' ? $banner_settings->text_en : $banner_settings->text_fr?>
 					<a href="<?php echo $banner_settings->link ?>" style="color: black"><?php echo $this->lang->line('current_lang') == 'en' ? 'here': 'ici'; ?></a>

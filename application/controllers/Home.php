@@ -184,22 +184,25 @@ class Home extends CI_Controller {
 	public function checkEmail($str){    
 		$checkEmail = $this->home_model->checkEmail($str);       
 		
-		$url = "http://apilayer.net/api/check?access_key=689490f7cd91accf9de70050a3316add&email=".$str."&smtp=1&format=1";
-		$ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        $response_all = json_decode($response);
+		// $url = "http://apilayer.net/api/check?access_key=689490f7cd91accf9de70050a3316add&email=".$str."&smtp=1&format=1";
+		// $ch = curl_init();
+	    // curl_setopt($ch, CURLOPT_URL, $url);
+	    // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	    // curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        // $response = curl_exec($ch);
+        // curl_close($ch);
+        // $response_all = json_decode($response);
+
+		// print_r($response_all);die;
 		
 		if($checkEmail>0){
 			$this->form_validation->set_message('checkEmail','User have already registered with this email!');
 			return FALSE;
-		} else if (!$response_all->smtp_check) {
-			$this->form_validation->set_message('checkEmail', $this->lang->line('invalid_domain'));
-			return FALSE;
-		}
+		} 
+		// else if (!$response_all->smtp_check) {
+		// 	$this->form_validation->set_message('checkEmail', $this->lang->line('invalid_domain'));
+		// 	return FALSE;
+		// }
 		else{
 			return TRUE;
 		}
@@ -319,10 +322,10 @@ class Home extends CI_Controller {
 		            if($this->input->post('email')){
                          // confirmation link
 		            	$language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
-                        $verificationCode = random_string('alnum', 20).$UserID.random_string('alnum', 5);
+                        $verificationCode = random_string('alnum', 20).$entity_id.random_string('alnum', 5);
                         $confirmationLink = '<a href='.base_url().'user/verify_account/'.$verificationCode.'>here</a>';   
                         $email_template = $this->db->get_where('email_template',array('email_slug'=>'verify-account','language_slug'=>$language_slug))->first_row();       
-                        $arrayData = array('FirstName'=>$namearr[0],'ForgotPasswordLink'=>$confirmationLink);
+                        $arrayData = array('FirstName'=>$userData['first_name'], 'LastName'=> $userData['last_name'],'ForgotPasswordLink'=>$confirmationLink);
                         $EmailBody = generateEmailBody($email_template->message,$arrayData);
                         //get System Option Data
                         $this->db->select('OptionValue');

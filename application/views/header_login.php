@@ -17,7 +17,6 @@
 	    <link rel='stylesheet' href='<?php echo base_url(); ?>assets/front/css/animate.min.css'>
 	    <link rel='stylesheet' href='<?php echo base_url(); ?>assets/front/css/owl.carousel.min.css'>
 	    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/bootstrap.min.css" type="text/css">
-	    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/style.php" type="text/css">
 	    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/main.css?<?php echo random_string()?>" type="text/css">
 	    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/style.css" type="text/css">
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/front/css/responsive.css" type="text/css">
