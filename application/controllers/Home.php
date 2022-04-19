@@ -10,7 +10,8 @@ class Home extends CI_Controller {
 		$this->load->model('/home_model');
 		$this->load->model(ADMIN_URL.'/store_type_model'); 
 		$this->load->model(ADMIN_URL.'/promotion_settings_model'); 
-		$this->load->model('v1/bot_api_model');
+		$this->load->helper('cookie');
+		
 
 		if (empty($this->session->userdata('language_slug'))) {
 			$data['lang'] = $this->common_model->getdefaultlang();
@@ -210,6 +211,7 @@ class Home extends CI_Controller {
 
 	public function fb_logon()
     {
+		$this->load->model('v1/bot_api_model');
 		$val = null;
         // $requestBody = json_decode($this->input->raw_input_stream, true);
         if(!empty($this->input->post('entity_id'))) 
