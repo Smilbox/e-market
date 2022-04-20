@@ -45,7 +45,7 @@
 						else { ?>
 							<div class="cart-empty text-center">
 								<img src="<?php echo base_url();?>assets/front/images/empty-cart-product.png">
-								<h6> <?php echo $this->lang->line('cart_empty') ?><br> <?php echo $this->lang->line('add_some_dishes') ?></h6>
+								<h6> <?php echo $this->lang->line('cart_empty') ?><br> <?php echo $this->lang->line('add_some_products') ?></h6>
 							</div>	
 						<?php } ?>
 					</tbody>
@@ -100,7 +100,7 @@ else { ?>
 				<tbody>
 					<div class="cart-empty text-center" >
 						<img src="<?php echo base_url();?>assets/front/images/empty-cart-product.png">
-						<h6><?php echo $this->lang->line('cart_empty') ?> <br> <?php echo $this->lang->line('add_some_dishes') ?></h6>
+						<h6><?php echo $this->lang->line('cart_empty') ?> <br> <?php echo $this->lang->line('add_some_products') ?></h6>
 					</div>	
 				</tbody>
 			</table>

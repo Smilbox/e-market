@@ -26,7 +26,7 @@
 									
 								</div>
 								<div class="add-cart-item">
-									<strong><?php echo $restaurant_details['restaurant'][0]['currency_symbol']; ?> <?php echo $value['totalPrice']; ?></strong>
+									<strong><?php echo $currency_symbol->currency_symbol; ?> <?php echo $value['totalPrice']; ?></strong>
 									<div class="number">
 										<span class="minus" id="minusQuantity" onclick="customItemCount(<?php echo $value['menu_id']; ?>,<?php echo $value['restaurant_id']; ?>,'minus',<?php echo $cart_key; ?>)"><i class="iicon-icon-22"></i></span>
 										<input type="text" value="<?php echo $value['quantity']; ?>" class="pointer-none" />
@@ -38,7 +38,7 @@
 					</div>
 					<div class="cart-subtotal">
 						<strong><?php echo $this->lang->line('sub_total') ?></strong>
-						<strong class="price"><?php echo $restaurant_details['restaurant'][0]['currency_symbol']; ?> <?php echo $cart_details['cart_total_price']; ?></strong>
+						<strong class="price"><?php echo $currency_symbol->currency_symbol; ?> <?php echo $cart_details['cart_total_price']; ?></strong>
 					</div>
 					<div class="continue-btn" id="btn-continue">
 					</div>			

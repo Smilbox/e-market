@@ -197,31 +197,30 @@ if(!empty($store_type_variables)) {
 <script>
 $(document).on('ready', function() {
 	$('#promotionModal').modal('show'); 
-	// initAutocomplete('address');
-	// console.log("kdj", "k");
-	// // auto detect location if even searched once.
-	// if (SEARCHED_LAT == '' && SEARCHED_LONG == '' && SEARCHED_ADDRESS == '') {
-	// 	getLocation('home_page');
-	// }
-	// else
-	// {
-	// 	getSearchedLocation(SEARCHED_LAT,SEARCHED_LONG,SEARCHED_ADDRESS,'home_page');
-	// }
+	initAutocomplete('address');
+	// auto detect location if even searched once.
+	if (SEARCHED_LAT == '' && SEARCHED_LONG == '' && SEARCHED_ADDRESS == '') {
+		getLocation('home_page');
+	}
+	else
+	{
+		getSearchedLocation(SEARCHED_LAT,SEARCHED_LONG,SEARCHED_ADDRESS,'home_page');
+	}
 
-	// $(window).keydown(function(event){
-	// 	if(event.keyCode == 13) {
-	// 	  event.preventDefault();
-	// 	  return false;
-	// 	}
-	// });	
+	$(window).keydown(function(event){
+		if(event.keyCode == 13) {
+		  event.preventDefault();
+		  return false;
+		}
+	});	
 	
-	// $('.carousel').carousel({
-  	// 	interval: 5000
-	// })
+	$('.carousel').carousel({
+  		interval: 5000
+	})
 
-	// $('#close-promote').on('click', function() {
-	// 	$('#popup-content').attr('style','display: none;');
-	// });
+	$('#close-promote').on('click', function() {
+		$('#popup-content').attr('style','display: none;');
+	});
 });
 </script>
 <?php $this->load->view('footer'); ?>

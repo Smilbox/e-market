@@ -121,8 +121,8 @@
 																<?php if (!empty($userNotifications)) {
 																    foreach ($userNotifications as $key => $value) {
 																        if (date("Y-m-d", strtotime($value->datetime)) == date("Y-m-d")) {
-																            $noti_time = date("H:i:s") - date("H:i:s", strtotime($value->datetime));
-																            $noti_time = abs($noti_time) . ' '.$this->lang->line('mins_ago');
+																			$noti_time = strtotime(date("H:i:s")) - strtotime(date("H:i:s", strtotime($value->datetime)));
+			            													$noti_time = intval(abs($noti_time)/60) . ' '.$this->lang->line('mins_ago');
 																        } else {
 																            $d1 = strtotime(date("Y-m-d",strtotime($value->datetime)));
 																			$d2 = strtotime(date("Y-m-d"));

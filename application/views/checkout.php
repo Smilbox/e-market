@@ -345,7 +345,7 @@
 										<tfoot>
 											<tr>
 												<td><?php echo $this->lang->line('to_pay') ?></td>
-												<?php $to_pay = $cart_details['cart_total_price'] + $delivery_charges; 
+												<?php $to_pay = $cart_details['cart_total_price'] + (isset($delivery_charges) ? $delivery_charges : 0); 
 												$this->session->set_userdata(array('total_price' => $to_pay)); ?>
 												<td><strong><?php echo $currency_symbol->currency_symbol; ?> <?php echo $to_pay; ?></strong></td>
 											</tr>

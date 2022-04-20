@@ -228,6 +228,7 @@ function customItemCount(entity_id,restaurant_id,action,cart_key){
       $('#quotes-main-loader').hide();
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log(XMLHttpRequest);
       alert(errorThrown);
     }
     });
@@ -372,6 +373,7 @@ function checkMenuItem(entity_id,restaurant_id,item_id){
       }
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log(errorThrown);
       alert(errorThrown);
     }
     });
@@ -486,8 +488,8 @@ function getAddress(latitude,longitude,page){
       $('#quotes-main-loader').hide();
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log(XMLHttpRequest);
       alert(errorThrown);
-      console.log(errorThrown);
     }
     });
 }
@@ -1432,7 +1434,8 @@ function getDeliveryCharges(latitude,longitude,action,cart_total){
       $('#quotes-main-loader').hide();
       getCoupons(cart_total,'delivery');
     },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {           
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log(XMLHttpRequest);           
       alert(errorThrown);
     }
     });
@@ -1593,13 +1596,16 @@ $( "#checkout_form" ).on("submit", function( event ) {
       },   
       success: function(response) {
               $('#quotes-main-loader').hide();
+              console.log("bizarre",response);
               if (response.result == "success") {
                 $('#track_order').html(response.order_id);
                 $('#order-confirmation').modal('show');
-                setTimeout(location.reload.bind(location), 300000);
+                console.log("response", response);
+                // setTimeout(location.reload.bind(location), 300000);
               }
       },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {           
+      error: function(XMLHttpRequest, textStatus, errorThrown) {     
+        console.log(XMLHttpRequest);      
         alert(errorThrown);
       }
       });
@@ -1633,7 +1639,8 @@ function customCheckoutItemCount(entity_id,restaurant_id,action,cart_key){
       }
       $('#quotes-main-loader').hide();
     },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {           
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      console.log(XMLHttpRequest);           
       alert(errorThrown);
     }
     });

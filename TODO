@@ -1,0 +1,98 @@
+Général:
+    Correction de bugs:
+        Affichage de la couleur principale du site ayant disparu et qui a réglé les problèmes:
+            ✔ Boutons 'invisibles ou sans fond' (ex: Langue, Se Connecter) @done(22-04-19 22:17)
+            ✔ Marque la page actuelle dans le header @done(22-04-19 22:17)
+            ✔ Affichage du footer (pied de page) @done(22-04-19 22:17)
+            ✔ Tout autre composant qui prend la couleur principale @done(22-04-19 22:17)
+        ☐ Changer le destinataire des mails réglé pour le moment sur sales@e-sakafo.mg vers => ?
+        ☐ Footer lien Facebook, Twitter, Linkedin
+        ✔ Bug notifications mal formés et n'apparait pas @done(22-04-20 19:29)
+
+Page Accueil:
+    Correction des termes:
+        ✔ Home => Accueil @done(22-04-19 21:39)
+        Vos envies livrées en un instant:
+            ☐ Avis Arnaud
+            ☐ Avis Eva
+            ☐ Avis Rija
+            ☐ Changer
+    Image téléphone:
+        ☐ Demander au designer/responsable
+        ☐ Changer
+    Image de fond 'téléchargez gratuitement notre appli e-market':
+        ☐ Demander au designer
+        ☐ Changer
+    
+Page restaurant_details_product (Telma par exemple):
+    ☐ Filtre
+    ☐ Appui sur 'Entrée' pour lancer recherche
+    Avis et notes étoiles:
+        ☐ Voir avec Arnaud car il affirme que l'avis n'est disponible qu'après livraison
+    Corrections de bugs:
+        ✔ Erreur lorsque le produit n'as pas d'image @done(22-04-19 22:24)
+        ✔ Erreur après l'ajout en quantité d'un produit @done(22-04-19 22:24)
+        ✔ Erreur après la diminution de quantité d'un produit @done(22-04-19 22:24)
+    
+Page inscription:
+    ☐ Image de fond
+    ✔ Bug "Veuillez entrer un email valide qui existe svp!" bloquant inscription @done(22-04-19 21:47)
+    Bugs liés au mail de confirmation:
+        ✔ Gestion des cas lorsqu'un ou plusieurs attributs est manquante (ex SFirstName, SLastName) dans common_helper @done(22-04-19 21:46)
+        ✔ Bug sur la génération du lien (attribut UserId inexistante qui se réfère à l'Id de l'utilisateur nouvellement créé) @done(22-04-19 21:46)
+    ✔ Bug de redirection vers page blanche après inscription @done(22-04-19 21:46)
+    ☐ Correction du checking de l'existence des mails lorsque Mr Laza et Guaurang renouvelleront l'api dans apilayers
+
+Page login:
+    ✔ Bug de redirection vers page blanche après login @done(22-04-19 21:46)
+    ✔ Bug causé par l'option 'remember me' si celle-ci n'est pas cochée @done(22-04-19 21:46)
+
+Page A propos de nous:
+    Correction des termes:
+        ☐ SSFM Backoffice
+
+Page Contactez e-market:
+    Correction des termes:
+        ✔ SSFM Backoffice @done(22-04-20 13:19)
+        ☐ Vérifier le fonctionnement de l'envoi par mail
+
+Page Termes et conditions:
+    Correction des termes:
+        ☐ SSFM Backoffice
+
+Page Mentions Légales:
+    Correction des termes:
+        ☐ SSFM Backoffice
+
+Page Politique de Confidentialité:
+    Correction des termes:
+        ✔ SSFM Backoffice @done(22-04-20 13:23)
+
+Page Panier:
+    Correction de bugs:
+        ✔ Bug lorsque les frais de livraisons ne sont pas définis @done(22-04-20 13:37)
+    Correction des termes:
+
+Page Checkout:
+    Correction de bugs:
+        ✔ Bug lorsque les frais de livraisons ne sont pas définis @done(22-04-20 18:40)
+        ✔ Bug lors du choix du lieu de livraison @done(22-04-20 18:36)
+        ✔ Bug lors de la suppression d'une commande @done(22-04-20 18:36)
+        ✔ Freeze après clic sur Poursuivre du à cause d'envoi de mail vers sales@e-sakafo.mg que j'ai sauté pour l'instant @done(22-04-20 18:40)
+
+Page Track order:
+    Correction de 
+
+Objectifs principaux:
+    ☐ Changements des différents termes/sections utilisés en un terme/section approprié pour les marketplace
+    Configuration des procédures de connexion:
+        ✔ Connexion et Inscription normal @done(22-04-20 19:54)
+        ☐ Connexion via Facebook
+    ☐ Configuration des attributions données et des bugs reliés aux comptes administrateurs
+    ☐ Configuration des redirections diverses
+    ☐ Création d’un e-mail de notification / alerte de notification
+    ☐ Configuration des zones de livraisons
+    ☐ Configuration des changements de mot de passe
+    ☐ Correction des bugs reliés aux front-office ( filtrage des données )
+    ☐ Configuration des sections affecter au livreur
+        

@@ -174,7 +174,7 @@ class Order extends CI_Controller {
         foreach ($grid_data['data'] as $key => $val) {
             $currency_symbol = $this->common_model->getCurrencySymbol($val->currency_id);
             $disabled = ($val->ostatus == 'delivered' || $val->ostatus == 'cancel')?'disabled':'';
-            $assignDisabled = ($val->first_name != '' || $val->last_name != '' || $val->order_delivery != "Delivery")?'disabled':'';
+            $assignDisabled = ($val->first_name != '' || $val->last_name != '' || strpos($val->order_delivery, "Delivery") === FALSE)?'disabled':'';
             $trackDriver = (($val->first_name != '' || $val->last_name != '') && $val->order_delivery == "Delivery")?'<a target="_blank" href="'.base_url().ADMIN_URL.'/order/track_order/'.str_replace(array('+', '/', '='), array('-', '_', '~'), $this->encryption->encrypt($val->entity_id)).'" title="Click here to view driver live position" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-eye"></i> '.$this->lang->line('track_driver').'</a>':'';            
             $assignDisabledStatus = ($val->status != 1)?'disabled':'';
             $ostatus = ($val->ostatus)?"'".$val->ostatus."'":'';

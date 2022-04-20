@@ -134,7 +134,7 @@ if (!empty($menu_arr)) {
 												 	<div class="detail-list">
 														<div class="detail-list-img">
 															<div class="list-img">
-															<?php $exist = file_get_contents($value['image'])?>
+															<?php $exist = @file_get_contents($value['image'])?>
 																<img src="<?php
 																echo ($exist) ? $value['image'] : default_img;
 																?>"
@@ -182,7 +182,7 @@ if (!empty($menu_arr)) {
 													<div class="detail-list <?php echo ($mvalue['is_veg'] == 1) ? 'veg' : 'non-veg'; ?>">
 														<div class="detail-list-img">
 															<div class="list-img">
-																<?php $exist = file_get_contents($mvalue['image']);?>
+																<?php $exist = @file_get_contents($mvalue['image']);?>
 																<img src="<?php
 																echo ($exist) ? $mvalue['image'] : default_img;
 																?>"

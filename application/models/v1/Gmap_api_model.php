@@ -23,7 +23,7 @@ class Gmap_api_model extends CI_Model {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 			'Content-Type: application/json; charset=utf-8',
             'Accept: application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',

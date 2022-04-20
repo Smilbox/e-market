@@ -91,7 +91,7 @@
 									<tfoot>
 										<tr>
 											<td><?php echo $this->lang->line('to_pay') ?></td>
-											<?php $to_pay = $cart_details['cart_total_price'] + $delivery_charges; ?>
+											<?php $to_pay = $cart_details['cart_total_price'] + (isset($delivery_charges) ? $delivery_charges : 0); ?>
 											<td><strong><?php echo $currency_symbol->currency_symbol; ?> <?php echo $to_pay; ?></strong></td>
 										</tr>
 									</tfoot>
@@ -115,7 +115,7 @@
 							<tbody>
 								<div class="cart-empty text-center">
 									<img src="<?php echo base_url();?>assets/front/images/empty-cart-product.png">
-									<h6><?php echo $this->lang->line('cart_empty') ?> <br> <?php echo $this->lang->line('add_some_dishes') ?></h6>
+									<h6><?php echo $this->lang->line('cart_empty') ?> <br> <?php echo $this->lang->line('add_some_products') ?></h6>
 								</div>	
 							</tbody>
 						</table>

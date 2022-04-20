@@ -214,6 +214,12 @@ class Checkout extends CI_Controller {
 			$cart_details = $this->getcookie('cart_details');
 			$cart_restaurant = $this->getcookie('cart_restaurant');
 		}
+
+		// if cart_details cookie has been deleted
+		// if cart_details cookie has been deleted
+		if($cart_details[1] == "deleted")
+			$cart_details = array();
+
 		$data['cart_details'] = $this->getCartItems($cart_details,$cart_restaurant);
 		$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($cart_restaurant);
 		$data['order_mode'] = $this->session->userdata('order_mode');
@@ -831,19 +837,19 @@ class Checkout extends CI_Controller {
 
         $this->db->select('OptionValue');
         $FromEmailName = $this->db->get_where('system_option',array('OptionSlug'=>'Email_From_Name'))->first_row();  
-        if(!empty($email_template)){
-            $this->load->library('email');  
-            $config['charset'] = 'iso-8859-1';  
-            $config['wordwrap'] = TRUE;  
-            $config['mailtype'] = 'html';  
-            $this->email->initialize($config);  
-            $this->email->from($FromEmailID->OptionValue, $FromEmailName->OptionValue);  
-            // $this->email->to(trim($restaurant_detail->email)); 
-            $this->email->to(trim($FromEmailID->OptionValue)); 
-            $this->email->subject($email_template->subject);  
-            $this->email->message($email_template->message);  
-            $this->email->send();
-        }
+        // if(!empty($email_template)){
+        //     $this->load->library('email');  
+        //     $config['charset'] = 'iso-8859-1';  
+        //     $config['wordwrap'] = TRUE;  
+        //     $config['mailtype'] = 'html';  
+        //     $this->email->initialize($config);  
+        //     $this->email->from($FromEmailID->OptionValue, $FromEmailName->OptionValue);  
+        //     // $this->email->to(trim($restaurant_detail->email)); 
+        //     $this->email->to(trim($FromEmailID->OptionValue)); 
+        //     $this->email->subject($email_template->subject);  
+        //     $this->email->message($email_template->message);  
+        //     $this->email->send();
+        // }
         if ($order_id) {
 			$this->session->unset_userdata('checkDelivery');
 			$this->session->unset_userdata('deliveryCharge');
@@ -871,6 +877,7 @@ class Checkout extends CI_Controller {
         {
         	$arrdata = array('result'=> 'fail','order_id'=> '');
         }
+		// $arrdata = array('result'=> 'fail','order_id'=> '');
         echo json_encode($arrdata);	
     }
 }

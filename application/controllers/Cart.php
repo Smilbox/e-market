@@ -10,6 +10,7 @@ class Cart extends CI_Controller {
 		$this->load->model('/restaurant_model');      
 		$this->load->model('/cart_model');    
 		$this->load->model(ADMIN_URL.'/store_type_model');    
+		$this->load->helper('cookie');
 	}
 	// index function
 	public function index()
@@ -437,8 +438,13 @@ class Cart extends CI_Controller {
 			} 
 			$data['cart_details'] = $this->getcookie('cart_details');
 			$data['cart_restaurant'] = $this->getcookie('cart_restaurant');
-			$data['cart_details'] = $this->getCartItems($data['cart_details'],$data['cart_restaurant']);
 			$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($data['cart_restaurant']);
+
+			// if cart_details cookie has been deleted
+			if($data['cart_details'][1] == "deleted")
+				$data['cart_details'] = array();
+				
+			$data['cart_details'] = $this->getCartItems($data['cart_details'],$data['cart_restaurant']);
 			// get if a item is still added in the cart or not
 			$added = 0;
 			if (!empty($data['cart_details']['cart_items'])) {
@@ -456,11 +462,7 @@ class Cart extends CI_Controller {
 				$store = $this->common_model->getSingleRow('restaurant', 'entity_id', $cart_restaurant);
 				if($store) {
 					$store_type = $this->store_type_model->getById($store->store_type_id);
-					if($store_type && $store_type->name_en == 'Restaurants') {
-						$cart = $this->load->view('ajax_your_cart',$data,true);
-					}else {
-						$cart = $this->load->view('ajax_your_cart_product',$data,true);
-					}
+					$cart = $this->load->view('ajax_your_cart',$data,true);
 				}
 			}
 			$array_view = array(

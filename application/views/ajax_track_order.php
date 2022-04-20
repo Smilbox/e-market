@@ -73,7 +73,7 @@
 									<p><?php echo ($latestOrder->placed) ? date("d M Y G:i A", strtotime($latestOrder->placed)) : ''; ?></p>
 								</div>
 							</div>
-							<?php $active = ($latestOrder->accepted_by_restaurant) ? "active" : "";?>
+							<?php $active = isset($latestOrder->accepted_by_restaurant) ? "active" : "";?>
 							<div class="status-step <?php echo $active; ?>">
 								<div class="status-step-img">
 									<div class="step-img">
@@ -82,7 +82,7 @@
 								</div>
 								<div class="status-step-name">
 									<label><?php echo $this->lang->line('order_accepted') ?></label>
-									<p><?php echo ($latestOrder->accepted_by_restaurant) ? date("d M Y G:i A", strtotime($latestOrder->accepted_by_restaurant)) : ''; ?></p>
+									<p><?php echo isset($latestOrder->accepted_by_restaurant) ? date("d M Y G:i A", strtotime($latestOrder->accepted_by_restaurant)) : ''; ?></p>
 								</div>
 							</div>
 							<?php $active = ($latestOrder->preparing) ? "active" : "";?>
