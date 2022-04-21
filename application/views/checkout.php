@@ -67,7 +67,8 @@
 		                        <div class="login-complete">
 		                        	<div class="login-img-main">
 		                        		<div class="user-img">
-		                        			<img src="<?php echo base_url();?>assets/front/images/user-login.png">
+											<?php $image = ($this->session->userdata('userImage')) ? strpos($this->session->userdata('userImage'), "https") == 0 ? $this->session->userdata('userImage') : (base_url() . 'uploads/' . $this->session->userdata('userImage')) : (base_url() . 'assets/front/images/user-login.png');?>
+                        					<img src="<?php echo $image; ?>">
 		                        		</div>
 		                        	</div>
 		                        	<div class="logged-in">

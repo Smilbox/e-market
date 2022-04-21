@@ -21,7 +21,7 @@
                 <div class="my-profile-head">
                     <div class="profile-img-main">
                         <div class="profile-img">
-                            <?php $image = ($profile->image) ? (base_url() . 'uploads/' . $profile->image) : (default_user_img);?>
+                            <?php $image = ($profile->image) ? ($profile->image) : (default_user_img);?>
                             <img src="<?php echo $image; ?>">
                         </div>
                     </div>
@@ -583,7 +583,7 @@
             <div id="error-msg" class="error display-no"></div>
             <div class="edit-profile-img">
                 <div class="edit-img">
-                    <?php $image = ($profile->image) ? (base_url() . 'uploads/' . $profile->image) : (base_url() . 'assets/front/images/user-login.png');?>
+                    <?php $image = ($profile->image) ? ($profile->image) : (base_url() . 'assets/front/images/user-login.png');?>
                     <img id='old' src="<?php echo $image; ?>">
                     <img id="preview" class="display-no"/>
                     <label>

@@ -80,7 +80,6 @@ $lang['title_admin_notification'] = 'Notification';
 $lang['title_admin_notificationadd'] = 'Add Notification';
 
 $lang['notifi_title'] = 'Notification Title';
-$lang['title_checkout'] = 'Checkout';
 $lang['add_coupon'] = 'Add Coupon';
 $lang['add_order'] = 'Add Order';
 

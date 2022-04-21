@@ -80,7 +80,6 @@ $lang['title_admin_notification'] = 'Notification';
 $lang['title_admin_notificationadd'] = 'Ajouter une notification';
 
 $lang['notifi_title'] = 'Titre de la notification';
-$lang['title_checkout'] = 'Check-out';
 $lang['add_coupon'] = 'Ajouter un coupon';
 $lang['add_order'] = 'Ajouter une commande';
 
@@ -426,7 +425,7 @@ $lang['front_login_deactivate'] = 'Votre compte est désactivé. Veuillez contac
 $lang['sign_in'] = "Se connecter";
 $lang['logout'] = 'Déconnexion';
 $lang['title_cart'] = 'Votre commande';
-$lang['title_checkout'] = 'Quitter';
+$lang['title_checkout'] = 'Caisse';
 $lang['add_coupon'] = 'Ajouter un Code Promo';
 $lang['add_order'] = 'Passer commande';
 $lang['contact_us'] = 'Contactez e-market';

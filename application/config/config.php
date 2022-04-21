@@ -49,10 +49,10 @@ define('Driver_FCM_KEY','AAAAcowv_a0:APA91bGUJjP93RRjNVImNEYabpIYlFlWPD8ubC3ut9-
 define('default_img',$root."assets/front/images/placeholder_image.jpg");
 define('default_user_img',$root."assets/front/images/user-login.png");
 define('cms_banner_img',$root."assets/front/images/order-food-banner.jpg");
-define('FB_PAGE_ID', '1708760856055518');
-define('FB_APP_ID', '1523098734517607');
+define('FB_PAGE_ID', '103083822391322');
+define('FB_APP_ID', '1378576182568815');
 define('FB_PAGE_ACCESS_TOKEN', 'EAAH47zNUReMBAIAoAtzUbGwAAsAwmdLRhtkZBJa2jkynbnagZAmZBRQrEuhAq7teWa5eetTldmKZBNFezQqE7ZBkN1cmilOObEEOmjGX8NNoyANXzH4xL2pcZBENxEE4L0gB8pWwi77ksx8oSB3GhvOgLtwZCflqKcJ3vAh2aI0KhTlaxfqFu88qMANHYmU5OsZD');
-define('FB_API_VERSION', 'v8.0');
+define('FB_API_VERSION', 'v13.0');
 define('FB_CHAT_THEME', '#bd0926');
 // define('GMAP_API_KEY', 'AIzaSyCQgapuNg7j-Q0UNWpo_wDEwncI0W-5WyE');
 // define('GMAP_API_KEY', 'AIzaSyBrEL6CgDLxKeXSJbf1poCbtn--AmmUYEE');

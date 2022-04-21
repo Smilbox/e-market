@@ -8,21 +8,17 @@ Général:
         ☐ Changer le destinataire des mails réglé pour le moment sur sales@e-sakafo.mg vers => ?
         ☐ Footer lien Facebook, Twitter, Linkedin
         ✔ Bug notifications mal formés et n'apparait pas @done(22-04-20 19:29)
+        ☐ Panier différent pour chaque langue ?
+        ☐ Heure d'ouverture-fermeture différent pour chaque langue ?
 
 Page Accueil:
     Correction des termes:
         ✔ Home => Accueil @done(22-04-19 21:39)
-        Vos envies livrées en un instant:
-            ☐ Avis Arnaud
-            ☐ Avis Eva
-            ☐ Avis Rija
-            ☐ Changer
+        ☐ Vos envies livrées en un instant
     Image téléphone:
         ☐ Demander au designer/responsable
-        ☐ Changer
     Image de fond 'téléchargez gratuitement notre appli e-market':
         ☐ Demander au designer
-        ☐ Changer
     
 Page restaurant_details_product (Telma par exemple):
     ☐ Filtre
@@ -36,12 +32,13 @@ Page restaurant_details_product (Telma par exemple):
     
 Page inscription:
     ☐ Image de fond
-    ✔ Bug "Veuillez entrer un email valide qui existe svp!" bloquant inscription @done(22-04-19 21:47)
-    Bugs liés au mail de confirmation:
-        ✔ Gestion des cas lorsqu'un ou plusieurs attributs est manquante (ex SFirstName, SLastName) dans common_helper @done(22-04-19 21:46)
-        ✔ Bug sur la génération du lien (attribut UserId inexistante qui se réfère à l'Id de l'utilisateur nouvellement créé) @done(22-04-19 21:46)
-    ✔ Bug de redirection vers page blanche après inscription @done(22-04-19 21:46)
-    ☐ Correction du checking de l'existence des mails lorsque Mr Laza et Guaurang renouvelleront l'api dans apilayers
+    Correction de bugs:
+        ✔ Bug "Veuillez entrer un email valide qui existe svp!" bloquant inscription @done(22-04-19 21:47)
+        Bugs liés au mail de confirmation:
+            ✔ Gestion des cas lorsqu'un ou plusieurs attributs est manquante (ex SFirstName, SLastName) dans common_helper @done(22-04-19 21:46)
+            ✔ Bug sur la génération du lien (attribut UserId inexistante qui se réfère à l'Id de l'utilisateur nouvellement créé) @done(22-04-19 21:46)
+        ✔ Bug de redirection vers page blanche après inscription @done(22-04-19 21:46)
+        ☐ Correction du checking de l'existence des mails lorsque Mr Laza et Guaurang renouvelleront l'api dans apilayers
 
 Page login:
     ✔ Bug de redirection vers page blanche après login @done(22-04-19 21:46)
@@ -81,18 +78,32 @@ Page Checkout:
         ✔ Freeze après clic sur Poursuivre du à cause d'envoi de mail vers sales@e-sakafo.mg que j'ai sauté pour l'instant @done(22-04-20 18:40)
 
 Page Track order:
-    Correction de 
+    Correction de bugs:
+        ✔ Bug si la commande n'est pas encore prise @done(22-04-20 20:22)
 
+Page Boutique/Order:
+    ☐ Changer l'image par défaut
+    ☐ Voir avec Arnaud
+
+
+
+
+
+
+    
 Objectifs principaux:
-    ☐ Changements des différents termes/sections utilisés en un terme/section approprié pour les marketplace
+    ✔ Changements des différents termes/sections utilisés en un terme/section approprié pour les marketplace @done(22-04-20 20:17)
     Configuration des procédures de connexion:
         ✔ Connexion et Inscription normal @done(22-04-20 19:54)
-        ☐ Connexion via Facebook
-    ☐ Configuration des attributions données et des bugs reliés aux comptes administrateurs
-    ☐ Configuration des redirections diverses
+        ✔ Connexion via Facebook (Je dois vérifier si je peux utiliser mon compte et mettre Rija en tant que superadmin ou s'il doit utiliser son compte) @done(22-04-21 19:36)
+        Configuration des redirections diverses:
+        ☐ Facebook
+        ☐ Twitter
+        ☐ LinkedIn
     ☐ Création d’un e-mail de notification / alerte de notification
-    ☐ Configuration des zones de livraisons
     ☐ Configuration des changements de mot de passe
-    ☐ Correction des bugs reliés aux front-office ( filtrage des données )
-    ☐ Configuration des sections affecter au livreur
+    ☐ Correction des bugs reliés aux front-office (page/page)
+    ☐ Configuration des zones de livraisons ???
+    ☐ Configuration des attributions données et des bugs reliés aux comptes administrateurs ???
+    ☐ Configuration des sections affectés au livreur ???
         

@@ -178,7 +178,7 @@
 								<?php if ($this->session->userdata('is_user_login')) {?>
 									<div class="header-user">
 										<div class="user-img">
-											<?php $image = ($this->session->userdata('userImage')) ? (base_url() . 'uploads/' . $this->session->userdata('userImage')) : (base_url() . 'assets/front/images/user-login.png');?>
+											<?php $image = ($this->session->userdata('userImage')) ? strpos($this->session->userdata('userImage'), "https") == 0 ? $this->session->userdata('userImage') : (base_url() . 'uploads/' . $this->session->userdata('userImage')) : (base_url() . 'assets/front/images/user-login.png');?>
                         					<img src="<?php echo $image; ?>">
 										</div>
 										<span class="user-menu-btn"><?php echo $this->session->userdata('userFirstname'); ?></span>
@@ -237,7 +237,7 @@
             // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
     		// console.log('Welcome!  Fetching your information.... ');
     		// FB.api(`/${data.id}/access_token=`+'<?php echo FB_PAGE_ACCESS_TOKEN ?>', function(response) {
-			FB.api('/me?fields=first_name,last_name,email,picture', function(response) {
+			FB.api('/me?fields=first_name,last_name,email,picture.width(500).height(500)', function(response) {
 				  if(response.error) {
 					  return;
 				  }	
