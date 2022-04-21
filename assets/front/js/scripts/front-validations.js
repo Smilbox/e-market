@@ -76,7 +76,8 @@ $("#form_front_forgotpass").on("submit", function(event) {
 	            }
             }
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {           
+        error: function(XMLHttpRequest, textStatus, errorThrown) {    
+            console.log(XMLHttpRequest);       
             alert(errorThrown);
         }
     });

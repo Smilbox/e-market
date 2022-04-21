@@ -96,11 +96,11 @@ Objectifs principaux:
     Configuration des procédures de connexion:
         ✔ Connexion et Inscription normal @done(22-04-20 19:54)
         ✔ Connexion via Facebook (Je dois vérifier si je peux utiliser mon compte et mettre Rija en tant que superadmin ou s'il doit utiliser son compte) @done(22-04-21 19:36)
-        Configuration des redirections diverses:
+    Configuration des redirections diverses:
         ☐ Facebook
         ☐ Twitter
         ☐ LinkedIn
-    ☐ Création d’un e-mail de notification / alerte de notification
+    ☐ Création d’un e-mail de notification / alerte de notification ???
     ☐ Configuration des changements de mot de passe
     ☐ Correction des bugs reliés aux front-office (page/page)
     ☐ Configuration des zones de livraisons ???
