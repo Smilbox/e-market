@@ -165,13 +165,13 @@
 											                    		<label>
 											                    			<input type="hidden" name="subtotal" id="subtotal" value="<?php echo $cart_details['cart_total_price']; ?>">
 																			
-																			<input type="radio" name="choose_order" id="delivery_24" value="delivery_24"  onclick="showDelivery24(<?php echo $cart_details['cart_total_price']; ?>);">
+																			<input type="radio" name="choose_order" id="delivery_24" value="delivery_24"  onclick="showDelivery24({lat:null,lng:null},<?php echo $cart_details['cart_total_price']; ?>);">
 											                    			<span class="<?php echo ($allow_24_delivery == "0") ? "hide" : ""  ?><?php echo ($mode_24 == '' && $pre_order_date) ? " hide" : "" ?> "><?php echo $this->lang->line('deliver_24') ?></span>
 											                    		</label>
 											                    	<!-- </div>
 											                    	<div class="radio-btn-list"> -->
 											                    		<label>
-											                    			<input type="radio" name="choose_order" id="delivery" value="delivery" onclick="showDelivery(<?php echo $cart_details['cart_total_price']; ?>);">
+											                    			<input type="radio" name="choose_order" id="delivery" value="delivery" onclick="showDelivery({lat:null,lng:null},<?php echo $cart_details['cart_total_price']; ?>);">
 											                    			<span class="<?php echo ($mode_24 == true ? "hide" : "")?><?php echo ($mode_24 == '' && $pre_order_date) ? " hide" : "" ?>"><?php echo $this->lang->line('delivery') ?></span>
 											                    		</label>
 											                    	</div>
@@ -192,8 +192,8 @@
 													                            	<input type="hidden" name="add_latitude" id="add_latitude">
 													                            	<input type="hidden" name="add_longitude" id="add_longitude">
 													                                <span style="color: red; font-weight: bold; margin: 0 20px 0px 20px;"><?php echo $this->lang->line('delivery_area') ?></span>
-													                            	<input type="text" name="add_address_area" id="add_address_area" <?php /*onfocus="geolocate('checkout', '<?php echo $cart_details['cart_total_price']; ?>')"*/?> placeholder="ex: Analakely, Antananarivo, Madagascar" autofocus 
-																					onblur="getLatLong('<?php echo $cart_details['cart_total_price']; ?>')" class="form-control">
+													                            	<input type="text" name="add_address_area" id="add_address_area" placeholder="ex: Analakely, Antananarivo, Madagascar" autocomplete="off" autofocus 
+																					 class="form-control">
 																					<span style="color: red; display: none" id="error-quarter"><?php echo $this->lang->line('valid_quarter') ?></span>
 													                            </div>
 																				<div class="form-group">
@@ -422,18 +422,34 @@
 // GMAP
 
 const cart_total = '<?php echo $cart_details['cart_total_price']; ?>';
+const coordinates = {
+		lat: null,
+		lng: null
+	};
 
 var updateMarker = function(e) {
 	var adr = new Promise(function(resolve, reject) {
+			coordinates.lat = e.latLng.lat();
+			coordinates.lng = e.latLng.lng();
 			geocodePositionAdr(e.latLng, resolve);
 		});
 		adr.then(function(value) {
 			if(value) {
 				$('#add_address_area').val(value);
-				getLatLong(cart_total);
+				let address = document.getElementById("add_address_area").value;
+
+				if(coordinates.lat === undefined || coordinates.lng === undefined) {
+					_getLatLongCb(coordinates.lat, coordinates.lng, address, cart_total);
+				} else{
+					geocoder.geocode( { 'address': address}, function(results, status) {
+						if (status == google.maps.GeocoderStatus.OK) {
+							_getLatLongCb(results[0].geometry.location.lat(),results[0].geometry.location.lng(),address,cart_total, true);
+						} 
+					});
+				}
 			}
 		});
-}
+};
 
 var map = new GMaps({
 	div: '#gmap_geocoding_adr',
@@ -455,14 +471,12 @@ var handleActionMap = function (lat, lng) {
 				updateMarker(e);
             }
         });
-}
-
-
+};
  
 $(document).ready(function(){ 
     jQuery( "#payment_option" ).prop('required',true);
 	$('#signup_form').hide();
-	var page = '<?php echo $page; ?>';
+	var page = '<?php echo isset($page) ? $page : ""; ?>';
 	if(page == "login"){
 		$('#login_form').show();
 		$('#signup_form').hide();
@@ -480,21 +494,15 @@ $(document).ready(function(){
 
 	var mode_24 = '<?php echo $mode_24 ?>';
 	var pre_order = '<?php echo $pre_order_date ?>';
+	
+
 	if(mode_24 !== '') {
-		showDelivery24();
+		showDelivery24(coordinates, cart_total);
 	}
 
 	if(mode_24 == '' && pre_order) {
-		showDelivery();
+		showDelivery(coordinates, cart_total);
 	}
-
-	$("#add_address_area").keypress(function (e) {
-        var keycode = (e.keyCode ? e.keyCode : e.which);
-        if (keycode == '13') {
-            e.preventDefault();
-            getLatLong(cart_total);
-		}
-	});
 });
 </script>
 <?php $this->load->view('footer'); ?>

@@ -95,15 +95,15 @@ Objectifs principaux:
     ✔ Changements des différents termes/sections utilisés en un terme/section approprié pour les marketplace @done(22-04-20 20:17)
     Configuration des procédures de connexion:
         ✔ Connexion et Inscription normal @done(22-04-20 19:54)
-        ✔ Connexion via Facebook (Je dois vérifier si je peux utiliser mon compte et mettre Rija en tant que superadmin ou s'il doit utiliser son compte) @done(22-04-21 19:36)
+        ✔ Connexion via Facebook (Je dois vérifier si je peux utiliser mon compte et mettre Rija en tant que superadmin ou s'il doit utiliser son compte) @done(22-04-22 10:13)
     Configuration des redirections diverses:
         ☐ Facebook
         ☐ Twitter
         ☐ LinkedIn
     ☐ Création d’un e-mail de notification / alerte de notification ???
-    ☐ Configuration des changements de mot de passe
+    ☐ Configuration des changements de mot de passe ???
     ☐ Correction des bugs reliés aux front-office (page/page)
-    ☐ Configuration des zones de livraisons ???
+    ✔ Configuration des zones de livraisons @done(22-04-22 16:32)
     ☐ Configuration des attributions données et des bugs reliés aux comptes administrateurs ???
-    ☐ Configuration des sections affectés au livreur ???
+    ✔ Configuration des sections affectés au livreur @done(22-04-22 16:44)
         

@@ -507,23 +507,36 @@ function menuSearch(category_id){
 }
 // autocomplete function
 var autocomplete;
-function initAutocomplete(id) {
+function initAutocomplete(id, coordinates, cart_total) {
       autocomplete = new google.maps.places.Autocomplete(
       document.getElementById(id), {
           types: ['geocode'] //'geocode','address','establishment','regions','cities'
       });
       autocomplete.setComponentRestrictions(
         {'country': ['mg']});
-      autocomplete.setFields(['address_component', 'formatted_address']);
+      autocomplete.setFields(['geometry']);
       
+      let address = document.getElementById("add_address_area").value;
       autocomplete.addListener('place_changed', function() {
-        var address = document.getElementById("add_address_area").value;
-        var test = /([a-zA-Z0-9]+)\,[\s]+Antananarivo, Madagascar/i.test(address);
-        if(!test) {
-          // $('#error-quarter').css('display', 'inherit');
-        }else {
-          $('#error-quarter').css('display', 'none'); 
-         }
+        var place = autocomplete.getPlace();
+        // var address = document.getElementById("add_address_area").value;
+        // var test = /([a-zA-Z0-9]+)\,[\s]+Antananarivo, Madagascar/i.test(address);
+        // if(!test) {
+        //   // $('#error-quarter').css('display', 'inherit');
+        // }else {
+        //   $('#error-quarter').css('display', 'none'); 
+        //  }
+        if(place.geometry !== undefined) {
+          coordinates.lat = place.geometry.location.lat();
+          coordinates.lng = place.geometry.location.lng();
+          _getLatLongCb(coordinates.lat, coordinates.lng, address, cart_total);
+        } else{
+          geocoder.geocode( { 'address': address}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              _getLatLongCb(results[0].geometry.location.lat(),results[0].geometry.location.lng(),address,cart_total, true);
+            } 
+          });
+        }
       });
 }
 
@@ -549,7 +562,7 @@ function geolocate(page, cart) {
       $('#add_latitude').val(position.coords.latitude); 
       $('#add_longitude').val(position.coords.longitude); 
       if(typeof handleActionMap == "function") {
-        handleActionMap(position.coords.latitude, position.coords.longitude, cart);
+        handleActionMap(position.coords.latitude, position.coords.longitude);
       }
     }
     });
@@ -1333,34 +1346,15 @@ function _getLatLongCb(latitude, longitude, address, cart_total, store = false){
   $('#add_latitude').val(latitude);
   $('#add_longitude').val(longitude);
   if(typeof handleActionMap == "function") {
-    handleActionMap(latitude, longitude, cart_total);
+    handleActionMap(latitude, longitude);
   }
   if(store){
     postGeocode(latitude, longitude, address);
   }
 }
-//get lat long
-function getLatLong(cart_total){  
-    setTimeout(function() {
-      var address = document.getElementById("add_address_area").value;
-      getGeocode(address).done(function(res) {
-        if(res.results) {
-         _getLatLongCb(res.results.latitude, res.results.longitude, address, cart_total);
-        }else{
-          console.log("getLatLong");
-          geocoder.geocode( { 'address': address}, function(results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-              _getLatLongCb(results[0].geometry.location.lat(),results[0].geometry.location.lng(),address,cart_total, true);
-            } 
-            });
-        }
-      });
-    }, 900);
-}
 
 function geocodePositionAdr(pos, resolve) {
   // var geocoder = new google.maps.Geocoder();
-  console.log("pos");
   geocoder.geocode({
     latLng: pos
   }, function(responses) {
@@ -1450,10 +1444,10 @@ function handleDisplay(id, val) {
 }
 
 // show delivery options
-function showDelivery(cart_total_price){ 
+function showDelivery(coordinates, cart_total){ 
   handleDisplay('delivery-form', 'block'); 
-  initAutocomplete('add_address_area');
-  handleActionMap(-18.8876653, 47.4423024, cart_total_price);
+  initAutocomplete('add_address_area', coordinates, cart_total);
+  handleActionMap(-18.8876653, 47.4423024);
 	jQuery( ".add_new_address" ).prop('required',true);
 	//getCoupons(cart_total_price,'delivery');
   $('#checkout_form').validate().resetForm();
@@ -1464,10 +1458,10 @@ function showDelivery(cart_total_price){
   $('#your_address_content').hide();
 }
 // shwo delivery 24 options
-function showDelivery24(cart_total_price){  
+function showDelivery24(coordinates, cart_total){  
 	handleDisplay('delivery-form', 'block');   
-  initAutocomplete('add_address_area');
-  handleActionMap(-18.8876653, 47.4423024, cart_total_price);
+  initAutocomplete('add_address_area', coordinates, cart_total);
+  handleActionMap(-18.8876653, 47.4423024);
 	jQuery( ".add_new_address" ).prop('required',true);
 	// getCoupons(cart_total_price,'delivery');
   $('#checkout_form').validate().resetForm();
