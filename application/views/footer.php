@@ -12,9 +12,6 @@
 			$facebook = $this->db->get_where('system_option',array('OptionSlug'=>'facebook'))->first_row();
 
 			$this->db->select('OptionValue');
-			$twitter = $this->db->get_where('system_option',array('OptionSlug'=>'twitter'))->first_row();
-
-			$this->db->select('OptionValue');
 			$linkedin = $this->db->get_where('system_option',array('OptionSlug'=>'linkedin'))->first_row(); 
 			?>
 			<div class="col-sm-12 ">
@@ -30,7 +27,6 @@
 							}
 						} ?> -->
 						<li><a href="<?php echo $facebook->OptionValue; ?>" target="_blank" ><i class="iicon-icon-08"></i></a></li>
-						<li><a href="<?php echo $twitter->OptionValue; ?>" target="_blank" ><i class="iicon-icon-09"></i></a></li>
 						<li><a href="<?php echo $linkedin->OptionValue; ?>" target="_blank" ><i class="iicon-icon-10"></i></a></li>
 					</ul>
 				</div>
