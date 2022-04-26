@@ -10,6 +10,7 @@ Général:
         ✔ Bug notifications mal formés et n'apparait pas @done(22-04-20 19:29)
         ☐ Panier différent pour chaque langue ?
         ☐ Heure d'ouverture-fermeture différent pour chaque langue ?
+        ✔ Integration Google Analytics @done(22-04-26 10:57)
 
 Page Accueil:
     Correction des termes:
@@ -22,7 +23,7 @@ Page Accueil:
     
 Page restaurant_details_product (Telma par exemple):
     ☐ Filtre
-    ☐ Appui sur 'Entrée' pour lancer recherche
+    ✔ Appui sur 'Entrée' pour lancer recherche @done(22-04-26 10:58)
     Avis et notes étoiles:
         ☐ Voir avec Arnaud car il affirme que l'avis n'est disponible qu'après livraison
     Corrections de bugs:
@@ -96,9 +97,9 @@ Objectifs principaux:
     Configuration des procédures de connexion:
         ✔ Connexion et Inscription normal @done(22-04-20 19:54)
         ✔ Connexion via Facebook (Je dois vérifier si je peux utiliser mon compte et mettre Rija en tant que superadmin ou s'il doit utiliser son compte) @done(22-04-22 10:13)
-    Configuration des redirections diverses:
-        ☐ Facebook
-        ☐ Twitter
+    Configuration des redirections diverses (Backoffice Options du systeme):
+        ✔ Facebook @done(22-04-26 11:01)
+        ✔ Suppression de Twitter @done(22-04-26 11:01)
         ☐ LinkedIn
     ☐ Création d’un e-mail de notification / alerte de notification ???
     ☐ Configuration des changements de mot de passe ???

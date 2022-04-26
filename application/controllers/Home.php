@@ -345,7 +345,15 @@ class Home extends CI_Controller {
                         $this->email->to($this->input->post('email'));      
                         $this->email->subject($email_template->subject);  
                         $this->email->message($EmailBody);
-                        $this->email->send();
+                        if($this->email->send())
+						{
+						echo 'Email sent.';
+						}
+						else
+						{
+						show_error($this->email->print_debugger());
+						die;
+						}
                           
                         // update verification code
                         $addata = array('email_verification_code'=>$verificationCode);
@@ -400,7 +408,15 @@ class Home extends CI_Controller {
 		                $this->email->to($this->input->post('email_forgot'));      
 		                $this->email->subject($email_template->subject);  
 		                $this->email->message($EmailBody);            
-		                $this->email->send();
+		                if($this->email->send())
+						{
+						echo 'Email sent.';
+						}
+						else
+						{
+						show_error($this->email->print_debugger());
+						die;
+						}
 		                // update verification code
 		                $addata = array('email_verification_code'=>$verificationCode);
 		                $this->common_model->updateData('users',$addata,'entity_id',$checkRecord[0]->entity_id); 

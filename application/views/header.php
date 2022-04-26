@@ -12,6 +12,7 @@
 	    <!-- SEO and SMO meta tags -->
 	    <meta name="description" content="">
 	    <meta name="keywords" content="">
+		
 
 	    <!-- Required Stylesheet -->
 	    <link rel='stylesheet' href='<?php echo base_url(); ?>assets/front/css/animate.min.css'>
@@ -28,6 +29,18 @@
 		<script type="text/javascript" src="<?php echo base_url(); ?>assets/front/js/bootstrap.min.js"></script>
 	    <script type="text/javascript" src='<?php echo base_url(); ?>assets/front/js/owl.carousel.min.js'></script>
 	    <script type="text/javascript" src="<?php echo base_url();?>assets/front/js/jquery.validate.min.js"></script>
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-227123047-1"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'UA-227123047-1');
+		</script>
+		<meta name="google-site-verification" content="phOKOOSHVhdQhnMr7b0TOJaNg2epmPj27YHAiDlxorE" />
+
 
 	    <!-- Favicons -->
 	    <link rel="shortcut icon"  sizes="40x40" href="<?php echo base_url();?>assets/admin/img/favicon.png"/>

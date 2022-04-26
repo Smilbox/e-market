@@ -63,7 +63,7 @@ if (!empty($menu_arr)) {
 
 						<div class="form-group search-restaurant">
 							<input class="input-tags" type="text" name="search_dish" placeholder="<?php echo $this->lang->line('search_item') ?>" id="search_dish">
-							<input type="button" name="Search" value="Search" class="btn" onclick="searchMenuDishes(<?php echo $restaurant_details['restaurant'][0]['restaurant_id']; ?>)">
+							<input type="button" id="search_dish_btn" name="Search" value="Search" class="btn" onclick="searchMenuDishes(<?php echo $restaurant_details['restaurant'][0]['restaurant_id']; ?>)">
 						</div>
 					</form>
 				</div>
@@ -681,6 +681,12 @@ $(function() {
 
 <script type="text/javascript">
 $(document).on('ready', function() {
+
+	$('#search_dish').keyup(function(e) {
+		if(e.key === "Enter") {
+			$('#search_dish_btn').click();
+		}
+	});
 
 	var count = '<?php echo count($cart_details['cart_items']); ?>'; 
 	$('#cart_count').html(count);
