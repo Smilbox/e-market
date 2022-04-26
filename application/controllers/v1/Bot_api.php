@@ -159,7 +159,10 @@ class Bot_api extends REST_Controller {
         $this->email->to($FromEmailID->OptionValue);      
         $this->email->subject($email_template->subject);  
         $this->email->message($EmailBody);            
-        $this->email->send();
+        if(!$this->email->send()){
+            show_error($this->email->print_debugger());
+            die;
+        }
         // update verification code
         //$addata = array('email_verification_code'=>$verificationCode);
         //$this->common_model->updateData('users',$addata,'entity_id',$id);
@@ -189,7 +192,10 @@ class Bot_api extends REST_Controller {
         $this->email->to($requestBody['email']);      
         $this->email->subject($email_template->subject);  
         $this->email->message($EmailBody);            
-        $this->email->send();
+        if(!$this->email->send()){
+            show_error($this->email->print_debugger());
+            die;
+        }
         // update verification code
         $addata = array('email_verification_code'=>$verificationCode);
         $this->common_model->updateData('users',$addata,'entity_id',$id);
@@ -291,7 +297,10 @@ class Bot_api extends REST_Controller {
                 $this->email->to(trim($FromEmailID->OptionValue)); 
                 $this->email->subject('Order Receive Alert');  
                 $this->email->message($email_template->message);  
-                $this->email->send();
+                if(!$this->email->send()){
+                    show_error($this->email->print_debugger());
+                    die;
+                }
             }
             $order_status = 'placed';
             $message = $this->lang->line('success_add');

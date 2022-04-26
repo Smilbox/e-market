@@ -30,7 +30,6 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/front/css/responsive.css">
     <link rel="shortcut icon" sizes="40x40" href="<?php echo base_url();?>assets/front/images/favicon.png" />
     <title>Welcome to Food Delivery App</title>
-    <meta name="google-site-verification" content="EQhTCxswGmedFwXXGLW30zschJ3ikmEMMaSdNopVyis" />
 </head>
 
 <body>

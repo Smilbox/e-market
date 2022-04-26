@@ -39,8 +39,6 @@
 
 		gtag('config', 'UA-227123047-1');
 		</script>
-		<meta name="google-site-verification" content="phOKOOSHVhdQhnMr7b0TOJaNg2epmPj27YHAiDlxorE" />
-
 
 	    <!-- Favicons -->
 	    <link rel="shortcut icon"  sizes="40x40" href="<?php echo base_url();?>assets/admin/img/favicon.png"/>

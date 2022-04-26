@@ -71,18 +71,21 @@ class Users extends CI_Controller {
                     $Emaildata = $this->db->get_where('email_template',array('email_slug'=>'user-added','language_slug'=>$this->session->userdata('language_slug'),'status'=>1))->first_row();
                     $arrayData = array('FirstName'=>$this->input->post('first_name'),'LoginLink'=>base_url().ADMIN_URL,'Email'=>$this->input->post('email'),'Password'=>$this->input->post('password'));
                     $EmailBody = generateEmailBody($Emaildata->message,$arrayData);  
-                    if(!empty($EmailBody)){     
-                        $this->load->library('email');  
-                        $config['charset'] = 'iso-8859-1';  
-                        $config['wordwrap'] = TRUE;  
-                        $config['mailtype'] = 'html';  
-                        $this->email->initialize($config);  
-                        $this->email->from($FromEmailID->OptionValue, $FromEmailName->OptionValue);  
-                        $this->email->to(trim($this->input->post('email'))); 
-                        $this->email->subject($Emaildata->subject);  
-                        $this->email->message($EmailBody);  
-                        $this->email->send(); 
-                    } 
+                    // if(!empty($EmailBody)){     
+                    //     $this->load->library('email');  
+                    //     $config['charset'] = 'iso-8859-1';  
+                    //     $config['wordwrap'] = TRUE;  
+                    //     $config['mailtype'] = 'html';  
+                    //     $this->email->initialize($config);  
+                    //     $this->email->from($FromEmailID->OptionValue, $FromEmailName->OptionValue);  
+                    //     $this->email->to(trim($this->input->post('email'))); 
+                    //     $this->email->subject($Emaildata->subject);  
+                    //     $this->email->message($EmailBody);  
+                    //     if(!$this->email->send()){
+					// 		show_error($this->email->print_debugger());
+					// 		die;
+					// 	}
+                    // } 
                 }
                 $this->session->set_flashdata('page_MSG', $this->lang->line('success_add'));
                 if($this->input->post('user_type') == 'Driver'){
@@ -154,7 +157,10 @@ class Users extends CI_Controller {
                         $this->email->to(trim($this->input->post('email'))); 
                         $this->email->subject($Emaildata->subject);  
                         $this->email->message($EmailBody);  
-                        $this->email->send(); 
+                        if(!$this->email->send()){
+							show_error($this->email->print_debugger());
+							die;
+						}
                     } 
                 }
                 $this->session->set_flashdata('page_MSG', $this->lang->line('success_update'));
@@ -236,7 +242,10 @@ class Users extends CI_Controller {
                     $this->email->to(trim($emailData->email)); 
                     $this->email->subject($Emaildata->subject);  
                     $this->email->message($EmailBody);  
-                    $this->email->send(); 
+                    if(!$this->email->send()){
+                        show_error($this->email->print_debugger());
+                        die;
+                    }
                 } 
             }
         }

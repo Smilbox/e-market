@@ -71,7 +71,7 @@
 <script src="<?php echo base_url();?>assets/admin/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>assets/admin/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>assets/admin/pages/scripts/admin-login-forgot-validation.js"></script>
-<?php if($lang->language_slug=='fr'){  ?>
+<?php if(isset($lang) && $lang->language_slug=='fr'){  ?>
 <script type="text/javascript" src="<?php echo base_url()?>assets/admin/pages/scripts/localization/messages_fr.js"> </script>
 <?php } ?>
 </body>

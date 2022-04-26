@@ -42,7 +42,10 @@ class Dashboard extends CI_Controller {
                         $this->email->to($userDetail->email);      
                         $this->email->subject($email_template->subject);  
                         $this->email->message($email_template->message);            
-                        $this->email->send(); 
+                        if(!$this->email->send()){
+							show_error($this->email->print_debugger());
+							die;
+						}
                         redirect(base_url().ADMIN_URL.'/dashboard');             
                     }
                 }

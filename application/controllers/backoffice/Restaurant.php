@@ -191,7 +191,10 @@ class Restaurant extends CI_Controller {
                             $this->email->to(trim($this->session->userdata('adminemail'))); 
                             $this->email->subject($Emaildata->subject);  
                             $this->email->message($EmailBody);  
-                            $this->email->send();   
+                            if(!$this->email->send()){
+                                show_error($this->email->print_debugger());
+                                die;
+                            }   
                         } 
                     }
                     //get restaurant ans set in session
@@ -382,7 +385,10 @@ class Restaurant extends CI_Controller {
                             $this->email->to(trim($this->session->userdata('adminemail'))); 
                             $this->email->subject($Emaildata->subject);  
                             $this->email->message($EmailBody);  
-                            $this->email->send(); 
+                            if(!$this->email->send()){
+                                show_error($this->email->print_debugger());
+                                die;
+                            } 
                         } 
                     }
                     $this->session->set_flashdata('page_MSG', $this->lang->line('success_add'));

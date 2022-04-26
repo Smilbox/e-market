@@ -98,7 +98,10 @@ class Api extends REST_Controller {
                         $this->email->to($this->post('Email'));      
                         $this->email->subject($email_template->subject);  
                         $this->email->message($EmailBody);
-                        $this->email->send();
+                        if(!$this->email->send()){
+							show_error($this->email->print_debugger());
+							die;
+						}
                           
                         
                         // update verification code
@@ -293,7 +296,10 @@ class Api extends REST_Controller {
                 $this->email->to($this->post('Email'));      
                 $this->email->subject($email_template->subject);  
                 $this->email->message($EmailBody);            
-                $this->email->send();
+                if(!$this->email->send()){
+                    show_error($this->email->print_debugger());
+                    die;
+                }
                 // update verification code
                 $addata = array('email_verification_code'=>$verificationCode);
                 $this->api_model->updateUser('users',$addata,'entity_id',$checkRecord->entity_id); 
@@ -1006,7 +1012,10 @@ class Api extends REST_Controller {
                 $this->email->to(trim($FromEmailID->OptionValue)); 
                 $this->email->subject($email_template->subject);  
                 $this->email->message($email_template->message);  
-                $this->email->send();
+                if(!$this->email->send()){
+                    show_error($this->email->print_debugger());
+                    die;
+                }
             }
             $order_status = 'placed';
             $message = $this->lang->line('success_add');
@@ -1056,7 +1065,10 @@ class Api extends REST_Controller {
                 $this->email->subject($Emaildata->subject);  
                 $this->email->message($EmailBody);
                 $this->email->attach($filepath);
-                $this->email->send(); 
+                if(!$this->email->send()){
+                    show_error($this->email->print_debugger());
+                    die;
+                }
             }
             $this->response(['restaurant_detail'=>$taxdetail,'order_status'=>$order_status,'order_date'=>date('Y-m-d H:i:s',strtotime($this->post('order_date'))),'status'=>1,'message' => $message], REST_Controller::HTTP_OK); // OK */
         }else{

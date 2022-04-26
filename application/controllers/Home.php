@@ -345,14 +345,9 @@ class Home extends CI_Controller {
                         $this->email->to($this->input->post('email'));      
                         $this->email->subject($email_template->subject);  
                         $this->email->message($EmailBody);
-                        if($this->email->send())
-						{
-						echo 'Email sent.';
-						}
-						else
-						{
-						show_error($this->email->print_debugger());
-						die;
+                        if(!$this->email->send()){
+							show_error($this->email->print_debugger());
+							die;
 						}
                           
                         // update verification code
@@ -408,14 +403,9 @@ class Home extends CI_Controller {
 		                $this->email->to($this->input->post('email_forgot'));      
 		                $this->email->subject($email_template->subject);  
 		                $this->email->message($EmailBody);            
-		                if($this->email->send())
-						{
-						echo 'Email sent.';
-						}
-						else
-						{
-						show_error($this->email->print_debugger());
-						die;
+		                if(!$this->email->send()){
+							show_error($this->email->print_debugger());
+							die;
 						}
 		                // update verification code
 		                $addata = array('email_verification_code'=>$verificationCode);
@@ -427,10 +417,10 @@ class Home extends CI_Controller {
 		        {
 		            $arr['forgot_error'] = $this->lang->line('email_not_exist');
 		        }
+				echo json_encode($arr);
 	        }
 	    }
 
-	    echo json_encode($arr);
 	}
 	// user logout
 	public function logout(){ 

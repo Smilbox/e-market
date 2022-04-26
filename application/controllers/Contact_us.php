@@ -47,8 +47,10 @@ class Contact_us extends CI_Controller {
                 $this->email->to($AdminEmailAddress->OptionValue);  
                 $this->email->subject($Emaildata->subject);  
                 $this->email->message($EmailBody);            
-                $this->email->send();
-
+                if(!$this->email->send()){
+					show_error($this->email->print_debugger());
+					die;
+				}
                 $data['success_msg'] = $this->lang->line('message_sent');
                 $this->session->set_flashdata('contactUsMSG', $this->lang->line('message_sent')); 
                 redirect(base_url().'contact_us');

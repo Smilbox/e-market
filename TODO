@@ -5,12 +5,15 @@ Général:
             ✔ Marque la page actuelle dans le header @done(22-04-19 22:17)
             ✔ Affichage du footer (pied de page) @done(22-04-19 22:17)
             ✔ Tout autre composant qui prend la couleur principale @done(22-04-19 22:17)
-        ☐ Changer le destinataire des mails réglé pour le moment sur sales@e-sakafo.mg vers => ?
-        ☐ Footer lien Facebook, Twitter, Linkedin
+        Changer le destinataire des mails réglé pour le moment sur sales@e-sakafo.mg vers sales@e-market.mg:
+            ✔ Creer mail sales@e-market.mg sur Madagascar Internet @done(22-04-26 15:36)
+            ✔ Configurer le site sur ce nouveau serveur mail @done(22-04-26 15:36)
+        ✔ Footer lien Facebook, Twitter, Linkedin @done(22-04-26 15:36)
         ✔ Bug notifications mal formés et n'apparait pas @done(22-04-20 19:29)
         ☐ Panier différent pour chaque langue ?
         ☐ Heure d'ouverture-fermeture différent pour chaque langue ?
         ✔ Integration Google Analytics @done(22-04-26 10:57)
+        ✔ Rapport Excel Utilisateur et Admin @done(22-04-26 21:36)
 
 Page Accueil:
     Correction des termes:
@@ -52,7 +55,7 @@ Page A propos de nous:
 Page Contactez e-market:
     Correction des termes:
         ✔ SSFM Backoffice @done(22-04-20 13:19)
-        ☐ Vérifier le fonctionnement de l'envoi par mail
+        ✔ Vérifier le fonctionnement de l'envoi par mail @done(22-04-26 15:37)
 
 Page Termes et conditions:
     Correction des termes:
@@ -100,11 +103,11 @@ Objectifs principaux:
     Configuration des redirections diverses (Backoffice Options du systeme):
         ✔ Facebook @done(22-04-26 11:01)
         ✔ Suppression de Twitter @done(22-04-26 11:01)
-        ☐ LinkedIn
-    ☐ Création d’un e-mail de notification / alerte de notification ???
-    ☐ Configuration des changements de mot de passe ???
+        ✔ LinkedIn @done(22-04-26 15:37)
+    ✔ Création d’un e-mail de notification / alerte de notification @done(22-04-26 19:19)
+    ✔ Configuration des changements de mot de passe @done(22-04-26 19:19)
     ☐ Correction des bugs reliés aux front-office (page/page)
     ✔ Configuration des zones de livraisons @done(22-04-22 16:32)
-    ☐ Configuration des attributions données et des bugs reliés aux comptes administrateurs ???
+    ✔ Configuration des attributions données et des bugs reliés aux comptes administrateurs @done(22-04-26 19:19)
     ✔ Configuration des sections affectés au livreur @done(22-04-22 16:44)
         
