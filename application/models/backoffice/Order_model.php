@@ -43,9 +43,9 @@ class Order_model extends CI_Model {
 		$this->db->join('order_driver_map','o.entity_id = order_driver_map.order_id AND order_driver_map.is_accept = 1','left');
 		$this->db->join('order_detail','o.entity_id = order_detail.order_id','left'); 
 		$this->db->join('users as driver','order_driver_map.driver_id = driver.entity_id','left');
-		if($this->session->userdata('UserType') == 'Admin'){
-			$this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
-		}
+		// if($this->session->userdata('UserType') == 'Admin'){
+		// 	$this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+		// }
 		if($order_status){
 			$this->db->where('o.order_status',$order_status);
 		}
@@ -95,9 +95,9 @@ class Order_model extends CI_Model {
 		if($order_status){
 			$this->db->where('o.order_status',$order_status);
 		}  
-		if($this->session->userdata('UserType') == 'Admin'){
-			$this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
-		}
+		// if($this->session->userdata('UserType') == 'Admin'){
+		// 	$this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+		// }
 		$this->db->group_by('o.entity_id');
 		$result['data'] = $this->db->get('order_master as o')->result();    
 
@@ -119,9 +119,9 @@ class Order_model extends CI_Model {
 	public function getDrivers(){
 		$this->db->select('users.entity_id,users.first_name,users.last_name');
 		$this->db->where('user_type','Driver');  
-		if($this->session->userdata('UserType') == 'Admin'){
-			$this->db->where('created_by',$this->session->userdata('UserID'));  
-		}  
+		// if($this->session->userdata('UserType') == 'Admin'){
+		// 	$this->db->where('created_by',$this->session->userdata('UserID'));  
+		// }  
 		return $this->db->get('users')->result();
 	}
 	// assign driver 
@@ -299,16 +299,16 @@ class Order_model extends CI_Model {
 			$this->db->select('first_name,last_name,entity_id');
 			$this->db->where('status',1);
 			$this->db->where('user_type !=','MasterAdmin');
-			if($this->session->userdata('UserType') == 'Admin'){
-				$this->db->where('created_by',$this->session->userdata('UserID'));  
-			}        
+			// if($this->session->userdata('UserType') == 'Admin'){
+			// 	$this->db->where('created_by',$this->session->userdata('UserID'));  
+			// }        
 			return $this->db->get($tblname)->result();
 		}else if($tblname == 'restaurant'){
 			$this->db->select('name,entity_id,amount_type,amount');
 			$this->db->where('status',1);
-			if($this->session->userdata('UserType') == 'Admin'){
-				$this->db->where('created_by',$this->session->userdata('UserID'));  
-			}
+			// if($this->session->userdata('UserType') == 'Admin'){
+			// 	$this->db->where('created_by',$this->session->userdata('UserID'));  
+			// }
 			return $this->db->get($tblname)->result();
 		}else{
 		    $this->db->select('name,entity_id,amount_type,amount');
@@ -365,9 +365,9 @@ class Order_model extends CI_Model {
 	}
 	//get list of restaurant
 	public function getRestaurantList(){
-		if($this->session->userdata('UserType') == 'Admin'){
-			$this->db->where('created_by',$this->session->userdata('UserID'));  
-		}   
+		// if($this->session->userdata('UserType') == 'Admin'){
+		// 	$this->db->where('created_by',$this->session->userdata('UserID'));  
+		// }   
 		return $this->db->get('restaurant')->result();
 	}
 	//generate report data

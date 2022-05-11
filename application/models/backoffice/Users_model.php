@@ -98,6 +98,14 @@ class Users_model extends CI_Model {
         $this->db->update('users',$userData);
         return $this->db->affected_rows();
     }
+
+    //get user by entity id
+    public function getSingleUserById($entity_id){
+        $this->db->where('entity_id',$entity_id);       
+        return $this->db->get('users')->result()[0];
+    }
+
+
     //get users
     public function getUsers(){
         $this->db->select('first_name,last_name,entity_id');

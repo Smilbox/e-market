@@ -41,9 +41,9 @@ class Dashboard_model extends CI_Model {
         $this->db->select('o.total_rate as rate,o.order_date,o.order_status as ostatus,o.status,o.entity_id as entity_id,u.first_name as fname,u.last_name as lname');
         $this->db->join('users as u','o.user_id = u.entity_id','left');
         $this->db->join('restaurant','o.restaurant_id = restaurant.entity_id');
-        if($this->session->userdata('UserType') == 'Admin'){
-            $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
-        }
+        // if($this->session->userdata('UserType') == 'Admin'){
+        //     $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+        // }
     	return $this->db->get('order_master as o')->num_rows();
     }
     //get last orders
@@ -52,9 +52,9 @@ class Dashboard_model extends CI_Model {
         $this->db->join('users as u','o.user_id = u.entity_id','left');
         $this->db->join('restaurant','o.restaurant_id = restaurant.entity_id');
         $this->db->order_by('o.entity_id','desc');
-        if($this->session->userdata('UserType') == 'Admin'){
-            $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
-        } 
+        // if($this->session->userdata('UserType') == 'Admin'){
+        //     $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+        // } 
         $this->db->limit(5);
         return $this->db->get('order_master as o')->result(); 
     }	

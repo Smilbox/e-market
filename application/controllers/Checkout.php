@@ -335,8 +335,19 @@ class Checkout extends CI_Controller {
 	public function getDeliveryCharges(){ 
 		$check = '';
 		if (!empty($this->input->post('action')) && $this->input->post('action') == "get") { 
-			if (!empty($this->input->post('latitude')) && !empty($this->input->post('longitude'))) { 
-				$cart_restaurant = get_cookie('cart_restaurant'); 
+			if (!empty($this->input->post('latitude')) && !empty($this->input->post('longitude'))) {
+				$cart_restaurant = 0;
+				if(!empty($this->input->post('restaurant_id'))) {
+					$cart_restaurant = $this->input->post('restaurant_id');
+					$array_view = array(
+						'check'=> $check ? $check : '',
+						'ajax_order_summary'=>$order_summary
+					);
+					//echo '<pre>'; print_r($array_view); exit;
+					return json_encode($array_view);
+				} else {
+					$cart_restaurant = get_cookie('cart_restaurant');
+				}
 				// $check = $this->checkGeoFence($this->input->post('latitude'),$this->input->post('longitude'),$price_charge = true,$cart_restaurant);
 				$delivery_type = $this->input->post('mode_24') == "true" ? "24H Delivery" : "Express Delivery";
 				$check = $this->getDeliveryByDistance(null, $this->input->post('latitude')."~".$this->input->post('longitude'), $cart_restaurant, $delivery_type);

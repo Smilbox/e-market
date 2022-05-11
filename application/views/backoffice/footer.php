@@ -1,3 +1,4 @@
+<div class="wait-loader display-no" id="quotes-main-loader"><img  src="<?php echo base_url() ?>assets/admin/img/ajax-loader.gif" align="absmiddle"  ></div>
 <div class="page-footer">
     <div class="page-footer-inner">
           <?php echo $this->lang->line('copyright');?>&copy; <?php echo date('Y');?>  <?php echo $this->lang->line('site_footer');?>

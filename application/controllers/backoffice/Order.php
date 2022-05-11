@@ -15,6 +15,7 @@ class Order extends CI_Controller {
         $this->load->model('common_model');
         $this->load->library('form_validation');
         $this->load->model(ADMIN_URL.'/order_model');
+        $this->load->model(ADMIN_URL.'/users_model');
         $this->load->model('v1/gmap_api_model');
     }
     // view order
@@ -31,7 +32,6 @@ class Order extends CI_Controller {
         {   
             $this->form_validation->set_rules('user_id', 'User', 'trim|required');
             $this->form_validation->set_rules('restaurant_id', 'Restaurant', 'trim|required');
-            $this->form_validation->set_rules('address_id','Address', 'trim|required');
             $this->form_validation->set_rules('order_status','Order Status', 'trim|required');
             $this->form_validation->set_rules('order_date','Date Of Order', 'trim|required');
             $this->form_validation->set_rules('total_rate','Total', 'trim|required');
@@ -41,7 +41,6 @@ class Order extends CI_Controller {
                 $add_data = array(              
                     'user_id'=>$this->input->post('user_id'),
                     'restaurant_id' =>$this->input->post('restaurant_id'),
-                    'address_id' =>$this->input->post('address_id'),
                     'coupon_id' =>$this->input->post('coupon_id'),
                     'order_status' =>$this->input->post('order_status'),
                     'order_date' =>date('Y-m-d H:i:s',strtotime($this->input->post('order_date'))),
@@ -74,17 +73,38 @@ class Order extends CI_Controller {
                 }
                 // user_details
                 $user = $this->db->get_where('users',array('entity_id'=>$this->input->post('user_id')))->first_row();
-                $address = $this->db->get_where('user_address',array('entity_id'=>$this->input->post('address_id')))->first_row();
+                // $address = $this->db->get_where('user_address',array('entity_id'=>$this->input->post('address_id')))->first_row();
+                // $user_detail = array(
+                //     'first_name'=>$user->first_name,
+                //     'last_name'=>$user->last_name,
+                //     'address'=>($address)?$address->address:'',
+                //     'landmark'=>($address)?$address->landmark:'',
+                //     'zipcode'=>($address)?$address->zipcode:'',
+                //     'city'=>($address)?$address->city:'',
+                //     'latitude'=>($address)?$address->latitude:'',
+                //     'longitude'=>($address)?$address->longitude:'',
+                // );
+
+                $add_address = array(
+                    'address'=> $this->input->post('add_address')." ".$this->input->post('add_address_area'),
+                    'landmark'=> $this->input->post('landmark'),
+                    'latitude'=> $this->input->post('add_latitude'),
+                    'longitude'=> $this->input->post('add_longitude'),
+                    'zipcode'=> $this->input->post('zipcode'),
+                    'city'=> $this->input->post('city'),
+                    'user_entity_id'=> $this->input->post('user_id')
+                );
                 $user_detail = array(
                     'first_name'=>$user->first_name,
                     'last_name'=>$user->last_name,
-                    'address'=>($address)?$address->address:'',
-                    'landmark'=>($address)?$address->landmark:'',
-                    'zipcode'=>($address)?$address->zipcode:'',
-                    'city'=>($address)?$address->city:'',
-                    'latitude'=>($address)?$address->latitude:'',
-                    'longitude'=>($address)?$address->longitude:'',
+                    'address'=>$this->input->post('add_address'),
+                    'landmark'=>$this->input->post('landmark'),
+                    'zipcode'=>$this->input->post('zipcode'),
+                    'city'=>$this->input->post('city'),
+                    'latitude'=>$this->input->post('add_latitude'),
+                    'longitude'=>$this->input->post('add_longitude'),
                 );
+
                 //get restaurant detail
                 $rest_detail = $this->order_model->getRestaurantDetail($this->input->post('restaurant_id'));
                 $order_detail = array(
@@ -412,6 +432,17 @@ class Order extends CI_Controller {
         }
         echo $html;
     }
+
+    //get address
+    public function getPhoneNumber(){
+        $entity_id = ($this->input->post('entity_id') != '')?$this->input->post('entity_id'):'';
+        if($entity_id){
+           $result =  $this->users_model->getSingleUserById($entity_id);
+        }
+        echo $result->phone_number;
+    }
+
+
     //get address
     public function getAddress(){
         $entity_id = ($this->input->post('entity_id') != '')?$this->input->post('entity_id'):'';
