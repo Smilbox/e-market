@@ -4,7 +4,7 @@
 			<div class="restaurant-box">
 				<div class="popular-rest-box">
 					<div class="popular-rest-img">
-						<a href="<?php echo base_url().'restaurant/restaurant-detail/'.$value['restaurant_slug'];?>">
+						<a href="<?php echo base_url().'restaurant/restaurant-detail/'.$value['shop_slug'];?>">
 						<img  style="object-fit:<?php echo $value['object_fit'] ?>" src="<?php echo ($value['featured_image'])?$value['featured_image']:default_img;?>" alt="<?php echo $value['name']; ?>">
 						<div class="middle">
 							<?php if(!empty($value['image'])) { ?>
@@ -22,7 +22,7 @@
 						<div class="popular-rest-text">
 							<p class="address-icon"><?php echo $value['address']; ?> </p>	
 							<div class="order-btn">
-							<a href="<?php echo base_url().'restaurant/restaurant-detail/'.$value['restaurant_slug'];?>" class="btn"><?php echo ($value['timings']['closing'] == "Closed" ? $this->lang->line('pre-order') : $this->lang->line('order') )  ?></a>
+							<a href="<?php echo base_url().'restaurant/restaurant-detail/'.$value['shop_slug'];?>" class="btn"><?php echo ($value['timings']['closing'] == "Closed" ? $this->lang->line('pre-order') : $this->lang->line('order') )  ?></a>
 						</div>					
 						</div>
 					</div>

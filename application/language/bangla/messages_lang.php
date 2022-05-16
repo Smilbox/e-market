@@ -27,9 +27,9 @@ $lang['title_admin_restaurant'] = 'গরসটবরে';
 $lang['title_admin_restaurantadd'] = 'এড্ গরসটবরে';
 $lang['title_admin_restaurantedit'] = 'ইসড্ট গরসটবরে';
 
-$lang['title_admin_restaurantMenu'] = 'গমনু';
-$lang['title_admin_restaurantMenuadd'] = 'এড্ গমনু';
-$lang['title_admin_restaurantMenuedit'] = 'ইসড্ট গমনু';
+$lang['title_admin_shop_menu'] = 'গমনু';
+$lang['title_admin_shop_menu_add'] = 'এড্ গমনু';
+$lang['title_admin_shop_menu_edit'] = 'ইসড্ট গমনু';
 
 $lang['title_admin_restaurantPackage'] = 'পযাবকজ';
 $lang['title_admin_restaurantPackageadd'] = 'এড্ পযাবকজ';

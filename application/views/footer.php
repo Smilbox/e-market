@@ -4,7 +4,7 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="footer-logo">
-					<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/front/images/logo-footer.png" alt=""></a>
+					<a href="<?php echo base_url(); ?>"><img src="<?php echo base_url(); ?>assets/front/images/logo.png" alt=""></a>
 				</div>
 			</div>
 			<?php //get System Option Data

@@ -39,25 +39,25 @@
                     </ul>
                 </li>
             <?php } ?>
-            <li class="start <?php echo ($this->uri->segment(2)=='restaurant' || $this->uri->segment(2)=='branch' || $this->uri->segment(2)=='delivery_charge' || $this->uri->segment(2)=='addons_category')?"active":""; ?>">
-                <a href="<?php echo base_url().ADMIN_URL;?>/restaurant/view">
+            <li class="start <?php echo ($this->uri->segment(2)=='shop' || $this->uri->segment(2)=='branch' || $this->uri->segment(2)=='delivery_charge' || $this->uri->segment(2)=='addons_category')?"active":""; ?>">
+                <a href="<?php echo base_url().ADMIN_URL;?>/shop/view">
                     <i class="fa fa-file-text"></i>
-                    <span class="title"><?php echo $this->lang->line('restaurant'); ?></span>
-                    <span class="arrow <?php echo ($this->uri->segment(2)=='restaurant' || $this->uri->segment(2)=='branch' || $this->uri->segment(2)=='delivery_charge' || $this->uri->segment(2)=='addons_category')?"open":""; ?>"></span>
+                    <span class="title"><?php echo $this->lang->line('shop'); ?></span>
+                    <span class="arrow <?php echo ($this->uri->segment(2)=='shop' || $this->uri->segment(2)=='branch' || $this->uri->segment(2)=='delivery_charge' || $this->uri->segment(2)=='addons_category')?"open":""; ?>"></span>
                     <span class="selected"></span>
                 </a> 
                 <ul class="sub-menu">
-                    <li class="start <?php echo ($this->uri->segment(2)=='restaurant' && $this->uri->segment(3) =='view')?"active":""; ?>">
-                        <a href="<?php echo base_url().ADMIN_URL;?>/restaurant/view">
+                    <li class="start <?php echo ($this->uri->segment(2)=='shop' && $this->uri->segment(3) =='view')?"active":""; ?>">
+                        <a href="<?php echo base_url().ADMIN_URL;?>/shop/view">
                             <i class="fa fa-cutlery"></i>
-                            <span class="title"><?php echo $this->lang->line('manage_res'); ?></span>
+                            <span class="title"><?php echo $this->lang->line('manage_shop'); ?></span>
                             <span class="selected"></span>
                         </a>
                     </li>
                     <li class="start <?php echo ($this->uri->segment(3)=='view_menu' || $this->uri->segment(3) == 'add_menu' || $this->uri->segment(3) == 'edit_menu')?"active":""; ?>">
-                        <a href="<?php echo base_url().ADMIN_URL;?>/restaurant/view_menu">
+                        <a href="<?php echo base_url().ADMIN_URL;?>/shop/view_menu">
                             <i class="fa fa-bars"></i>
-                            <span class="title"><?php echo $this->lang->line('manage_res_menu'); ?></span>
+                            <span class="title"><?php echo $this->lang->line('manage_shop_menu'); ?></span>
                             <span class="selected"></span>
                         </a>
                     </li>

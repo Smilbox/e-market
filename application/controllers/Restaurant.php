@@ -129,13 +129,13 @@ class Restaurant extends CI_Controller {
 		$data['page_title'] = $this->lang->line('restaurant_details').' | '.$this->lang->line('site_title');
 		$data['current_page'] = 'Restaurant Details';
 		$data['restaurant_details'] = array();
-		$restaurant_slug = $this->uri->segment('3');
-		if (empty($restaurant_slug)) {
-			$restaurant_slug = $this->uri->segment('1');
+		$shop_slug = $this->uri->segment('3');
+		if (empty($shop_slug)) {
+			$shop_slug = $this->uri->segment('1');
 		}
-		if (!empty($restaurant_slug)) {
-			$restaurant_slug = strtolower($restaurant_slug);
-			$content_id = $this->restaurant_model->getContentID($restaurant_slug);
+		if (!empty($shop_slug)) {
+			$shop_slug = strtolower($shop_slug);
+			$content_id = $this->restaurant_model->getContentID($shop_slug);
 			$data['restaurant_details'] = $this->restaurant_model->getRestaurantDetail($content_id->content_id);
 			$data['categories_count'] = count($data['restaurant_details']['categories']);
 

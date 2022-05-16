@@ -49,7 +49,7 @@ class Promotion_settings_model extends CI_Model {
 
     public function getAllPromotionWithResto()
     {
-        $this->db->select('promotion_settings.entity_id,promotion_settings.restaurant_id,promotion_settings.shown_promotion,promotion_settings.priority_order, promotion_settings.image, res.restaurant_slug');
+        $this->db->select('promotion_settings.entity_id,promotion_settings.restaurant_id,promotion_settings.shown_promotion,promotion_settings.priority_order, promotion_settings.image, res.shop_slug');
         $this->db->join('restaurant as res','promotion_settings.restaurant_id = res.entity_id','left');
         return $this->db->get('promotion_settings')->result();  
     }

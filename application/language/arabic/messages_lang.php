@@ -27,9 +27,9 @@ $lang['title_admin_restaurant'] = 'Restaurant';
 $lang['title_admin_restaurantadd'] = 'Add Restaurant';
 $lang['title_admin_restaurantedit'] = 'Edit Restaurant';
 
-$lang['title_admin_restaurantMenu'] = 'Menu';
-$lang['title_admin_restaurantMenuadd'] = 'Add Menu';
-$lang['title_admin_restaurantMenuedit'] = 'Edit Menu';
+$lang['title_admin_shop_menu'] = 'Menu';
+$lang['title_admin_shop_menu_add'] = 'Add Menu';
+$lang['title_admin_shop_menu_edit'] = 'Edit Menu';
 
 $lang['title_admin_restaurantPackage'] = 'Package';
 $lang['title_admin_restaurantPackageadd'] = 'Add Package';

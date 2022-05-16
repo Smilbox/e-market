@@ -1591,11 +1591,10 @@ $( "#checkout_form" ).on("submit", function( event ) {
       },   
       success: function(response) {
               $('#quotes-main-loader').hide();
-              console.log("bizarre",response);
               if (response.result == "success") {
                 $('#track_order').html(response.order_id);
+                console.log(response);
                 $('#order-confirmation').modal('show');
-                console.log("response", response);
                 // setTimeout(location.reload.bind(location), 300000);
               }
       },

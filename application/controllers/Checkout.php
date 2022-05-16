@@ -839,7 +839,7 @@ class Checkout extends CI_Controller {
         );
         $this->common_model->addData('order_detail',$order_detail);
 
-        $verificationCode = random_string('alnum',25);
+        // $verificationCode = random_string('alnum',25);
         $language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
         $email_template = $this->db->get_where('email_template',array('email_slug'=>'order-receive-alert','language_slug'=>$language_slug,'status'=>1))->first_row();                    
        
@@ -855,8 +855,8 @@ class Checkout extends CI_Controller {
             $config['mailtype'] = 'html';  
             $this->email->initialize($config);  
             $this->email->from($FromEmailID->OptionValue, $FromEmailName->OptionValue);  
-            // $this->email->to(trim($restaurant_detail->email)); 
             $this->email->to(trim($FromEmailID->OptionValue)); 
+            // $this->email->to(trim($restaurant_detail->email)); 
             $this->email->subject($email_template->subject);  
             $this->email->message($email_template->message);  
             if(!$this->email->send()){
@@ -887,14 +887,98 @@ class Checkout extends CI_Controller {
         		// $order_id = "<a href='".base_url().'myprofile'."' class='btn'>View Details</a>";
 				$order_id = "<a href = '". base_url() .'myprofile' . "' class = 'btn' >" . $this->lang->line('view_details') ."</a>";
         	}
-        	$arrdata = array('result'=> 'success','order_id'=> $order_id);
+        	$arrdata = array('result'=> 'success','order_id'=> $order_id, 'total_rate' => ($this->session->userdata('total_price'))?$this->session->userdata('total_price'):'');
         }
         else
         {
         	$arrdata = array('result'=> 'fail','order_id'=> '');
         }
 		// $arrdata = array('result'=> 'fail','order_id'=> '');
+
+		if($this->input->post('mobile_money_option') !== null && !empty($this->input->post('mobile_money_option'))) {
+			$mobileMoneyOption = $this->input->post('mobile_money_option');
+			if($this->session->userdata('total_price') === null || $this->session->userdata('total_price') === 0 || empty($this->session->userdata('total_price'))) {
+				return $this->output
+							->set_content_type('application/json')
+							->set_status_header(406)
+							->set_output(json_encode(array(
+								"error_message" => "No amount to be paid was received."
+							)));
+			}
+
+			if($mobileMoneyOption === "MVOLA") {
+
+			} else if($mobileMoneyOption === "AIRTEL_MONEY") {
+				if($this->input->post('airtel_money_phone_number') === null || empty($this->input->post('airtel_money_phone_number'))) {
+					return $this->output
+							->set_content_type('application/json')
+							->set_status_header(400)
+							->set_output(json_encode(array(
+								"error_message" => "No Airtel money phone number given"
+							)));
+				} 
+
+				$bearerToken = $this->getAirtelMoneyBearerAccessToken();
+				$headers = array(
+					'Content-Type: application/json',
+					'X-Country: MG',
+					'X-Currency: MGA',
+					'Authorization: Bearer ' . $bearerToken
+				);
+				$fields = array(
+					"reference" => 'Achat EMarket',
+					"subscriber" => array(
+						"country" => "MG",
+						"currency" => "MGA",
+						"msisdn" => $this->input->post('airtel_money_phone_number')
+					),
+					"transaction" => array(
+						"amount" => $this->session->userdata('total_price'),
+						"country" => "MG",
+						"currency" => "MGA",
+						"id" => "emarket" . time()
+					)
+				);
+				#Send Reponse To FireBase Server    
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, AIRTEL_URL_API.'/merchant/v1/payments/');
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+				$result = curl_exec($ch);
+				curl_close($ch);
+				print_r($result);
+				$json = json_decode($result);
+			} else if($mobileMoneyOption === "ORANGE_MONEY") {
+
+			}
+		}
         echo json_encode($arrdata);	
     }
+
+	private function getAirtelMoneyBearerAccessToken() {
+		$headers = array (
+			'Content-Type: application/json'
+		);
+		$fields = array(
+			"client_id" => AIRTEL_MONEY_CLIENT_ID,
+			"client_secret" => AIRTEL_MONEY_CLIENT_SECRET,
+			"grant_type" => "client_credentials"
+		);
+		#Send Reponse To FireBase Server    
+		$ch = curl_init();
+		curl_setopt( $ch,CURLOPT_URL, 'https://openapiuat.airtel.africa/auth/oauth2/token' );
+		curl_setopt( $ch,CURLOPT_POST, true );
+		curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+		curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+		curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+		$result = curl_exec($ch);
+		curl_close($ch);
+		$json = json_decode($result);
+		return $json->{'access_token'};
+	}
 }
 ?>

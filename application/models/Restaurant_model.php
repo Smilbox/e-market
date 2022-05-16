@@ -7,7 +7,7 @@ class Restaurant_model extends CI_Model {
     // get restaurant details
     public function getRestaurantDetail($content_id,$searchArray=NULL,$food=NULL,$price=NULL){ 
         $language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
-    	$this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,restaurant.store_type_id, restaurant.object_fit, restaurant.allow_24_delivery, restaurant.flat_rate_24, address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.phone_number,restaurant.restaurant_slug,restaurant.content_id,currencies.currency_symbol,currencies.currency_code");
+    	$this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,restaurant.store_type_id, restaurant.object_fit, restaurant.allow_24_delivery, restaurant.flat_rate_24, address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.phone_number,restaurant.shop_slug,restaurant.content_id,currencies.currency_symbol,currencies.currency_code");
     	$this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
         $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
         $this->db->where('restaurant.language_slug',$language_slug);
@@ -190,14 +190,14 @@ class Restaurant_model extends CI_Model {
         return $avg_rating;
     }
     // get restaurant id
-    public function getRestaurantID($restaurant_slug){
+    public function getRestaurantID($shop_slug){
         $this->db->select('entity_id');
-        return $this->db->get_where('restaurant',array('restaurant_slug'=>$restaurant_slug))->first_row();
+        return $this->db->get_where('restaurant',array('shop_slug'=>$shop_slug))->first_row();
     }
     // get content id from slug
-    public function getContentID($restaurant_slug){
+    public function getContentID($shop_slug){
         $this->db->select('content_id');
-        return $this->db->get_where('restaurant',array('restaurant_slug'=>$restaurant_slug))->first_row();
+        return $this->db->get_where('restaurant',array('shop_slug'=>$shop_slug))->first_row();
     }
     // get content id from restaurant id
     public function getRestContentID($restaurant_id){
@@ -208,7 +208,7 @@ class Restaurant_model extends CI_Model {
     public function getAllRestaurants($limit,$offset,$search_item=NULL)
     {
         $language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
-        $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.restaurant_slug");
+        $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.shop_slug");
         $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
         $this->db->join('restaurant_menu_item','restaurant.entity_id = restaurant_menu_item.restaurant_id AND restaurant_menu_item.language_slug = "'.$language_slug.'"','left');
         $this->db->where('restaurant.language_slug',$language_slug);
@@ -242,7 +242,7 @@ class Restaurant_model extends CI_Model {
             }
         } 
         // total count
-        $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.restaurant_slug");
+        $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.shop_slug");
         $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
         $this->db->join('restaurant_menu_item','restaurant.entity_id = restaurant_menu_item.restaurant_id AND restaurant_menu_item.language_slug = "'.$language_slug.'"','left');
         $this->db->where('restaurant.language_slug',$language_slug);
@@ -347,7 +347,7 @@ class Restaurant_model extends CI_Model {
     // get restaurants with pagination
     public function getRestaurantsForOrder($limit,$offset,$resdish=NULL,$latitude=NULL,$longitude=NULL,$minimum_range=NULL,$maximum_range=NULL,$food_veg=NULL,$food_non_veg=NULL,$pagination=NULL, $store_type=NULL, $store_filter = []){
         $language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
-        $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.restaurant_slug,restaurant.status,restaurant.object_fit,restaurant.content_id,restaurant.language_slug,restaurant.store_type_id,restaurant.sub_store_type_id");
+        $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.shop_slug,restaurant.status,restaurant.object_fit,restaurant.content_id,restaurant.language_slug,restaurant.store_type_id,restaurant.sub_store_type_id");
         $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
         $this->db->join('restaurant_menu_item','restaurant.entity_id = restaurant_menu_item.restaurant_id AND restaurant_menu_item.status = 1','left');
         if (!empty($resdish)) {
@@ -409,12 +409,12 @@ class Restaurant_model extends CI_Model {
                 $content_id[] = $value['content_id'];
                 $RestDataArr[$value['content_id']] = array(
                     'content_id' =>$value['content_id'],
-                    'restaurant_slug' =>$value['restaurant_slug'],
+                    'shop_slug' =>$value['shop_slug'],
                     'restaurant_id'=>$value['restaurant_id']
                 );
             }    
             if(!empty($content_id)){
-                $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.status,restaurant.object_fit,restaurant.restaurant_slug,restaurant.content_id,restaurant.language_slug, restaurant.store_type_id, restaurant.sub_store_type_id");
+                $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.status,restaurant.object_fit,restaurant.shop_slug,restaurant.content_id,restaurant.language_slug, restaurant.store_type_id, restaurant.sub_store_type_id");
                 $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
                 $this->db->join('restaurant_menu_item','restaurant.entity_id = restaurant_menu_item.restaurant_id AND restaurant_menu_item.status = 1','left');
                 $this->db->where_in('restaurant.content_id',$content_id);
@@ -505,7 +505,7 @@ class Restaurant_model extends CI_Model {
                         'timings'=> $value['timings'],                
                         'language_slug'=> $value['language_slug'],
                         'content_id' =>$RestDataArr[$value['content_id']]['content_id'],
-                        'restaurant_slug' =>$RestDataArr[$value['content_id']]['restaurant_slug'],
+                        'shop_slug' =>$RestDataArr[$value['content_id']]['shop_slug'],
                         'restaurant_id'=>$RestDataArr[$value['content_id']]['restaurant_id'],
                     );
                 }

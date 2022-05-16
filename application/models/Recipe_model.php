@@ -7,7 +7,7 @@ class Recipe_model extends CI_Model {
     // get all recipies
     public function getAllRecipies($limit,$offset,$recipe=NULL){
         $language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
-    	$this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.timings,restaurant.phone_number,restaurant.restaurant_slug,restaurant_menu_item.*");
+    	$this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.timings,restaurant.phone_number,restaurant.shop_slug,restaurant_menu_item.*");
         $this->db->join('restaurant','restaurant_menu_item.restaurant_id = restaurant.entity_id','left');
     	$this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
         if (!empty($recipe)) {
@@ -23,7 +23,7 @@ class Recipe_model extends CI_Model {
             }
         } 
         // total count
-        $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.timings,restaurant.phone_number,restaurant.restaurant_slug,restaurant_menu_item.*");
+        $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.timings,restaurant.phone_number,restaurant.shop_slug,restaurant_menu_item.*");
         $this->db->join('restaurant','restaurant_menu_item.restaurant_id = restaurant.entity_id','left');
         $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
         if (!empty($recipe)) {

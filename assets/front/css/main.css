@@ -7374,3 +7374,11 @@ Google Maps
 		max-height: 260px;
 	}
 }
+
+.mobile-money-logo.selected {
+	border: var(--main-color) 4px solid;
+}
+
+.mobile-money-logo {
+	margin-right: 15px;
+}

@@ -14,7 +14,7 @@
                 <div class="col-md-12">
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                     <h3 class="page-title">
-                        <?php echo $this->lang->line('restaurant') ?>
+                        <?php echo $this->lang->line('shop') ?>
                     </h3>
                     <ul class="page-breadcrumb breadcrumb">
                         <li>
@@ -24,7 +24,7 @@
                             <i class="fa fa-angle-right"></i>
                         </li>
                         <li>
-                            <?php echo $this->lang->line('restaurant') ?>
+                            <?php echo $this->lang->line('shop') ?>
                         </li>
                     </ul>
                     <!-- END PAGE TITLE & BREADCRUMB-->
@@ -36,7 +36,7 @@
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet box red">
                         <div class="portlet-title">
-                            <div class="caption"><?php echo $this->lang->line('restaurant') ?></div>
+                            <div class="caption"><?php echo $this->lang->line('shop') ?></div>
                             <div class="actions c-dropdown">                                     
                                 <button type="button" class="btn btn-sm danger-btn dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="false"><?php echo $this->lang->line('add') ?><span class="caret"></span>

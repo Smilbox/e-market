@@ -619,7 +619,7 @@ class Restaurant_model extends CI_Model {
     }
     // get restaurant slug
     public function getRestaurantSlug($content_id){
-        $this->db->select('restaurant_slug');
+        $this->db->select('shop_slug');
         $this->db->where('content_id',$content_id);
         return $this->db->get('restaurant')->first_row();
     }

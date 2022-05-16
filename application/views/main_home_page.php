@@ -105,7 +105,7 @@ if(!empty($store_type_variables)) {
 //                            if ($key <= 8) { ?>
 <!--                                <div class="col-sm-12 col-md-6 col-lg-4">-->
 <!--                                    <div class="popular-rest-box">-->
-<!--                                        <a href="--><?php //echo base_url().'restaurant/restaurant-detail/'.$value['restaurant_slug'];?><!--">-->
+<!--                                        <a href="--><?php //echo base_url().'restaurant/restaurant-detail/'.$value['shop_slug'];?><!--">-->
 <!--                                            <div class="popular-rest-img">-->
 <!--                                                <img style="object-fit:--><?php //echo $value['object_fit'] ?><!--" src="--><?php //echo $featured_image ?><!--" alt="--><?php //echo $value['name']; ?><!--">-->
 <!--                                                <div class="middle">-->

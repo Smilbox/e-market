@@ -26,13 +26,13 @@ class Api extends REST_Controller {
        foreach($store_types as $key => $value)
        {
         if($value->name_fr == "Telma" || $value->name_en == "Telma") {
-            // $store = $this->common_model->getSingleRow('restaurant', 'restaurant_slug', "telma");
+            // $store = $this->common_model->getSingleRow('restaurant', 'shop_slug', "telma");
             $storefr = $this->common_model->getSingleRowMultipleWhere('restaurant', array(
-                'restaurant_slug'=>"telma",
+                'shop_slug'=>"telma",
                 'language_slug' => "fr",
              ));
              $storeen = $this->common_model->getSingleRowMultipleWhere('restaurant', array(
-                'restaurant_slug'=>"telma",
+                'shop_slug'=>"telma",
                 'language_slug' => "en",
             ));
             $value->store_entity_id_fr = $storefr->entity_id;

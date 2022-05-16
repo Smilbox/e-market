@@ -77,7 +77,7 @@
 					if ($key <= 8) { ?>
 						<div class="col-sm-12 col-md-6 col-lg-3">
 							<div class="popular-rest-box">
-								<a href="<?php echo base_url().'restaurant/restaurant-detail/'.$value['restaurant_slug'];?>">
+								<a href="<?php echo base_url().'restaurant/restaurant-detail/'.$value['shop_slug'];?>">
 									<div class="popular-rest-img">
 										<img src="<?php echo ($value['image'])?$value['image']:default_img;?>" alt="<?php echo $value['name']; ?>">
 										<?php echo ($value['ratings'] > 0)?'<strong>'.$value['ratings'].'</strong>':'<strong class="newres">NEW</strong>'; ?>

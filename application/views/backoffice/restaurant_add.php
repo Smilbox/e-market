@@ -13,19 +13,19 @@ if($this->input->post()){
     $$key = @htmlspecialchars($this->input->post($key));
   } 
 } else {
-  $FieldsArray = array('content_id','entity_id','name','phone_number','email','capacity','no_of_table','no_of_hall','hall_capacity','object_fit','address','landmark','latitude','longitude','state','country','city','zipcode', 'store_type_id','amount_type','amount','enable_hours','timings','image','is_veg','driver_commission','currency_id','restaurant_slug', 'allow_24_delivery', 'flat_rate_24', 'featured_image', 'sub_store_type_id');
+  $FieldsArray = array('content_id','entity_id','name','phone_number','email','capacity','no_of_table','no_of_hall','hall_capacity','object_fit','address','landmark','latitude','longitude','state','country','city','zipcode', 'store_type_id','amount_type','amount','enable_hours','timings','image','is_veg','driver_commission','currency_id','shop_slug', 'allow_24_delivery', 'flat_rate_24', 'featured_image', 'sub_store_type_id');
   foreach ($FieldsArray as $key) {
     $$key = @htmlspecialchars($edit_records->$key);
   }
 }
 if(isset($edit_records) && $edit_records !="")
 {
-    $add_label    = $this->lang->line('edit').' '.$this->lang->line('restaurant');        
+    $add_label    = $this->lang->line('edit').' '.$this->lang->line('shop');        
     $form_action  = base_url().ADMIN_URL.'/'.$this->controller_name."/edit/".$this->uri->segment('4').'/'.str_replace(array('+', '/', '='), array('-', '_', '~'), $this->encryption->encrypt($edit_records->entity_id));
 }
 else
 {
-    $add_label    = $this->lang->line('add').' '.$this->lang->line('restaurant');       
+    $add_label    = $this->lang->line('add').' '.$this->lang->line('shop');       
     $form_action  = base_url().ADMIN_URL.'/'.$this->controller_name."/add/".$this->uri->segment('4');
 }
 $usertypes = getUserTypeList($this->session->userdata('language_slug'));
@@ -37,7 +37,7 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
             <div class="row">
                 <div class="col-md-12">
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->
-                    <h3 class="page-title"><?php echo $this->lang->line('restaurant') ?></h3>
+                    <h3 class="page-title"><?php echo $this->lang->line('shop') ?></h3>
                     <ul class="page-breadcrumb breadcrumb">
                         <li>
                             <i class="fa fa-home"></i>
@@ -46,7 +46,7 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                             <i class="fa fa-angle-right"></i>
                         </li>
                         <li>
-                            <a href="<?php echo base_url().ADMIN_URL.'/'.$this->controller_name?>/view"><?php echo $this->lang->line('restaurant') ?></a>
+                            <a href="<?php echo base_url().ADMIN_URL.'/'.$this->controller_name?>/view"><?php echo $this->lang->line('shop') ?></a>
                             <i class="fa fa-angle-right"></i>
                         </li>
                         <li>
@@ -81,11 +81,11 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                     </div>
                                     <?php } ?>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('res_name') ?><span class="required">*</span></label>
+                                        <label class="control-label col-md-3"><?php echo $this->lang->line('shop_name') ?><span class="required">*</span></label>
                                         <div class="col-md-4">
                                             <input type="hidden" id="entity_id" name="entity_id" value="<?php echo $entity_id;?>" />
                                             <input type="hidden" id="content_id" name="content_id" value="<?php echo ($content_id)?$content_id:$this->uri->segment('5');?>" />
-                                            <input type="hidden" id="restaurant_slug" name="restaurant_slug" value="<?php echo ($restaurant_slug)?$restaurant_slug:'';?>" />
+                                            <input type="hidden" id="shop_slug" name="shop_slug" value="<?php echo ($shop_slug)?$shop_slug:'';?>" />
                                             <input type="text" name="name" id="name" value="<?php echo $name;?>" maxlength="249" data-required="1" class="form-control"/>
                                         </div>
                                     </div>      
@@ -163,25 +163,25 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('capacity') ?><span class="required">*</span></label>
+                                        <label class="control-label col-md-3"><?php echo $this->lang->line('owner_name') ?><span class="required">*</span></label>
                                         <div class="col-md-4">
                                             <input type="text" name="capacity" id="capacity" value="<?php echo $capacity ?>" maxlength="20" data-required="1" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('no_of_table') ?><span class="required">*</span></label>
+                                        <label class="control-label col-md-3"><?php echo $this->lang->line('nif') ?><span class="required">*</span></label>
                                         <div class="col-md-4">
                                             <input type="text" name="no_of_table" id="no_of_table" value="<?php echo $no_of_table ?>" maxlength="20" data-required="1" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('no_of_hall') ?></label>
+                                        <label class="control-label col-md-3"><?php echo $this->lang->line('stat') ?></label>
                                         <div class="col-md-4">
                                             <input type="text" name="no_of_hall" id="no_of_hall"  value="<?php echo $no_of_hall ?>" maxlength="20" data-required="1" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('hall_capacity') ?></label>
+                                        <label class="control-label col-md-3"><?php echo $this->lang->line('rcs') ?></label>
                                         <div class="col-md-4">
                                             <input type="text"  name="hall_capacity" id="hall_capacity" value="<?php echo $hall_capacity ?>" maxlength="20" data-required="1" class="form-control"/>
                                         </div>
@@ -236,7 +236,7 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('store-type') ?><span class="required">*</span></label>
+                                        <label class="control-label col-md-3"><?php echo $this->lang->line('category') ?><span class="required">*</span></label>
                                         <div class="col-md-4">
                                             <select class="form-control form-control-sm" name="store-type" id="store-type" >
                                                 <?php if (!empty($store_types)) 
@@ -250,7 +250,7 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('sub-store-type') ?><span class="required">*</span></label>
+                                        <label class="control-label col-md-3"><?php echo $this->lang->line('sub_category') ?><span class="required">*</span></label>
                                         <div class="col-md-4">
                                             <select class="form-control form-control-sm" multiple="true" name="sub-store-type[]" id="sub-store-type" >
                                                 <?php $sub_store_type_array = explode(',', $sub_store_type_id); ?>
@@ -296,11 +296,10 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                     </div> 
                                     <?php */ ?>                                    
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('food_type') ?><span class="required">*</span></label>
+                                        <label class="control-label col-md-3"><?php echo $this->lang->line('product_type') ?><span class="required">*</span></label>
                                         <div class="col-md-8">
-                                            <input type="radio" name="is_veg" id="is_veg" value="1" checked="" <?php echo ($is_veg)?($is_veg == '1')?'checked':'':'checked' ?>><?php echo $this->lang->line('veg') ?>
-                                            <input type="radio" name="is_veg" id="non-veg" value="0" <?php echo ($is_veg == '0')?'checked':'' ?>><?php echo $this->lang->line('non_veg') ?>
-                                            <input type="radio" name="is_veg" id="non-veg" value="" <?php echo ($is_veg == '')?'checked':'' ?>><?php echo $this->lang->line('both') ?>
+                                            <input type="radio" name="is_veg" id="is_veg" value="1" checked="" <?php echo ($is_veg)?($is_veg == '1')?'checked':'':'checked' ?>><?php echo $this->lang->line('under_20_kg') ?>
+                                            <input type="radio" name="is_veg" id="non-veg" value="0" <?php echo ($is_veg == '0')?'checked':'' ?>><?php echo $this->lang->line('plus_20_kg') ?>
                                         </div>
                                     </div> 
                                     <div class="form-group">

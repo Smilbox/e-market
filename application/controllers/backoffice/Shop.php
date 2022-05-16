@@ -1,8 +1,8 @@
 <?php
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
-class Restaurant extends CI_Controller {
-    public $controller_name = 'restaurant';
+class Shop extends CI_Controller {
+    public $controller_name = 'shop';
     public $prefix = '_re'; 
     public $menu_prefix = '_menu';
     public $package_prefix = '_pac';
@@ -18,13 +18,13 @@ class Restaurant extends CI_Controller {
     }
     // view restaurant
     public function view(){
-    	$data['meta_title'] = $this->lang->line('title_admin_restaurant').' | '.$this->lang->line('site_title');
+    	$data['meta_title'] = $this->lang->line('title_admin_shop').' | '.$this->lang->line('site_title');
         $data['Languages'] = $this->common_model->getLanguages();     
         $this->load->view(ADMIN_URL.'/restaurant',$data);
     }
     // add restaurant
     public function add(){
-        $data['meta_title'] = $this->lang->line('title_admin_restaurantadd').' | '.$this->lang->line('site_title');
+        $data['meta_title'] = $this->lang->line('title_admin_shopadd').' | '.$this->lang->line('site_title');
     	if($this->input->post('submit_page') == "Submit")
         {   
             $this->form_validation->set_rules('name', 'Restaurant Name', 'trim|required');
@@ -54,16 +54,16 @@ class Restaurant extends CI_Controller {
                       'created_date'=>date('Y-m-d H:i:s')                      
                     );
                     $ContentID = $this->restaurant_model->addData('content_general',$add_content);
-                    $restaurant_slug = slugify($this->input->post('name'),'restaurant','restaurant_slug');
+                    $shop_slug = slugify($this->input->post('name'),'restaurant','shop_slug');
                 }else{                    
                     $ContentID = $this->input->post('content_id');
                     $slug = $this->restaurant_model->getRestaurantSlug($this->input->post('content_id'));
-                    $restaurant_slug = $slug->restaurant_slug;
+                    $shop_slug = $slug->shop_slug;
                 }
                 $currency_id = $this->common_model->getCurrencyID('Ariary');
                 $add_data = array(                  
                     'name'=>$this->input->post('name'),
-                    'restaurant_slug'=>$restaurant_slug,
+                    'shop_slug'=>$shop_slug,
                     'currency_id' =>$currency_id->currency_id,
                     'phone_number' =>$this->input->post('phone_number'),
                     'email' =>$this->input->post('email'),
@@ -221,7 +221,7 @@ class Restaurant extends CI_Controller {
     }
     // edit restaurant
     public function edit(){
-    	$data['meta_title'] = $this->lang->line('title_admin_restaurantedit').' | '.$this->lang->line('site_title');
+    	$data['meta_title'] = $this->lang->line('title_admin_shopedit').' | '.$this->lang->line('site_title');
         if($this->input->post('submit_page') == "Submit")
         {   
             $this->form_validation->set_rules('name', 'Restaurant Name', 'trim|required');
@@ -245,16 +245,16 @@ class Restaurant extends CI_Controller {
             {  
                 $content_id = $this->restaurant_model->getContentId($this->input->post('entity_id'),'restaurant');
                 $slug = $this->restaurant_model->getRestaurantSlug($this->input->post('content_id'));
-                if (!empty($slug->restaurant_slug)) { 
-                    $restaurant_slug = $slug->restaurant_slug;
+                if (!empty($slug->shop_slug)) { 
+                    $shop_slug = $slug->shop_slug;
                 }
                 else
                 {
-                    $restaurant_slug = slugify($this->input->post('name'),'restaurant','restaurant_slug','content_id',$content_id->content_id);
+                    $shop_slug = slugify($this->input->post('name'),'restaurant','shop_slug','content_id',$content_id->content_id);
                 }
                 $edit_data = array(                  
                     'name'=>$this->input->post('name'),
-                    'restaurant_slug'=>$restaurant_slug,
+                    'shop_slug'=>$shop_slug,
                     'phone_number' =>$this->input->post('phone_number'),
                     'email' =>$this->input->post('email'),
                     'capacity' =>$this->input->post('capacity'),
@@ -478,14 +478,14 @@ class Restaurant extends CI_Controller {
     }
     // view restaurant menu
     public function view_menu(){
-        $data['meta_title'] = $this->lang->line('title_admin_restaurantMenu').' | '.$this->lang->line('site_title');
+        $data['meta_title'] = $this->lang->line('title_admin_shop_menu').' | '.$this->lang->line('site_title');
         $data['Languages'] = $this->common_model->getLanguages();
         $data['restaurant'] = $this->restaurant_model->getListData('restaurant',$this->session->userdata('language_slug'));
         $this->load->view(ADMIN_URL.'/restaurant_menu',$data);
     }
     //add menu
     public function add_menu(){
-        $data['meta_title'] = $this->lang->line('title_admin_restaurantMenuadd').' | '.$this->lang->line('site_title');
+        $data['meta_title'] = $this->lang->line('title_admin_shop_menu_add').' | '.$this->lang->line('site_title');
         if($this->input->post('submit_page') == "Submit")
         {
             $this->form_validation->set_rules('name', 'Menu Name', 'trim|required');
@@ -629,7 +629,7 @@ class Restaurant extends CI_Controller {
     //edit menu
     public function edit_menu(){
 
-        $data['meta_title'] = $this->lang->line('title_admin_restaurantMenuedit').' | '.$this->lang->line('site_title');
+        $data['meta_title'] = $this->lang->line('title_admin_shop_menu_edit').' | '.$this->lang->line('site_title');
         if($this->input->post('submit_page') == "Submit")
         {
             $this->form_validation->set_rules('name', 'Menu Name', 'trim|required');
@@ -896,7 +896,7 @@ class Restaurant extends CI_Controller {
     }
 
     public function import_menu_status(){
-        $data['meta_title'] = $this->lang->line('title_admin_restaurantMenu').' | '.$this->lang->line('site_title');
+        $data['meta_title'] = $this->lang->line('title_admin_shop_menu').' | '.$this->lang->line('site_title');
         $this->load->view(ADMIN_URL.'/import_menu_status',$data);
     }
 

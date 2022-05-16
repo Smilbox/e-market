@@ -63,11 +63,11 @@ $route['terms-and-conditions'] = 'cms/terms_and_conditions';
 // Custom restaurant routes
 
 $db =& DB();
-$resto_query = $db->select('restaurant_slug')->get( 'restaurant' );
+$resto_query = $db->select('shop_slug')->get( 'restaurant' );
 $result = $resto_query->result();
 foreach( $result as $res )
 {
-    $route[$res->restaurant_slug] = 'restaurant/restaurant-detail/'.$res->restaurant_slug;
+    $route[$res->shop_slug] = 'restaurant/restaurant-detail/'.$res->shop_slug;
 }
 
 // Custom store type routes

@@ -38,7 +38,7 @@ class Bot_api_model extends CI_Model {
     // RESTAURANT OPERATION
     public function getRestaurantRecords($store_type)
     {
-        $this->db->select("res.entity_id as restaurant_id,res.store_type_id, res.allow_24_delivery, res.flat_rate_24, res.restaurant_slug, res.language_slug ,res.name,res.timings,res.image,address.address,address.landmark,address.latitude, address.longitude,AVG(review.rating) as rating");
+        $this->db->select("res.entity_id as restaurant_id,res.store_type_id, res.allow_24_delivery, res.flat_rate_24, res.shop_slug, res.language_slug ,res.name,res.timings,res.image,address.address,address.landmark,address.latitude, address.longitude,AVG(review.rating) as rating");
         $this->db->join('restaurant_address as address','res.entity_id = address.resto_entity_id','left');
         $this->db->join('review','res.entity_id = review.restaurant_id','left');
         $this->db->where('res.status', 1);

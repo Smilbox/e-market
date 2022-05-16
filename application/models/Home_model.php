@@ -23,7 +23,7 @@ class Home_model extends CI_Model {
     // get restaurant details
     public function getRestaurants($storeTypeId = null){
         $language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
-    	$this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.object_fit,restaurant.timings,restaurant.restaurant_slug,restaurant.content_id,restaurant.language_slug,restaurant.featured_image, restaurant.store_type_id");
+    	$this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.object_fit,restaurant.timings,restaurant.shop_slug,restaurant.content_id,restaurant.language_slug,restaurant.featured_image, restaurant.store_type_id");
     	$this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
         $this->db->group_by('restaurant.content_id');
         $restaurantWhere = [
@@ -60,13 +60,13 @@ class Home_model extends CI_Model {
                 $content_id[] = $value['content_id'];
                 $RestDataArr[$value['content_id']] = array(
                     'content_id' =>$value['content_id'],
-                    'restaurant_slug' =>$value['restaurant_slug'],
+                    'shop_slug' =>$value['shop_slug'],
                     'restaurant_id'=>$value['restaurant_id'],
                     'store_type_id' => $value['store_type_id'],
                 );
             }    
             if(!empty($content_id)){
-                $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.timings, restaurant.object_fit, restaurant.restaurant_slug,restaurant.content_id,restaurant.language_slug,restaurant.featured_image");
+                $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.timings, restaurant.object_fit, restaurant.shop_slug,restaurant.content_id,restaurant.language_slug,restaurant.featured_image");
                 $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
                 $this->db->where_in('restaurant.content_id',$content_id);
                 $this->db->where('restaurant.language_slug',$language_slug);
@@ -110,7 +110,7 @@ class Home_model extends CI_Model {
                         'timings'=> $value['timings'],                
                         'language_slug'=> $value['language_slug'],
                         'content_id' =>$RestDataArr[$value['content_id']]['content_id'],
-                        'restaurant_slug' =>$RestDataArr[$value['content_id']]['restaurant_slug'],
+                        'shop_slug' =>$RestDataArr[$value['content_id']]['shop_slug'],
                         'restaurant_id'=>$RestDataArr[$value['content_id']]['restaurant_id'],
                         'store_type_id' => $RestDataArr[$value['content_id']]['store_type_id'],
                     );
@@ -146,7 +146,7 @@ class Home_model extends CI_Model {
     }
     // search restaurant details
     public function searchRestaurants($category_id){
-    	$this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.timings,restaurant.restaurant_slug,restaurant.featured_image");
+    	$this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.timings,restaurant.shop_slug,restaurant.featured_image");
     	$this->db->join('restaurant','restaurant_menu_item.restaurant_id = restaurant.entity_id','left');
     	$this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
         $this->db->where('restaurant_menu_item.category_id',$category_id);
