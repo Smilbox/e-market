@@ -51,12 +51,12 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="control-label"><?php echo $this->lang->line('restaurant') ?><span class="required">*</span></label>
-                                                <select name="restaurant_id" id="restaurant_id" class="form-control required">
+                                                <label class="control-label"><?php echo $this->lang->line('shop') ?><span class="required">*</span></label>
+                                                <select name="shop_id" id="shop_id" class="form-control required">
                                                     <option value=""><?php echo $this->lang->line('select') ?></option>
 
-                                                    <?php if(!empty($restaurant)){
-                                                    foreach ($restaurant as $key => $value) { ?>
+                                                    <?php if(!empty($shop)){
+                                                    foreach ($shop as $key => $value) { ?>
                                                          <option value="<?php echo $value->entity_id ?>"><?php echo $value->name ?></option>
                                                     <?php  } } ?>                           
                                                 </select> 
@@ -118,7 +118,7 @@
                                         <tr role="row" class="heading">
                                             <th class="table-checkbox"><input type="checkbox" class="group-checkable"></th>
                                             <th><?php echo $this->lang->line('order') ?>#</th>
-                                            <th><?php echo $this->lang->line('restaurant') ?></th>
+                                            <th><?php echo $this->lang->line('shop') ?></th>
                                             <th><?php echo $this->lang->line('user') ?></th>
                                             <th><?php echo $this->lang->line('order_total') ?></th>
                                             <th><?php echo $this->lang->line('order_assign') ?></th>
@@ -132,7 +132,7 @@
                                         <tr role="row" class="filter">
                                             <td></td>  
                                             <td><input type="text" class="form-control form-filter input-sm" name="order"></td>                                
-                                            <td><input type="text" class="form-control form-filter input-sm" name="restaurant"></td>                                    
+                                            <td><input type="text" class="form-control form-filter input-sm" name="shop"></td>                                    
                                             <td><input type="text" class="form-control form-filter input-sm" name="page_title"></td>
                                             <td><input type="text" class="form-control form-filter input-sm" name="order_total"></td>
                                             <td><input type="text" class="form-control form-filter input-sm" name="driver"></td>
@@ -479,7 +479,7 @@ function deleteDetail(entity_id)
 }
 
 // method for reject order 
-function rejectOrder(user_id,restaurant_id,order_id)
+function rejectOrder(user_id,shop_id,order_id)
 {
     bootbox.confirm({
         message: "<?php echo $this->lang->line('reject_module'); ?>",
@@ -497,7 +497,7 @@ function rejectOrder(user_id,restaurant_id,order_id)
                   type : "POST",
                   dataType : "json",
                   url : 'ajaxReject',
-                  data : {'user_id':user_id,'restaurant_id':restaurant_id,'order_id':order_id},
+                  data : {'user_id':user_id,'shop_id':shop_id,'order_id':order_id},
                   success: function(response) {
                        grid.getDataTable().fnDraw(); 
                   },
@@ -647,7 +647,7 @@ function statusHistory(order_id){
     });
 }
 // method for update status 
-function disableDetail(entity_id,restaurant_id,order_id)
+function disableDetail(entity_id,shop_id,order_id)
 {
     bootbox.confirm({
         message: "<?php echo $this->lang->line('accept_order'); ?>",
@@ -665,7 +665,7 @@ function disableDetail(entity_id,restaurant_id,order_id)
                   type : "POST",
                   dataType : "json",
                   url : 'ajaxdisable',
-                  data : {'entity_id':entity_id,'restaurant_id':restaurant_id,'order_id':order_id},
+                  data : {'entity_id':entity_id,'shop_id':shop_id,'order_id':order_id},
                   success: function(response) {
                        grid.getDataTable().fnDraw(); 
                   },

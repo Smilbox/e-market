@@ -25,7 +25,7 @@ class Coupon extends CI_Controller {
             $this->form_validation->set_rules('name', 'Coupon Name', 'trim|callback_checkExist');
             $this->form_validation->set_rules('coupon_type', 'Coupon Type', 'trim|required');
             $this->form_validation->set_rules('description', 'Description', 'trim|required');
-            $this->form_validation->set_rules('restaurant_id[]', 'Restaurant', 'trim|required');
+            $this->form_validation->set_rules('shop_id[]', 'Shop', 'trim|required');
             if($this->input->post('coupon_type') != 'free_delivery'){
                 $this->form_validation->set_rules('amount_type','Amount type', 'trim|required');
                 $this->form_validation->set_rules('amount','Amount', 'trim|required');
@@ -73,15 +73,15 @@ class Coupon extends CI_Controller {
                 } 
                 if (empty($data['Error'])) {   
                     $entity_id = $this->coupon_model->addData('coupon',$add_data);
-                    if(!empty($this->input->post('restaurant_id'))){
+                    if(!empty($this->input->post('shop_id'))){
                         $res_data = array();
-                        foreach ($this->input->post('restaurant_id') as $key => $value) {
+                        foreach ($this->input->post('shop_id') as $key => $value) {
                             $res_data[] = array(
-                                'restaurant_id'=>$value,
+                                'shop_id'=>$value,
                                 'coupon_id'=>$entity_id
                             );
                         }
-                        $this->coupon_model->insertBatch('coupon_restaurant_map',$res_data,$id = '');
+                        $this->coupon_model->insertBatch('coupon_shop_map',$res_data,$id = '');
                     }
                     if(!empty($this->input->post('item_id'))){
                         $item_data = array();
@@ -98,7 +98,7 @@ class Coupon extends CI_Controller {
                 }                                  
             }
         }
-        $data['restaurant'] = $this->coupon_model->getListData('restaurant',array('status'=>1));
+        $data['shop'] = $this->coupon_model->getListData('shop',array('status'=>1));
     	$this->load->view(ADMIN_URL.'/coupon_add',$data);
     }
     // edit coupon
@@ -160,15 +160,15 @@ class Coupon extends CI_Controller {
                 } 
                 if (empty($data['Error'])) {                        
                     $this->coupon_model->updateData($edit_data,'coupon','entity_id',$this->input->post('entity_id')); 
-                    if(!empty($this->input->post('restaurant_id'))){
+                    if(!empty($this->input->post('shop_id'))){
                         $res_data = array();
-                        foreach ($this->input->post('restaurant_id') as $key => $value) {
+                        foreach ($this->input->post('shop_id') as $key => $value) {
                             $res_data[] = array(
-                                'restaurant_id'=>$value,
+                                'shop_id'=>$value,
                                 'coupon_id'=>$this->input->post('entity_id')
                             );
                         }
-                        $this->coupon_model->insertBatch('coupon_restaurant_map',$res_data,$this->input->post('entity_id'));
+                        $this->coupon_model->insertBatch('coupon_shop_map',$res_data,$this->input->post('entity_id'));
                     }
                     if(!empty($this->input->post('item_id'))){
                         $item_data = array();
@@ -194,8 +194,8 @@ class Coupon extends CI_Controller {
         }      
         $entity_id = ($this->uri->segment('4'))?$this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $this->uri->segment(4))):$this->input->post('entity_id');
         $data['edit_records'] = $this->coupon_model->getEditDetail($entity_id);
-        $data['restaurant'] = $this->coupon_model->getListData('restaurant',array('status'=>1));
-        $data['restaurant_map'] = $this->coupon_model->getListData('coupon_restaurant_map',array('coupon_id'=>$entity_id));
+        $data['shop'] = $this->coupon_model->getListData('shop',array('status'=>1));
+        $data['shop_map'] = $this->coupon_model->getListData('coupon_shop_map',array('coupon_id'=>$entity_id));
         $data['item_map'] = $this->coupon_model->getListData('coupon_item_map',array('coupon_id'=>$entity_id));
         $this->load->view(ADMIN_URL.'/coupon_add',$data);
     }
@@ -275,7 +275,7 @@ class Coupon extends CI_Controller {
             $result =  $this->coupon_model->getItem($entity_id[0],$coupon_type);
             if(!empty($result)){
                 foreach ($result as $key => $value) {
-                    $html .= '<optgroup label="'.$value[0]->restaurant_name.'">';
+                    $html .= '<optgroup label="'.$value[0]->shop_name.'">';
                     foreach ($value as $k => $val) {
                         $html .= '<option value='.$val->entity_id.'>'.$val->name.'</option>';
                     }

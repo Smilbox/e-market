@@ -1247,7 +1247,7 @@ body.fixed {
 	border-radius: 10px;
 }
 
-.popular-restaurants {
+.popular-shops {
 	padding: 50px 0;
 }
 
@@ -1402,7 +1402,7 @@ body.fixed {
 	border: 2px solid #EC0101;
 }
 
-.restaurant-app-content {
+.shop-app-content {
 	display: flex;
 	align-items: center;
 	background: rgba(255, 255, 255, 1);
@@ -1418,11 +1418,11 @@ body.fixed {
 	position: relative;
 }
 
-.restaurant-app-content .row {
+.shop-app-content .row {
 	align-items: center;
 }
 
-.restaurant-app-content::after {
+.shop-app-content::after {
 	content: "";
 	background: url(../images/eatance-bg.png) no-repeat right center / auto 100%;
 	position: absolute;
@@ -1432,7 +1432,7 @@ body.fixed {
 	width: 100%;
 }
 
-.restaurant-app-img {
+.shop-app-img {
 	margin-top: -105px;
 	margin-left: -74px;
 	margin-bottom: -53px;
@@ -1440,7 +1440,7 @@ body.fixed {
 	z-index: 9;
 }
 
-.restaurant-app-text {
+.shop-app-text {
 	width: 100%;
 	max-width: 570px;
 	padding-left: 61px;
@@ -1448,7 +1448,7 @@ body.fixed {
 	z-index: 9;
 }
 
-.restaurant-app-text p,
+.shop-app-text p,
 .driver-app-content p {
 	font-size: 18px;
 	font-weight: 500;
@@ -1600,8 +1600,8 @@ body.fixed {
 	background-image: url(../images/order-food-banner.jpg);
 }
 
-.restaurant-detail-banner {
-	background-image: url(../images/restaurant-detail-banner.jpg);
+.shop-detail-banner {
+	background-image: url(../images/shop-detail-banner.jpg);
 }
 
 .event-booking-banner {
@@ -1642,11 +1642,11 @@ body.fixed {
 	width: 100%;
 }
 
-.inner-pages-form .form-group.search-restaurant .bootstrap-tagsinput {
+.inner-pages-form .form-group.search-shop .bootstrap-tagsinput {
 	width: 100%;
 }
 
-.inner-pages-form .form-group.search-restaurant .label-info {
+.inner-pages-form .form-group.search-shop .label-info {
 	display: inline-block;
 	margin: 0 0 5px;
 	padding: 4px 7px;
@@ -1682,14 +1682,14 @@ body.fixed {
 	background-position: left 12px center;
 }
 
-.inner-pages-form .form-group.search-restaurant input[type="text"] {
+.inner-pages-form .form-group.search-shop input[type="text"] {
 	border-radius: 5px 0 0 5px;
 	background-image: url(../images/search-icon.svg);
 	background-size: 17px auto;
 	background-position: left 14px center;
 }
 
-.inner-pages-form .form-group.search-restaurant input[type="button"] {
+.inner-pages-form .form-group.search-shop input[type="button"] {
 	border-radius: 0 5px 5px 0;
 }
 
@@ -1697,7 +1697,7 @@ body.fixed {
 	align-items: flex-end;
 }
 
-.rest-detail-section .inner-pages-form .form-group.search-restaurant input[type="button"] {
+.rest-detail-section .inner-pages-form .form-group.search-shop input[type="button"] {
 	height: 45px;
 }
 
@@ -1940,11 +1940,11 @@ body.fixed {
 	text-align: center;
 }
 
-.order-food-section .restaurant-box-row .col-lg-6 {
+.order-food-section .shop-box-row .col-lg-6 {
 	margin-bottom: 40px;
 }
 
-.restaurant-box {
+.shop-box {
 	background: #fff;
 	padding: 15px;
 	border-radius: 10px;
@@ -1952,22 +1952,22 @@ body.fixed {
 	min-height: 100%;
 }
 
-.restaurant-box .popular-rest-box {
+.shop-box .popular-rest-box {
 	margin: 0px;
 }
 
-.restaurant-box .popular-rest-box .popular-rest-img {
+.shop-box .popular-rest-box .popular-rest-img {
 	border-radius: 4px;
 	position: relative;
 	overflow: hidden;
 	height: 210px;
 }
 
-.restaurant-box .popular-rest-box .popular-rest-img img {
+.shop-box .popular-rest-box .popular-rest-img img {
 	border-radius: 4px
 }
 
-.restaurant-box .popular-rest-box .popular-rest-img .openclose {
+.shop-box .popular-rest-box .popular-rest-img .openclose {
     position: absolute;
     right: 8px;
     bottom: 8px;
@@ -1978,7 +1978,7 @@ body.fixed {
 	padding: 2px 18px;
 }
 
-.restaurant-box-row {
+.shop-box-row {
 	margin-left: -25px;
 	margin-right: -25px;
 	min-height: 100%;
@@ -1993,7 +1993,7 @@ body.fixed {
 	align-items: center;
 }
 
-.restaurant-box-row .col-lg-6 {
+.shop-box-row .col-lg-6 {
 	padding-left: 25px;
 	padding-right: 25px;
 }
@@ -2041,7 +2041,7 @@ body.fixed {
    ============================== */
 
 
-/* ====== Restaurant detail start ======== 
+/* ====== Shop detail start ======== 
    ======================================= */
 
 .inner-pages-section.rest-detail-section {
@@ -2558,28 +2558,28 @@ body.fixed {
 	transition: none;
 }
 
-.restaurant-detail-row .col-lg-8 {
+.shop-detail-row .col-lg-8 {
 	flex: 0 0 65%;
 	max-width: 65%;
 }
 
-.restaurant-detail-row .col-lg-4 {
+.shop-detail-row .col-lg-4 {
 	flex: 0 0 35%;
 	max-width: 35%;
 }
 
-.restaurant-detail-row {
+.shop-detail-row {
 	margin-left: -21px;
 	margin-right: -21px;
 }
 
-.restaurant-detail-row [class*=" col-"] {
+.shop-detail-row [class*=" col-"] {
 	padding-left: 21px;
 	padding-right: 21px;
 }
 
 
-/* ====== Restaurant detail end ======== 
+/* ====== Shop detail end ======== 
    ===================================== */
 
 
@@ -3156,7 +3156,7 @@ body.fixed {
 	padding-right: 50px;
 }
 
-.rate-restaurant {
+.rate-shop {
 	text-align: center;
 	width: 43%;
 	padding: 0 10px;
@@ -4758,7 +4758,7 @@ body.fixed {
 	.add-cart-list-main .cart-list-content {
 		padding-left: 25px;
 	}
-	.restaurant-detail-row {
+	.shop-detail-row {
 		margin-left: -15px;
 		margin-right: -15px;
 	}
@@ -4772,7 +4772,7 @@ body.fixed {
 	.inner-pages-form .delivery-address {
 		max-width: 235px;
 	}
-	.restaurant-detail-row [class*=" col-"] {
+	.shop-detail-row [class*=" col-"] {
 		padding-left: 15px;
 		padding-right: 15px;
 	}
@@ -4782,11 +4782,11 @@ body.fixed {
 	.your-doorstep .search-form {
 		max-width: 580px;
 	}
-	.restaurant-app-img {
+	.shop-app-img {
 		margin-left: 0px;
 		width: 600px;
 	}
-	.restaurant-app-text {
+	.shop-app-text {
 		max-width: 450px;
 	}
 	.rest-box-row {
@@ -4828,7 +4828,7 @@ body.fixed {
 		font-size: 14px;
 		padding: 2px 15px;
 	}
-	.restaurant-app-text p,
+	.shop-app-text p,
 	.driver-app-content p {
 		font-size: 16px;
 		line-height: 30px;
@@ -4836,11 +4836,11 @@ body.fixed {
 	.driver-app {
 		margin: 50px 0;
 	}
-	.restaurant-box-row {
+	.shop-box-row {
 		margin-left: -15px;
 		margin-right: -15px;
 	}
-	.restaurant-box-row .col-lg-6 {
+	.shop-box-row .col-lg-6 {
 		padding-left: 15px;
 		padding-right: 15px;
 	}
@@ -5242,14 +5242,14 @@ body.fixed {
 	.mobile-icon {
 		display: block;
 	}
-	.restaurant-app-img {
+	.shop-app-img {
 		width: 460px;
 	}
-	.restaurant-app-content {
+	.shop-app-content {
 		border-top: 30px solid #fff;
 		border-bottom: 30px solid #fff;
 	}
-	.restaurant-app-img {
+	.shop-app-img {
 		margin-top: -30px;
 		margin-bottom: -30px;
 	}
@@ -5290,7 +5290,7 @@ body.fixed {
 		border-bottom: 1px solid #E2E2E2;
 		border-right: 0px;
 	}
-	.rate-restaurant {
+	.rate-shop {
 		width: 100%;
 	}
 	.order-summary-content {
@@ -5335,37 +5335,37 @@ body.fixed {
 	.footer-logo {
 		max-width: 100%;
 	}
-	.restaurant-app-content {
+	.shop-app-content {
 		flex-wrap: wrap;
 	}
-	.restaurant-app-img {
+	.shop-app-img {
 		margin: 0px auto 20px;
 		max-width: 500px;
 		width: 100%;
 	}
-	.restaurant-app-content {
+	.shop-app-content {
 		background: #edeef3;
 		padding: 20px;
 		border: 0;
 		border-radius: 0 50px;
 	}
-	.restaurant-app-text {
+	.shop-app-text {
 		padding: 0px;
 		max-width: 100%;
 		text-align: center;
 	}
-	.restaurant-app .app-download {
+	.shop-app .app-download {
 		margin: auto;
 		justify-content: center;
 	}
-	.restaurant-app-content::after {
+	.shop-app-content::after {
 		content: none;
 	}
 	.footer-area {
 		padding: 5px 0;
 	}
-	.restaurant-detail-row .col-lg-8,
-	.restaurant-detail-row .col-lg-4 {
+	.shop-detail-row .col-lg-8,
+	.shop-detail-row .col-lg-4 {
 		flex: 0 0 100%;
 		max-width: 100%;
 	}
@@ -5480,7 +5480,7 @@ body.fixed {
 	.social-icon ul {
 		justify-content: center;
 	}
-	.restaurant-app-text p,
+	.shop-app-text p,
 	.driver-app-content p {
 		font-size: 14px;
 		line-height: 24px;
@@ -5516,10 +5516,10 @@ body.fixed {
 	.inner-pages-form .form-group {
 		flex-wrap: wrap;
 	}
-	.inner-pages-form .form-group.search-restaurant input[type="text"] {
+	.inner-pages-form .form-group.search-shop input[type="text"] {
 		border-radius: 5px 5px 0px 0px;
 	}
-	.inner-pages-form .form-group.search-restaurant input[type="button"] {
+	.inner-pages-form .form-group.search-shop input[type="button"] {
 		width: 100%;
 		border-radius: 0 0 5px 5px;
 	}

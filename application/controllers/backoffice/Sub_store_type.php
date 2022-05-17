@@ -76,7 +76,7 @@ class Sub_store_type extends CI_Controller {
         $this->load->view(ADMIN_URL.'/sub_store_type_add',$data);
     }
     
-    // view restaurant menu
+    // view shop menu
     public function view(){
         $data['meta_title'] = $this->lang->line('sub-store-type').' | '.$this->lang->line('site_title');
         $data['Languages'] = $this->common_model->getLanguages();

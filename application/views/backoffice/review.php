@@ -65,7 +65,7 @@
                                         </tr>
                                         <tr role="row" class="filter">
                                             <td></td>                                       
-                                            <td><input type="text" class="form-control form-filter input-sm" name="restaurant"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="shop"></td>
                                             <td><input type="text" class="form-control form-filter input-sm" name="review"></td>
                                             <td><input type="text" class="form-control form-filter input-sm" name="rating"></td>
                                             <td>

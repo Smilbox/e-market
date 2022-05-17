@@ -7,7 +7,7 @@
 		<div class="add-cart-list-main type-food-option">
 			<?php foreach ($cart_details['cart_items'] as $cart_key => $value) { ?>
 				<div class="add-cart-list">
-					<div class="cart-list-content <?php echo ($value['is_veg'] == 1)?'veg':'non-veg'; ?>">
+					<div class="cart-list-content <?php echo ($value['is_under_20_kg'] == 1)?'veg':'non-veg'; ?>">
 						<h5><?php echo $value['name']; ?></h5>
 						<ul class="ul-disc">
 						<?php if (!empty($value['addons_category_list'])) {
@@ -28,9 +28,9 @@
 					<div class="add-cart-item">
 						<strong><?php echo $currency_symbol->currency_symbol; ?> <?php echo $value['totalPrice']; ?></strong>
 						<div class="number">
-							<span class="minus" id="minusQuantity" onclick="customItemCount(<?php echo $value['menu_id']; ?>,<?php echo $value['restaurant_id']; ?>,'minus',<?php echo $cart_key; ?>)"><i class="iicon-icon-22"></i></span>
+							<span class="minus" id="minusQuantity" onclick="customItemCount(<?php echo $value['menu_id']; ?>,<?php echo $value['shop_id']; ?>,'minus',<?php echo $cart_key; ?>)"><i class="iicon-icon-22"></i></span>
 							<input type="text" value="<?php echo $value['quantity']; ?>" class="pointer-none" />
-							<span class="plus" id="plusQuantity" onclick="customItemCount(<?php echo $value['menu_id']; ?>,<?php echo $value['restaurant_id']; ?>,'plus',<?php echo $cart_key; ?>)"><i class="iicon-icon-21"></i></span>
+							<span class="plus" id="plusQuantity" onclick="customItemCount(<?php echo $value['menu_id']; ?>,<?php echo $value['shop_id']; ?>,'plus',<?php echo $cart_key; ?>)"><i class="iicon-icon-21"></i></span>
 						</div>
 					</div>
 				</div>

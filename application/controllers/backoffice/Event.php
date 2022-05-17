@@ -31,7 +31,7 @@ class Event extends CI_Controller {
     public function view(){
 
     	$data['meta_title'] = $this->lang->line('title_admin_event').' | '.$this->lang->line('site_title');
-        $data['restaurant'] = $this->event_model->getRestaurantList();
+        $data['shop'] = $this->event_model->getShopList();
         $this->load->view(ADMIN_URL.'/event',$data);
 
     }
@@ -166,7 +166,7 @@ class Event extends CI_Controller {
 
     }
 
-    //get restaurant
+    //get shop
 
     public function getRestuarantDetail(){
 
@@ -261,9 +261,9 @@ class Event extends CI_Controller {
     }
     //generate report
     public function generate_report(){
-        $restaurant_id = $this->input->post('restaurant_id');
+        $shop_id = $this->input->post('shop_id');
         $booking_date = $this->input->post('booking_date_export');
-        $data['report_data'] = $this->event_model->generate_report($restaurant_id,$booking_date); 
+        $data['report_data'] = $this->event_model->generate_report($shop_id,$booking_date); 
         
         if(!empty($data['report_data'])){
             $html = $this->load->view('backoffice/event_generate_report',$data,true);
@@ -271,7 +271,7 @@ class Event extends CI_Controller {
             if (!@is_dir('uploads/invoice')) {
               @mkdir('./uploads/invoice', 0777, TRUE);
             } 
-            $filepath = 'uploads/invoice/report_'.$restaurant_id.'.pdf';
+            $filepath = 'uploads/invoice/report_'.$shop_id.'.pdf';
             $file = 'report.pdf';
             $this->load->library('M_pdf'); 
             $mpdf=new mPDF('','Letter'); 

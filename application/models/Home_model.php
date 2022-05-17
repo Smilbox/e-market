@@ -20,17 +20,17 @@ class Home_model extends CI_Model {
     public function mobileCheck($mobile_number){
         return $this->db->get_where('users',array('mobile_number'=>$mobile_number))->num_rows();
     }
-    // get restaurant details
-    public function getRestaurants($storeTypeId = null){
+    // get shop details
+    public function getShops($storeTypeId = null){
         $language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
-    	$this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.object_fit,restaurant.timings,restaurant.shop_slug,restaurant.content_id,restaurant.language_slug,restaurant.featured_image, restaurant.store_type_id");
-    	$this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
-        $this->db->group_by('restaurant.content_id');
-        $restaurantWhere = [
+    	$this->db->select("shop.entity_id as shop_id,shop.name,address.address,address.landmark,address.latitude,address.longitude,shop.image,shop.object_fit,shop.timings,shop.shop_slug,shop.content_id,shop.language_slug,shop.featured_image, shop.store_type_id");
+    	$this->db->join('shop_address as address','shop.entity_id = address.shop_entity_id','left');
+        $this->db->group_by('shop.content_id');
+        $shopWhere = [
             "status" => 1,
         ];
-        !is_null($storeTypeId) && $restaurantWhere["store_type_id"] = $storeTypeId;
-    	$result = $this->db->get_where('restaurant', $restaurantWhere)->result_array();
+        !is_null($storeTypeId) && $shopWhere["store_type_id"] = $storeTypeId;
+    	$result = $this->db->get_where('shop', $shopWhere)->result_array();
         $finalData = array();
     	if (!empty($result)) {
 	    	foreach ($result as $key => $value) {
@@ -61,22 +61,22 @@ class Home_model extends CI_Model {
                 $RestDataArr[$value['content_id']] = array(
                     'content_id' =>$value['content_id'],
                     'shop_slug' =>$value['shop_slug'],
-                    'restaurant_id'=>$value['restaurant_id'],
+                    'shop_id'=>$value['shop_id'],
                     'store_type_id' => $value['store_type_id'],
                 );
             }    
             if(!empty($content_id)){
-                $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.timings, restaurant.object_fit, restaurant.shop_slug,restaurant.content_id,restaurant.language_slug,restaurant.featured_image");
-                $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
-                $this->db->where_in('restaurant.content_id',$content_id);
-                $this->db->where('restaurant.language_slug',$language_slug);
+                $this->db->select("shop.entity_id as shop_id,shop.name,address.address,address.landmark,address.latitude,address.longitude,shop.image,shop.timings, shop.object_fit, shop.shop_slug,shop.content_id,shop.language_slug,shop.featured_image");
+                $this->db->join('shop_address as address','shop.entity_id = address.shop_entity_id','left');
+                $this->db->where_in('shop.content_id',$content_id);
+                $this->db->where('shop.language_slug',$language_slug);
                 
-                $this->db->where('restaurant.status',1);
-                $this->db->group_by('restaurant.content_id');
-                $this->db->order_by('restaurant.entity_id');
-                $restaurantLng = $this->db->get('restaurant')->result_array();
+                $this->db->where('shop.status',1);
+                $this->db->group_by('shop.content_id');
+                $this->db->order_by('shop.entity_id');
+                $shopLng = $this->db->get('shop')->result_array();
 
-                foreach ($restaurantLng as $key => $value) {
+                foreach ($shopLng as $key => $value) {
                     $timing = $value['timings'];
                     if($timing){
                        $timing =  unserialize(html_entity_decode($timing));
@@ -92,13 +92,13 @@ class Home_model extends CI_Model {
                             }
                         }
                     }
-                    $restaurantLng[$key]['timings'] = $newTimingArr[strtolower($day)];
-                    $restaurantLng[$key]['image'] = ($value['image'])?image_url.$value['image']:'';
-                    $restaurantLng[$key]['featured_image'] = ($value['featured_image'])?image_url.$value['featured_image']:'';
+                    $shopLng[$key]['timings'] = $newTimingArr[strtolower($day)];
+                    $shopLng[$key]['image'] = ($value['image'])?image_url.$value['image']:'';
+                    $shopLng[$key]['featured_image'] = ($value['featured_image'])?image_url.$value['featured_image']:'';
                 }
-                foreach ($restaurantLng as $key => $value) {
+                foreach ($shopLng as $key => $value) {
                     $finalData[$value['content_id']] = array(
-                        'MainRestaurantID'=> $value['restaurant_id'],
+                        'MainShopID'=> $value['shop_id'],
                         'name'=> $value['name'],
                         'address'=> $value['address'],
                         'object_fit'=>$value['object_fit'],
@@ -111,7 +111,7 @@ class Home_model extends CI_Model {
                         'language_slug'=> $value['language_slug'],
                         'content_id' =>$RestDataArr[$value['content_id']]['content_id'],
                         'shop_slug' =>$RestDataArr[$value['content_id']]['shop_slug'],
-                        'restaurant_id'=>$RestDataArr[$value['content_id']]['restaurant_id'],
+                        'shop_id'=>$RestDataArr[$value['content_id']]['shop_id'],
                         'store_type_id' => $RestDataArr[$value['content_id']]['store_type_id'],
                     );
                 }
@@ -119,12 +119,12 @@ class Home_model extends CI_Model {
         } 
         return $finalData;
     }
-    // get restaurant reviews
-    public function getRestaurantReview($restaurant_id){
-    	$this->db->select("review.restaurant_id,review.rating,review.review,users.first_name,users.last_name,users.image");
+    // get shop reviews
+    public function getShopReview($shop_id){
+    	$this->db->select("review.shop_id,review.rating,review.review,users.first_name,users.last_name,users.image");
         $this->db->join('users','review.user_id = users.entity_id','left');
         $this->db->where('review.status',1);
-        $this->db->where('review.restaurant_id',$restaurant_id);
+        $this->db->where('review.shop_id',$shop_id);
         $result =  $this->db->get('review')->result();
         $avg_rating = 0;
         if (!empty($result)) {
@@ -144,15 +144,15 @@ class Home_model extends CI_Model {
         $this->db->group_by('content_id');
     	return $this->db->get_where('category',array('status'=>1))->result();
     }
-    // search restaurant details
-    public function searchRestaurants($category_id){
-    	$this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.timings,restaurant.shop_slug,restaurant.featured_image");
-    	$this->db->join('restaurant','restaurant_menu_item.restaurant_id = restaurant.entity_id','left');
-    	$this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
-        $this->db->where('restaurant_menu_item.category_id',$category_id);
-        $this->db->where('restaurant_menu_item.status',1);
-        $this->db->group_by('restaurant.entity_id');
-    	$result = $this->db->get('restaurant_menu_item')->result_array();
+    // search shop details
+    public function searchShops($category_id){
+    	$this->db->select("shop.entity_id as shop_id,shop.name,address.address,address.landmark,address.latitude,address.longitude,shop.image,shop.timings,shop.shop_slug,shop.featured_image");
+    	$this->db->join('shop','shop_menu_item.shop_id = shop.entity_id','left');
+    	$this->db->join('shop_address as address','shop.entity_id = address.shop_entity_id','left');
+        $this->db->where('shop_menu_item.category_id',$category_id);
+        $this->db->where('shop_menu_item.status',1);
+        $this->db->group_by('shop.entity_id');
+    	$result = $this->db->get('shop_menu_item')->result_array();
     	if (!empty($result)) {
 	    	foreach ($result as $key => $value) {
 	            $timing = $value['timings'];

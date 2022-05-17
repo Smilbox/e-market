@@ -12,26 +12,28 @@ class Shop extends CI_Controller {
             redirect(ADMIN_URL.'/home');
         }
         $this->load->library('form_validation');
-        $this->load->model(ADMIN_URL.'/restaurant_model');
+        $this->load->model(ADMIN_URL.'/shop_model');
         $this->load->model(ADMIN_URL.'/store_type_model');
         $this->load->model(ADMIN_URL.'/sub_store_type_model');
     }
-    // view restaurant
+    // view shop
     public function view(){
     	$data['meta_title'] = $this->lang->line('title_admin_shop').' | '.$this->lang->line('site_title');
         $data['Languages'] = $this->common_model->getLanguages();     
-        $this->load->view(ADMIN_URL.'/restaurant',$data);
+        $this->load->view(ADMIN_URL.'/shop',$data);
     }
-    // add restaurant
+    // add shop
     public function add(){
         $data['meta_title'] = $this->lang->line('title_admin_shopadd').' | '.$this->lang->line('site_title');
     	if($this->input->post('submit_page') == "Submit")
         {   
-            $this->form_validation->set_rules('name', 'Restaurant Name', 'trim|required');
+            $this->form_validation->set_rules('name', 'Shop Name', 'trim|required');
             $this->form_validation->set_rules('phone_number', 'Phone Number', 'trim|callback_checkExist');
             $this->form_validation->set_rules('email','Email', 'trim|valid_email|callback_checkEmailExist');
-            $this->form_validation->set_rules('capacity','Capacity', 'trim|required');
-            $this->form_validation->set_rules('no_of_table','No of table', 'trim|required');
+            $this->form_validation->set_rules('owner_name','Owner Name', 'trim');
+            $this->form_validation->set_rules('nif','NIF', 'trim');
+            $this->form_validation->set_rules('stat','STAT', 'trim');
+            $this->form_validation->set_rules('rcs','RCS', 'trim');
             $this->form_validation->set_rules('address','Address', 'trim|required');
             $this->form_validation->set_rules('landmark','Landmark', 'trim|required');
             $this->form_validation->set_rules('latitude','Latitude', 'trim|required');
@@ -53,11 +55,11 @@ class Shop extends CI_Controller {
                       'created_by'=>$this->session->userdata("UserID"),  
                       'created_date'=>date('Y-m-d H:i:s')                      
                     );
-                    $ContentID = $this->restaurant_model->addData('content_general',$add_content);
-                    $shop_slug = slugify($this->input->post('name'),'restaurant','shop_slug');
+                    $ContentID = $this->shop_model->addData('content_general',$add_content);
+                    $shop_slug = slugify($this->input->post('name'),'shop','shop_slug');
                 }else{                    
                     $ContentID = $this->input->post('content_id');
-                    $slug = $this->restaurant_model->getRestaurantSlug($this->input->post('content_id'));
+                    $slug = $this->shop_model->getShopSlug($this->input->post('content_id'));
                     $shop_slug = $slug->shop_slug;
                 }
                 $currency_id = $this->common_model->getCurrencyID('Ariary');
@@ -67,16 +69,16 @@ class Shop extends CI_Controller {
                     'currency_id' =>$currency_id->currency_id,
                     'phone_number' =>$this->input->post('phone_number'),
                     'email' =>$this->input->post('email'),
-                    'capacity' =>$this->input->post('capacity'),
-                    'no_of_table' =>$this->input->post('no_of_table'),
-                    'no_of_hall' =>$this->input->post('no_of_hall'),
-                    'hall_capacity' =>$this->input->post('hall_capacity'),
+                    'owner_name'=>$this->input->post('owner_name'),
+                    'nif' =>$this->input->post('nif'),
+                    'stat' =>$this->input->post('stat'),
+                    'rcs' =>$this->input->post('rcs'),
                     'enable_hours'=>$this->input->post("enable_hours"),
                     'status'=>1,
                     'content_id'=>$ContentID,
                     'language_slug'=>$this->uri->segment('4'),
                     'created_by' => $this->session->userdata('UserID'),
-                    'is_veg'=>($this->input->post('is_veg') != '')?$this->input->post('is_veg'):NULL,
+                    'is_under_20_kg'=>($this->input->post('is_under_20_kg') != '')?$this->input->post('is_under_20_kg'):NULL,
                     'driver_commission'=>$this->input->post('driver_commission'),
                     'store_type_id' => $this->input->post('store-type'),
                     'sub_store_type_id' => implode(',', $this->input->post('sub-store-type')),
@@ -109,19 +111,19 @@ class Shop extends CI_Controller {
                 if (!empty($_FILES['Image']['name']))
                 {
                     $this->load->library('upload');
-                    $config['upload_path'] = './uploads/restaurant';
+                    $config['upload_path'] = './uploads/shop';
                     $config['allowed_types'] = 'gif|jpg|png|jpeg';  
                     $config['max_size'] = '5120'; //in KB    
                     $config['encrypt_name'] = TRUE;               
                     // create directory if not exists
-                    if (!@is_dir('uploads/restaurant')) {
-                      @mkdir('./uploads/restaurant', 0777, TRUE);
+                    if (!@is_dir('uploads/shop')) {
+                      @mkdir('./uploads/shop', 0777, TRUE);
                     }
                     $this->upload->initialize($config);                  
                     if ($this->upload->do_upload('Image'))
                     {
                       $img = $this->upload->data();
-                      $add_data['image'] = "restaurant/".$img['file_name'];    
+                      $add_data['image'] = "shop/".$img['file_name'];    
                     }
                     else
                     {
@@ -132,19 +134,19 @@ class Shop extends CI_Controller {
                 if (!empty($_FILES['FeaturedImage']['name']))
                 {
                     $this->load->library('upload');
-                    $config['upload_path'] = './uploads/restaurant';
+                    $config['upload_path'] = './uploads/shop';
                     $config['allowed_types'] = 'gif|jpg|png|jpeg';
                     $config['max_size'] = '5120'; //in KB
                     $config['encrypt_name'] = TRUE;
                     // create directory if not exists
-                    if (!@is_dir('uploads/restaurant')) {
-                        @mkdir('./uploads/restaurant', 0777, TRUE);
+                    if (!@is_dir('uploads/shop')) {
+                        @mkdir('./uploads/shop', 0777, TRUE);
                     }
                     $this->upload->initialize($config);
                     if ($this->upload->do_upload('FeaturedImage'))
                     {
                         $img = $this->upload->data();
-                        $add_data['featured_image'] = "restaurant/".$img['file_name'];
+                        $add_data['featured_image'] = "shop/".$img['file_name'];
                     }
                     else
                     {
@@ -154,10 +156,10 @@ class Shop extends CI_Controller {
                 }
                 $entity_id = '';
                 if(empty($data['Error'])){
-                    $entity_id = $this->restaurant_model->addData('restaurant',$add_data);
+                    $entity_id = $this->shop_model->addData('shop',$add_data);
                      //for address
                     $add_data = array(
-                        'resto_entity_id'=>$entity_id,
+                        'shop_entity_id'=>$entity_id,
                         'address' =>$this->input->post('address'),
                         'landmark' =>$this->input->post('landmark'),
                         'latitude' =>$this->input->post('latitude'),
@@ -169,7 +171,7 @@ class Shop extends CI_Controller {
                         'content_id'=>$ContentID,
                         'language_slug'=>$this->uri->segment('4'),
                     );
-                    $this->restaurant_model->addData('restaurant_address',$add_data);
+                    $this->shop_model->addData('shop_address',$add_data);
                     if($this->session->userdata('adminemail')){
                         $this->db->select('OptionValue');
                         $FromEmailID = $this->db->get_where('system_option',array('OptionSlug'=>'From_Email_Address'))->first_row();
@@ -177,9 +179,9 @@ class Shop extends CI_Controller {
                         $this->db->select('OptionValue');
                         $FromEmailName = $this->db->get_where('system_option',array('OptionSlug'=>'Email_From_Name'))->first_row();
                         $this->db->select('subject,message');
-                        $Emaildata = $this->db->get_where('email_template',array('email_slug'=>'new-restaurant-alert','language_slug'=>$this->session->userdata('language_slug'),'status'=>1))->first_row();
+                        $Emaildata = $this->db->get_where('email_template',array('email_slug'=>'new-shop-alert','language_slug'=>$this->session->userdata('language_slug'),'status'=>1))->first_row();
 
-                        $arrayData = array('FirstName'=>$this->session->userdata('adminFirstname'),'restaurant_name'=>$this->input->post('name'));
+                        $arrayData = array('FirstName'=>$this->session->userdata('adminFirstname'),'shop_name'=>$this->input->post('name'));
                         $EmailBody = generateEmailBody($Emaildata->message,$arrayData);  
                         if(!empty($EmailBody)){     
                             $this->load->library('email');  
@@ -197,12 +199,12 @@ class Shop extends CI_Controller {
                             }   
                         } 
                     }
-                    //get restaurant ans set in session
-                    $restaurant = $this->common_model->getRestaurantinSession('restaurant',$this->session->userdata('UserID'));
-                    if(!empty($restaurant))
+                    //get shop ans set in session
+                    $shop = $this->common_model->getShopInSession('shop',$this->session->userdata('UserID'));
+                    if(!empty($shop))
                     {
-                        $restaurant = array_column($restaurant, 'entity_id');
-                        $this->session->set_userdata('restaurant',$restaurant);
+                        $shop = array_column($shop, 'entity_id');
+                        $this->session->set_userdata('shop',$shop);
                     }
                     $this->session->set_flashdata('page_MSG', $this->lang->line('success_add'));
                     redirect(base_url().ADMIN_URL.'/'.$this->controller_name.'/view');             
@@ -212,23 +214,21 @@ class Shop extends CI_Controller {
         }
         $data['currencies'] = $this->common_model->getCountriesCurrency();
         if (!empty($this->uri->segment('5'))) {
-            $getRestaurantCurrency = $this->common_model->getRestaurantCurrency($this->uri->segment('5'));
-            $data['res_currency_id'] = $getRestaurantCurrency->currency_id;
+            $getShopCurrency = $this->common_model->getShopCurrency($this->uri->segment('5'));
+            $data['res_currency_id'] = $getShopCurrency->currency_id;
         }
         $data['store_types'] = $this->store_type_model->getAll();
         $data['sub_store_types'] = $this->sub_store_type_model->getAll();
-    	$this->load->view(ADMIN_URL.'/restaurant_add',$data);
+    	$this->load->view(ADMIN_URL.'/shop_add',$data);
     }
-    // edit restaurant
+    // edit shop
     public function edit(){
     	$data['meta_title'] = $this->lang->line('title_admin_shopedit').' | '.$this->lang->line('site_title');
         if($this->input->post('submit_page') == "Submit")
         {   
-            $this->form_validation->set_rules('name', 'Restaurant Name', 'trim|required');
+            $this->form_validation->set_rules('name', 'Shop Name', 'trim|required');
             $this->form_validation->set_rules('phone_number', 'Phone Number', 'trim|callback_checkExist');
             $this->form_validation->set_rules('email','Email', 'trim|valid_email|callback_checkEmailExist');
-            $this->form_validation->set_rules('capacity','Capacity', 'trim|required|numeric');
-            $this->form_validation->set_rules('no_of_table','No of table', 'trim|required|numeric');
             $this->form_validation->set_rules('address','Address', 'trim|required');
             $this->form_validation->set_rules('landmark','Landmark', 'trim|required');
             $this->form_validation->set_rules('latitude','Latitude', 'trim|required');
@@ -243,31 +243,27 @@ class Shop extends CI_Controller {
             //check form validation using codeigniter
             if ($this->form_validation->run())
             {  
-                $content_id = $this->restaurant_model->getContentId($this->input->post('entity_id'),'restaurant');
-                $slug = $this->restaurant_model->getRestaurantSlug($this->input->post('content_id'));
+                $content_id = $this->shop_model->getContentId($this->input->post('entity_id'),'shop');
+                $slug = $this->shop_model->getShopSlug($this->input->post('content_id'));
                 if (!empty($slug->shop_slug)) { 
                     $shop_slug = $slug->shop_slug;
                 }
                 else
                 {
-                    $shop_slug = slugify($this->input->post('name'),'restaurant','shop_slug','content_id',$content_id->content_id);
+                    $shop_slug = slugify($this->input->post('name'),'shop','shop_slug','content_id',$content_id->content_id);
                 }
                 $edit_data = array(                  
                     'name'=>$this->input->post('name'),
                     'shop_slug'=>$shop_slug,
                     'phone_number' =>$this->input->post('phone_number'),
                     'email' =>$this->input->post('email'),
-                    'capacity' =>$this->input->post('capacity'),
-                    'no_of_table' =>$this->input->post('no_of_table'),
-                    'no_of_hall' =>$this->input->post('no_of_hall'),
-                    'hall_capacity' =>$this->input->post('hall_capacity'),
                     'enable_hours'=>$this->input->post("enable_hours"),
                     'status'=>1,
                     'updated_by' => $this->session->userdata('UserID'),
                     'store_type_id' => $this->input->post('store-type'),
                     'sub_store_type_id' => implode(',', $this->input->post('sub-store-type')),
                     'updated_date'=>date('Y-m-d H:i:s'),
-                    'is_veg'=>($this->input->post('is_veg') != '')?$this->input->post('is_veg'):NULL,
+                    'is_under_20_kg'=>($this->input->post('is_under_20_kg') != '')?$this->input->post('is_under_20_kg'):NULL,
                     'driver_commission'=>$this->input->post('driver_commission'),
                     'allow_24_delivery' => $this->input->post('allow_24_delivery'),
                     'flat_rate_24' => $this->input->post('flat_rate_24'),
@@ -299,19 +295,19 @@ class Shop extends CI_Controller {
                 if (!empty($_FILES['Image']['name']))
                 {
                     $this->load->library('upload');
-                    $config['upload_path'] = './uploads/restaurant';
+                    $config['upload_path'] = './uploads/shop';
                     $config['allowed_types'] = 'gif|jpg|png|jpeg';  
                     $config['max_size'] = '5120'; //in KB    
                     $config['encrypt_name'] = TRUE;               
                     // create directory if not exists
-                    if (!@is_dir('uploads/restaurant')) {
-                      @mkdir('./uploads/restaurant', 0777, TRUE);
+                    if (!@is_dir('uploads/shop')) {
+                      @mkdir('./uploads/shop', 0777, TRUE);
                     }
                     $this->upload->initialize($config);                  
                     if ($this->upload->do_upload('Image'))
                     {
                       $img = $this->upload->data();
-                      $edit_data['image'] = "restaurant/".$img['file_name'];   
+                      $edit_data['image'] = "shop/".$img['file_name'];   
                       if($this->input->post('uploaded_image')){
                         @unlink(FCPATH.'uploads/'.$this->input->post('uploaded_image'));
                       }  
@@ -326,19 +322,19 @@ class Shop extends CI_Controller {
                 if (!empty($_FILES['FeaturedImage']['name']))
                 {
                     $this->load->library('upload');
-                    $config['upload_path'] = './uploads/restaurant';
+                    $config['upload_path'] = './uploads/shop';
                     $config['allowed_types'] = 'gif|jpg|png|jpeg';
                     $config['max_size'] = '5120'; //in KB
                     $config['encrypt_name'] = TRUE;
                     // create directory if not exists
-                    if (!@is_dir('uploads/restaurant')) {
-                        @mkdir('./uploads/restaurant', 0777, TRUE);
+                    if (!@is_dir('uploads/shop')) {
+                        @mkdir('./uploads/shop', 0777, TRUE);
                     }
                     $this->upload->initialize($config);
                     if ($this->upload->do_upload('FeaturedImage'))
                     {
                         $img = $this->upload->data();
-                        $edit_data['featured_image'] = "restaurant/".$img['file_name'];
+                        $edit_data['featured_image'] = "shop/".$img['file_name'];
                         if($this->input->post('uploaded_imagefeatured')){
                             @unlink(FCPATH.'uploads/'.$this->input->post('uploaded_imagefeatured'));
                         }
@@ -351,10 +347,10 @@ class Shop extends CI_Controller {
                 }
                 
                 if(empty($data['Error'])){
-                    $this->restaurant_model->updateData($edit_data,'restaurant','entity_id',$this->input->post('entity_id'));
+                    $this->shop_model->updateData($edit_data,'shop','entity_id',$this->input->post('entity_id'));
                      //for address
                     $edit_data = array(
-                        'resto_entity_id'=>$this->input->post('entity_id'),
+                        'shop_entity_id'=>$this->input->post('entity_id'),
                         'address' =>$this->input->post('address'),
                         'landmark' =>$this->input->post('landmark'),
                         'latitude' =>$this->input->post('latitude'),
@@ -364,7 +360,7 @@ class Shop extends CI_Controller {
                         'city'=>$this->input->post("city"),
                         'zipcode'=>$this->input->post("zipcode"),
                     );
-                    $this->restaurant_model->updateData($edit_data,'restaurant_address','resto_entity_id',$this->input->post('entity_id'));
+                    $this->shop_model->updateData($edit_data,'shop_address','shop_entity_id',$this->input->post('entity_id'));
                     if($this->session->userdata('adminemail')){
                         $this->db->select('OptionValue');
                         $FromEmailID = $this->db->get_where('system_option',array('OptionSlug'=>'From_Email_Address'))->first_row();
@@ -372,8 +368,8 @@ class Shop extends CI_Controller {
                         $this->db->select('OptionValue');
                         $FromEmailName = $this->db->get_where('system_option',array('OptionSlug'=>'Email_From_Name'))->first_row();
                         $this->db->select('subject,message');
-                        $Emaildata = $this->db->get_where('email_template',array('email_slug'=>'restaurant-details-update-alert','language_slug'=>$this->session->userdata('language_slug'),'status'=>1))->first_row();
-                        $arrayData = array('FirstName'=>$this->session->userdata('adminFirstname'),'restaurant_name'=>$this->input->post('name'));
+                        $Emaildata = $this->db->get_where('email_template',array('email_slug'=>'shop-details-update-alert','language_slug'=>$this->session->userdata('language_slug'),'status'=>1))->first_row();
+                        $arrayData = array('FirstName'=>$this->session->userdata('adminFirstname'),'shop_name'=>$this->input->post('name'));
                         $EmailBody = generateEmailBody($Emaildata->message,$arrayData);  
                         if(!empty($EmailBody)){     
                             $this->load->library('email');  
@@ -398,11 +394,11 @@ class Shop extends CI_Controller {
             }
         }
         $entity_id = ($this->uri->segment('5'))?$this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $this->uri->segment(5))):$this->input->post('entity_id');
-        $data['edit_records'] = $this->restaurant_model->getEditDetail('restaurant',$entity_id);
+        $data['edit_records'] = $this->shop_model->getEditDetail('shop',$entity_id);
         $data['currencies'] = $this->common_model->getCountriesCurrency();
         $data['store_types'] = $this->store_type_model->getAll();
         $data['sub_store_types'] = $this->sub_store_type_model->getAll();
-        $this->load->view(ADMIN_URL.'/restaurant_add',$data);
+        $this->load->view(ADMIN_URL.'/shop_add',$data);
     }
     // call for ajax data
     public function ajaxview() {
@@ -419,7 +415,7 @@ class Shop extends CI_Controller {
             $sortFieldName = $sortfields[$sortCol];
         }
         //Get Recored from model
-        $grid_data = $this->restaurant_model->getGridList($sortFieldName,$sortOrder,$displayStart,$displayLength);
+        $grid_data = $this->shop_model->getGridList($sortFieldName,$sortOrder,$displayStart,$displayLength);
 
         $Languages = $this->common_model->getLanguages();        
         $totalRecords = $grid_data['total'];        
@@ -460,28 +456,28 @@ class Shop extends CI_Controller {
     /*
      * Update status for Single 
      */
-    // method to change restaurant status
+    // method to change shop status
     public function ajaxDisable() {
         $entity_id = ($this->input->post('entity_id') != '')?$this->input->post('entity_id'):'';
         if($entity_id != ''){
-            $this->restaurant_model->UpdatedStatus($this->input->post('tblname'),$entity_id,$this->input->post('status'));
+            $this->shop_model->UpdatedStatus($this->input->post('tblname'),$entity_id,$this->input->post('status'));
         }
     }
-    // method for deleting a restaurant
+    // method for deleting a shop
     public function ajaxDelete(){
     	$entity_id = ($this->input->post('entity_id') != '')?$this->input->post('entity_id'):'';
-        $this->restaurant_model->ajaxDelete($this->input->post('tblname'),$this->input->post('content_id'),$entity_id);
+        $this->shop_model->ajaxDelete($this->input->post('tblname'),$this->input->post('content_id'),$entity_id);
     }
     public function ajaxDeleteAll(){
         $content_id = ($this->input->post('content_id') != '')?$this->input->post('content_id'):'';
-        $this->restaurant_model->ajaxDeleteAll($this->input->post('tblname'),$content_id);
+        $this->shop_model->ajaxDeleteAll($this->input->post('tblname'),$content_id);
     }
-    // view restaurant menu
+    // view shop menu
     public function view_menu(){
         $data['meta_title'] = $this->lang->line('title_admin_shop_menu').' | '.$this->lang->line('site_title');
         $data['Languages'] = $this->common_model->getLanguages();
-        $data['restaurant'] = $this->restaurant_model->getListData('restaurant',$this->session->userdata('language_slug'));
-        $this->load->view(ADMIN_URL.'/restaurant_menu',$data);
+        $data['shop'] = $this->shop_model->getListData('shop',$this->session->userdata('language_slug'));
+        $this->load->view(ADMIN_URL.'/shop_menu',$data);
     }
     //add menu
     public function add_menu(){
@@ -489,7 +485,7 @@ class Shop extends CI_Controller {
         if($this->input->post('submit_page') == "Submit")
         {
             $this->form_validation->set_rules('name', 'Menu Name', 'trim|required');
-            $this->form_validation->set_rules('restaurant_id', 'Restaurant', 'trim|required');
+            $this->form_validation->set_rules('shop_id', 'Shop', 'trim|required');
             $this->form_validation->set_rules('category_id','Category', 'trim|required');
             if($this->input->post('check_add_ons') != 1){
                 $this->form_validation->set_rules('price','Price', 'trim|required');
@@ -502,7 +498,7 @@ class Shop extends CI_Controller {
                 if(!empty($this->input->post('content_id')))
                 {
                     $ContentID = $this->input->post('content_id');
-                    $slug = $this->restaurant_model->getItemSlug($this->input->post('content_id'));
+                    $slug = $this->shop_model->getItemSlug($this->input->post('content_id'));
                     $item_slug = $slug->item_slug;
                 }
                 else
@@ -513,13 +509,13 @@ class Shop extends CI_Controller {
                       'created_by'=>$this->session->userdata("UserID"),  
                       'created_date'=>date('Y-m-d H:i:s')                      
                     );
-                    $ContentID = $this->restaurant_model->addData('content_general',$add_content);
-                    $item_slug = slugify($this->input->post('name'),'restaurant_menu_item','item_slug');               
+                    $ContentID = $this->shop_model->addData('content_general',$add_content);
+                    $item_slug = slugify($this->input->post('name'),'shop_menu_item','item_slug');               
                 }
                 $add_data = array(                  
                     'name'=>$this->input->post('name'),
                     'item_slug'=>$item_slug,
-                    'restaurant_id' =>$this->input->post('restaurant_id'),
+                    'shop_id' =>$this->input->post('shop_id'),
                     'category_id' =>$this->input->post('category_id'),
                     'price' =>($this->input->post('price'))?$this->input->post('price'):NULL,
                     'menu_detail' =>$this->input->post('menu_detail'),
@@ -529,7 +525,7 @@ class Shop extends CI_Controller {
                     'content_id'=>$ContentID,
                     'language_slug'=>$this->uri->segment('4'),
                     'created_by' => $this->session->userdata('UserID'),
-                    'is_veg'=>$this->input->post('is_veg'),
+                    'is_under_20_kg'=>$this->input->post('is_under_20_kg'),
                     'check_add_ons'=>($this->input->post('check_add_ons'))?$this->input->post('check_add_ons'):0
                 ); 
                 if (!empty($_FILES['Images']['name']) && count(array_filter($_FILES['Images']['name'])) > 0)
@@ -594,7 +590,7 @@ class Shop extends CI_Controller {
                     }
                 }*/
                 if(empty($data['Error'])){
-                    $menu_id = $this->restaurant_model->addData('restaurant_menu_item',$add_data);
+                    $menu_id = $this->shop_model->addData('shop_menu_item',$add_data);
                     if($this->input->post('check_add_ons') == 1){
                         if(!empty($this->input->post('add_ons_list'))){
                             $addons = array();
@@ -612,7 +608,7 @@ class Shop extends CI_Controller {
                                 }
                             }
                         }
-                        $this->restaurant_model->inserBatch('add_ons_master',$addons);
+                        $this->shop_model->inserBatch('add_ons_master',$addons);
                     }
                     $this->session->set_flashdata('page_MSG', $this->lang->line('success_add'));
                     redirect(base_url().ADMIN_URL.'/'.$this->controller_name.'/view_menu');               
@@ -621,10 +617,10 @@ class Shop extends CI_Controller {
             }
         }
         $language_slug = ($this->uri->segment(4))?$this->uri->segment(4):$this->session->userdata('language_slug');
-        $data['restaurant'] = $this->restaurant_model->getListData('restaurant',$language_slug);
-        $data['category'] = $this->restaurant_model->getListData('category',$language_slug);
-        $data['addons_category'] = $this->restaurant_model->getListData('add_ons_category',$language_slug);
-        $this->load->view(ADMIN_URL.'/restaurant_menu_add',$data);
+        $data['shop'] = $this->shop_model->getListData('shop',$language_slug);
+        $data['category'] = $this->shop_model->getListData('category',$language_slug);
+        $data['addons_category'] = $this->shop_model->getListData('add_ons_category',$language_slug);
+        $this->load->view(ADMIN_URL.'/shop_menu_add',$data);
     }
     //edit menu
     public function edit_menu(){
@@ -633,7 +629,7 @@ class Shop extends CI_Controller {
         if($this->input->post('submit_page') == "Submit")
         {
             $this->form_validation->set_rules('name', 'Menu Name', 'trim|required');
-            $this->form_validation->set_rules('restaurant_id', 'Restaurant', 'trim|required');
+            $this->form_validation->set_rules('shop_id', 'Shop', 'trim|required');
             $this->form_validation->set_rules('category_id','Category', 'trim|required');
             if($this->input->post('check_add_ons') != 1){
                 $this->form_validation->set_rules('price','Price', 'trim|required');
@@ -643,19 +639,19 @@ class Shop extends CI_Controller {
             //check form validation using codeigniter
             if ($this->form_validation->run())
             {  
-                $content_id = $this->restaurant_model->getContentId($this->input->post('entity_id'),'restaurant_menu_item');
-                $slug = $this->restaurant_model->getItemSlug($this->input->post('content_id'));
+                $content_id = $this->shop_model->getContentId($this->input->post('entity_id'),'shop_menu_item');
+                $slug = $this->shop_model->getItemSlug($this->input->post('content_id'));
                 if (!empty($slug->item_slug)) { 
                     $item_slug = $slug->item_slug;
                 }
                 else
                 {
-                    $item_slug = slugify($this->input->post('name'),'restaurant_menu_item','item_slug','content_id',$content_id->content_id);
+                    $item_slug = slugify($this->input->post('name'),'shop_menu_item','item_slug','content_id',$content_id->content_id);
                 }
                 $edit_data = array(                  
                     'name'=>$this->input->post('name'),
                     'item_slug'=>$item_slug,
-                    'restaurant_id' =>$this->input->post('restaurant_id'),
+                    'shop_id' =>$this->input->post('shop_id'),
                     'category_id' =>$this->input->post('category_id'),
                     'price' =>($this->input->post('price'))?$this->input->post('price'):NULL,
                     'menu_detail' =>$this->input->post('menu_detail'),
@@ -663,7 +659,7 @@ class Shop extends CI_Controller {
                     'availability'=>implode(',', $this->input->post("availability")),
                     'updated_by' => $this->session->userdata('UserID'),
                     'updated_date' => date('Y-m-d H:i:s'),
-                    'is_veg'=>$this->input->post('is_veg'),
+                    'is_under_20_kg'=>$this->input->post('is_under_20_kg'),
                     'check_add_ons'=>($this->input->post('check_add_ons'))?$this->input->post('check_add_ons'):0
                 );
                 if (!empty($_FILES['Images']['name']) && count(array_filter($_FILES['Images']["name"])) > 0)
@@ -731,7 +727,7 @@ class Shop extends CI_Controller {
                     }
                 }*/    
                 if(empty($data['Error'])){                            
-                    $this->restaurant_model->updateData($edit_data,'restaurant_menu_item','entity_id',$this->input->post('entity_id'));
+                    $this->shop_model->updateData($edit_data,'shop_menu_item','entity_id',$this->input->post('entity_id'));
                     $addons = array();
                     if($this->input->post('check_add_ons') == 1){
                         if(!empty($this->input->post('add_ons_list'))){
@@ -752,17 +748,17 @@ class Shop extends CI_Controller {
                             }
                         }
                     }
-                    $this->restaurant_model->deleteinsertBatch('add_ons_master',$addons,$this->input->post('entity_id'));
+                    $this->shop_model->deleteinsertBatch('add_ons_master',$addons,$this->input->post('entity_id'));
                     $this->session->set_flashdata('page_MSG', $this->lang->line('success_update'));
                     redirect(base_url().ADMIN_URL.'/'.$this->controller_name.'/view_menu');       
                 }          
             }
         }
         $language_slug = ($this->uri->segment(4))?$this->uri->segment(4):$this->session->userdata('language_slug');
-        $data['restaurant'] = $this->restaurant_model->getListData('restaurant',$language_slug);
-        $data['category'] = $this->restaurant_model->getListData('category',$language_slug);
+        $data['shop'] = $this->shop_model->getListData('shop',$language_slug);
+        $data['category'] = $this->shop_model->getListData('category',$language_slug);
         $entity_id = ($this->uri->segment('5'))?$this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $this->uri->segment(5))):$this->input->post('entity_id');
-        $data['edit_records'] = $this->restaurant_model->getEditDetail('restaurant_menu_item',$entity_id);
+        $data['edit_records'] = $this->shop_model->getEditDetail('shop_menu_item',$entity_id);
         $data['list_images'] = array();
         if(!empty($data['edit_records']->image_group))
         {
@@ -775,9 +771,9 @@ class Shop extends CI_Controller {
                 }
             }
         }
-        $data['add_ons_detail'] = $this->restaurant_model->getAddonsDetail('add_ons_master',$entity_id); 
-        $data['addons_category'] = $this->restaurant_model->getListData('add_ons_category',$language_slug);
-        $this->load->view(ADMIN_URL.'/restaurant_menu_add',$data);
+        $data['add_ons_detail'] = $this->shop_model->getAddonsDetail('add_ons_master',$entity_id); 
+        $data['addons_category'] = $this->shop_model->getListData('add_ons_category',$language_slug);
+        $this->load->view(ADMIN_URL.'/shop_menu_add',$data);
     }
     // call for ajax data
     public function ajaxviewMenu() {
@@ -794,7 +790,7 @@ class Shop extends CI_Controller {
             $sortFieldName = $sortfields[$sortCol];
         }
         //Get Recored from model
-        $grid_data = $this->restaurant_model->getMenuGridList($sortFieldName,$sortOrder,$displayStart,$displayLength);
+        $grid_data = $this->shop_model->getMenuGridList($sortFieldName,$sortOrder,$displayStart,$displayLength);
         //echo '<pre>'; print_r($grid_data); exit;
         $totalRecords = $grid_data['total'];        
         $records = array();
@@ -856,14 +852,14 @@ class Shop extends CI_Controller {
     public function ajaxDisableAll() {
         $content_id = ($this->input->post('content_id') != '')?$this->input->post('content_id'):'';
         if($content_id != ''){
-            $this->restaurant_model->UpdatedStatusAll($this->input->post('tblname'),$content_id,$this->input->post('status'));
+            $this->shop_model->UpdatedStatusAll($this->input->post('tblname'),$content_id,$this->input->post('status'));
         }
     }
     public function checkExist(){
         $phone_number = ($this->input->post('phone_number') != '')?$this->input->post('phone_number'):'';
         if($this->input->post('name')){
             if($phone_number != ''){
-                $check = $this->restaurant_model->checkExist($phone_number,$this->input->post('entity_id'),$this->input->post('content_id'));
+                $check = $this->shop_model->checkExist($phone_number,$this->input->post('entity_id'),$this->input->post('content_id'));
                 if($check > 0){
                     $this->form_validation->set_message('checkExist', $this->lang->line('phones_exist'));
                     return false;
@@ -871,7 +867,7 @@ class Shop extends CI_Controller {
             } 
         }else{
             if($phone_number != ''){
-                $check = $this->restaurant_model->checkExist($phone_number,$this->input->post('entity_id'),$this->input->post('content_id'));
+                $check = $this->shop_model->checkExist($phone_number,$this->input->post('entity_id'),$this->input->post('content_id'));
                 echo $check;
             } 
         }
@@ -881,7 +877,7 @@ class Shop extends CI_Controller {
         $email = ($this->input->post('email') != '')?$this->input->post('email'):'';
         if($this->input->post('name')){
             if($email != ''){
-                $check = $this->restaurant_model->checkEmailExist($email,$this->input->post('entity_id'),$this->input->post('content_id'));
+                $check = $this->shop_model->checkEmailExist($email,$this->input->post('entity_id'),$this->input->post('content_id'));
                 if($check > 0){
                     $this->form_validation->set_message('checkEmailExist', $this->lang->line('email_exist'));
                     return false;  
@@ -889,7 +885,7 @@ class Shop extends CI_Controller {
             }
         }else{
             if($email != ''){
-                $check = $this->restaurant_model->checkEmailExist($email,$this->input->post('entity_id'),$this->input->post('content_id'));
+                $check = $this->shop_model->checkEmailExist($email,$this->input->post('entity_id'),$this->input->post('content_id'));
                 echo $check;
             }  
         }
@@ -966,7 +962,7 @@ class Shop extends CI_Controller {
                             // check for language
                             if (trim($arr_data[$d]['C']) != '') {
                                 $add_data['language_slug'] = trim($arr_data[$d]['C']);
-                                $getAddons = $this->restaurant_model->getAddons(trim($arr_data[$d]['C']));
+                                $getAddons = $this->shop_model->getAddons(trim($arr_data[$d]['C']));
                             }
                             else
                             {
@@ -974,11 +970,11 @@ class Shop extends CI_Controller {
                                 $Import[$rowcount][] = $header[2]['C'].' is required.';
                             }
 
-                            // check for restaurant
+                            // check for shop
                             if (trim($arr_data[$d]['B']) != '' && trim($arr_data[$d]['C']) != '') {
-                                $restaurant = $this->restaurant_model->getRestaurantId(trim($arr_data[$d]['B']),trim($arr_data[$d]['C']));
-                                if (!empty($restaurant)) {
-                                    $add_data['restaurant_id'] = $restaurant->entity_id;
+                                $shop = $this->shop_model->getShopId(trim($arr_data[$d]['B']),trim($arr_data[$d]['C']));
+                                if (!empty($shop)) {
+                                    $add_data['shop_id'] = $shop->entity_id;
                                 }
                                 else
                                 {
@@ -994,7 +990,7 @@ class Shop extends CI_Controller {
 
                             //check for Category
                             if (trim($arr_data[$d]['D']) != '' && trim($arr_data[$d]['C']) != '') {
-                                $category = $this->restaurant_model->getCategoryId(trim($arr_data[$d]['D']),trim($arr_data[$d]['C']));
+                                $category = $this->shop_model->getCategoryId(trim($arr_data[$d]['D']),trim($arr_data[$d]['C']));
                                 if (!empty($category)) {
                                     $add_data['category_id'] = $category->entity_id;
                                 }
@@ -1013,7 +1009,7 @@ class Shop extends CI_Controller {
                             // check for name
                             if (trim($arr_data[$d]['E']) != '') {
                                 $add_data['name'] = trim($arr_data[$d]['E']);
-                                $add_data['item_slug'] = slugify(trim($arr_data[$d]['E']),'restaurant_menu_item','item_slug');
+                                $add_data['item_slug'] = slugify(trim($arr_data[$d]['E']),'shop_menu_item','item_slug');
                             }
                             else
                             {
@@ -1075,7 +1071,7 @@ class Shop extends CI_Controller {
 
                             //check for Food Type
                             if (trim($arr_data[$d]['J']) != '') {
-                                $add_data['is_veg'] = (trim($arr_data[$d]['J']) == "veg")?1:0;
+                                $add_data['is_under_20_kg'] = (trim($arr_data[$d]['J']) == "veg")?1:0;
                             }
                             else
                             {
@@ -1097,7 +1093,7 @@ class Shop extends CI_Controller {
                                         }
                                     }
                                     foreach ($lang_addons as $Akey => $Avalue) {  
-                                        $category_id = $this->restaurant_model->getAddonsId(trim($Avalue),trim($arr_data[$d]['C']));
+                                        $category_id = $this->shop_model->getAddonsId(trim($Avalue),trim($arr_data[$d]['C']));
                                         if (in_array(trim($Avalue),$getAddons)) { 
                                             $add_ons = explode(",",trim($arr_data[$d][$Akey]));
                                             if (!empty($add_ons)) {
@@ -1148,7 +1144,7 @@ class Shop extends CI_Controller {
                                                   'created_by'=>$this->session->userdata("UserID"),  
                                                   'created_date'=>date('Y-m-d H:i:s')                      
                                                 );
-                                                $ContentID = $this->restaurant_model->addData('content_general',$add_content);
+                                                $ContentID = $this->shop_model->addData('content_general',$add_content);
                                                 $content_id_arr[$d] = $ContentID;
                                             }
                                         }
@@ -1159,7 +1155,7 @@ class Shop extends CI_Controller {
                                               'created_by'=>$this->session->userdata("UserID"),  
                                               'created_date'=>date('Y-m-d H:i:s')                      
                                             );
-                                            $ContentID = $this->restaurant_model->addData('content_general',$add_content);
+                                            $ContentID = $this->shop_model->addData('content_general',$add_content);
                                             $content_id_arr[$d] = $ContentID;
                                         }
                                     }
@@ -1170,7 +1166,7 @@ class Shop extends CI_Controller {
                                           'created_by'=>$this->session->userdata("UserID"),  
                                           'created_date'=>date('Y-m-d H:i:s')                      
                                         );
-                                        $ContentID = $this->restaurant_model->addData('content_general',$add_content);
+                                        $ContentID = $this->shop_model->addData('content_general',$add_content);
                                         $content_id_arr[$d] = $ContentID;
                                     }
                                     $menu_language_arr[$d] = $arr_data[$d]['A'];
@@ -1179,12 +1175,12 @@ class Shop extends CI_Controller {
                                 $add_data['content_id'] = $ContentID; 
                                 $add_data['status']= 1;
                                 $add_data['created_by'] =  $this->session->userdata('UserID');
-                                $menu_id = $this->restaurant_model->addData('restaurant_menu_item',$add_data);
+                                $menu_id = $this->shop_model->addData('shop_menu_item',$add_data);
                                 if (!empty($addons)) {
                                     foreach ($addons as $key => $value) {
                                         $addons[$key]['menu_id'] = $menu_id;
                                     }
-                                    $this->restaurant_model->inserBatch('add_ons_master',$addons);
+                                    $this->shop_model->inserBatch('add_ons_master',$addons);
                                 }
                                 $Import[$rowcount][] = "Success";
                             }
@@ -1192,16 +1188,16 @@ class Shop extends CI_Controller {
                         $import_data['arr_data'] = $arr_data;
                         $import_data['header'] = $header;
                         $import_data['Import'] = $Import;
-                        $import_data['restaurant'] = $this->restaurant_model->getRestaurantName($this->input->post('restaurant_id'));
+                        $import_data['shop'] = $this->shop_model->getShopName($this->input->post('shop_id'));
                         $this->session->set_userdata('import_data', $import_data);
-                        redirect(base_url().ADMIN_URL.'/restaurant/import_menu_status');
+                        redirect(base_url().ADMIN_URL.'/shop/import_menu_status');
                     }
                 }
             }
         }
         $data['Languages'] = $this->common_model->getLanguages();
-        $data['restaurant'] = $this->restaurant_model->getListData('restaurant',$this->session->userdata('language_slug'));
-        $this->load->view(ADMIN_URL.'/restaurant_menu',$data);
+        $data['shop'] = $this->shop_model->getListData('shop',$this->session->userdata('language_slug'));
+        $this->load->view(ADMIN_URL.'/shop_menu',$data);
     }
 }
 ?>

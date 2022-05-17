@@ -26,12 +26,12 @@ class Api extends REST_Controller {
        foreach($store_types as $key => $value)
        {
         if($value->name_fr == "Telma" || $value->name_en == "Telma") {
-            // $store = $this->common_model->getSingleRow('restaurant', 'shop_slug', "telma");
-            $storefr = $this->common_model->getSingleRowMultipleWhere('restaurant', array(
+            // $store = $this->common_model->getSingleRow('shop', 'shop_slug', "telma");
+            $storefr = $this->common_model->getSingleRowMultipleWhere('shop', array(
                 'shop_slug'=>"telma",
                 'language_slug' => "fr",
              ));
-             $storeen = $this->common_model->getSingleRowMultipleWhere('restaurant', array(
+             $storeen = $this->common_model->getSingleRowMultipleWhere('shop', array(
                 'shop_slug'=>"telma",
                 'language_slug' => "en",
             ));
@@ -221,12 +221,12 @@ class Api extends REST_Controller {
             $searchItem = ($this->post('itemSearch'))?$this->post('itemSearch'):'';
             $store_type_id = ($this->post('store_type_id'))?$this->post('store_type_id'):'';
             $store_filter = ($this->post('sub_store_filters'))?$this->post('sub_store_filters'):'';
-            $restaurant = $this->api_model->getEventRestaurant($latitude,$longitude,$searchItem,$this->current_lang,$this->post('count'),$this->post('page_no'), $store_type_id, $store_filter);
+            $shop = $this->api_model->getEventShop($latitude,$longitude,$searchItem,$this->current_lang,$this->post('count'),$this->post('page_no'), $store_type_id, $store_filter);
             $sub_store_types =  $this->sub_store_type_model->getByStoreType($store_type_id);
-            if(!empty($restaurant)){
+            if(!empty($shop)){
                $this->response([
                     'date'=>date("Y-m-d g:i A"),
-                    'restaurant'=>$restaurant,
+                    'shop'=>$shop,
                     'sub_store_filters_list'=>$sub_store_types ,
                     'status' => 1,
                     'message' => $this->lang->line('record_found')], REST_Controller::HTTP_OK); // OK (200) being the HTTP response code 
@@ -244,13 +244,13 @@ class Api extends REST_Controller {
                 $searchItem = ($this->post('itemSearch'))?$this->post('itemSearch'):'';
                 $store_type_id = ($this->post('store_type_id'))?$this->post('store_type_id'):'';
                 $store_filter = ($this->post('sub_store_filters'))?$this->post('sub_store_filters'):'';
-                $restaurant = $this->api_model->getHomeRestaurant($this->post('latitude'),$this->post('longitude'),$searchItem,$food,$rating,$distance,$this->current_lang,$this->post('count'),$this->post('page_no'), $store_type_id, $store_filter);
+                $shop = $this->api_model->getHomeShop($this->post('latitude'),$this->post('longitude'),$searchItem,$food,$rating,$distance,$this->current_lang,$this->post('count'),$this->post('page_no'), $store_type_id, $store_filter);
                 $sub_store_types =  $this->sub_store_type_model->getByStoreType($store_type_id);
                 $slider = $this->api_model->getbanner();
                 $category = $this->api_model->getcategory($this->post('language_slug'), $store_type_id);
                 $this->response([
                     'date'=>date("Y-m-d g:i A"),
-                    'restaurant'=>$restaurant,
+                    'shop'=>$shop,
                     'slider'=>$slider,
                     'category'=>$category,
                     'sub_store_filters_list'=>$sub_store_types ,
@@ -342,7 +342,7 @@ class Api extends REST_Controller {
             $add_data = array(
                 'rating'=>trim($this->post('rating')),
                 'review'=>trim($this->post('review')),
-                'restaurant_id'=>$this->post('restaurant_id'),
+                'shop_id'=>$this->post('shop_id'),
                 'user_id'=>$this->post('user_id'),
                 'order_user_id'=>($this->post('driver_id'))?$this->post('driver_id'):'',
                 'status'=>1,
@@ -357,18 +357,18 @@ class Api extends REST_Controller {
             ], REST_Controller::HTTP_OK); // NOT_FOUND (404) being the HTTP response code
         }
     }
-    //get restaurant
-    public function getRestaurantDetail_post(){
+    //get shop
+    public function getShopDetail_post(){
         $this->getLang();
-        if($this->post('restaurant_id')){
-            $details = $this->api_model->getRestaurantDetail($this->post('content_id'),$this->current_lang);
-            $item_image = $this->api_model->item_image($this->post('restaurant_id'),$this->current_lang);
-            $popular_item = $this->api_model->getMenuItem($this->post('restaurant_id'),$this->post('food'),$this->post('price'),$this->current_lang,$popular = 1);
-            $menu_item = $this->api_model->getMenuItem($this->post('restaurant_id'),$this->post('food'),$this->post('price'),$this->current_lang,$popular = 0);
-            $review = $this->api_model->getRestaurantReview($this->post('restaurant_id'));
-            $package = $this->api_model->getPackage($this->post('restaurant_id'),$this->current_lang);
+        if($this->post('shop_id')){
+            $details = $this->api_model->getShopDetail($this->post('content_id'),$this->current_lang);
+            $item_image = $this->api_model->item_image($this->post('shop_id'),$this->current_lang);
+            $popular_item = $this->api_model->getMenuItem($this->post('shop_id'),$this->post('food'),$this->post('price'),$this->current_lang,$popular = 1);
+            $menu_item = $this->api_model->getMenuItem($this->post('shop_id'),$this->post('food'),$this->post('price'),$this->current_lang,$popular = 0);
+            $review = $this->api_model->getShopReview($this->post('shop_id'));
+            $package = $this->api_model->getPackage($this->post('shop_id'),$this->current_lang);
             $this->response([
-                'restaurant'=>$details,
+                'shop'=>$details,
                 'item_image'=>$item_image,
                 'popular_item'=>$popular_item,
                 'menu_item'=>$menu_item,
@@ -439,7 +439,7 @@ class Api extends REST_Controller {
             if(date('Y-m-d',strtotime($this->post('booking_date'))) == date('Y-m-d') && date($time) < date($date)){
                 $this->response(['status'=>0,'message' => 'Time should be greater than current time'], REST_Controller::HTTP_OK); // OK      
             }else{
-                $check = $this->api_model->getBookingAvailability($this->post('booking_date'),$this->post('people'),$this->post('restaurant_id'));
+                $check = $this->api_model->getBookingAvailability($this->post('booking_date'),$this->post('people'),$this->post('shop_id'));
                 if($check){
                    $this->response(['status'=>1,'message' => $this->lang->line('booking_available')], REST_Controller::HTTP_OK); // OK  
                 }else{
@@ -465,7 +465,7 @@ class Api extends REST_Controller {
                         'name'=>$this->post('name'),
                         'no_of_people'=>$this->post('people'),
                         'booking_date'=>date('Y-m-d H:i:s',strtotime($this->post('booking_date'))),
-                        'restaurant_id'=>$this->post('restaurant_id'),
+                        'shop_id'=>$this->post('shop_id'),
                         'user_id'=>$this->post('user_id'),
                         'package_id'=>$this->post('package_id'),
                         'status'=>1,
@@ -477,8 +477,8 @@ class Api extends REST_Controller {
                         'first_name'=>$tokenres->first_name,
                         'last_name'=>($tokenres->last_name)?$tokenres->last_name:''
                     );
-                    $taxdetail = $this->api_model->getRestaurantTax('restaurant',$this->post('restaurant_id'),$flag="order");
-                    $package = $this->api_model->getRecord('restaurant_package','entity_id',$this->post('package_id'));
+                    $taxdetail = $this->api_model->getShopTax('shop',$this->post('shop_id'),$flag="order");
+                    $package = $this->api_model->getRecord('shop_package','entity_id',$this->post('package_id'));
                     $package_detail = '';
                     if(!empty($package)){
                         $package_detail = array(
@@ -488,7 +488,7 @@ class Api extends REST_Controller {
                         );
                     }
                     $serialize_array = array(
-                        'restaurant_detail'=>(!empty($taxdetail))?serialize($taxdetail):'',
+                        'shop_detail'=>(!empty($taxdetail))?serialize($taxdetail):'',
                         'user_detail'=>(!empty($users))?serialize($users):'',
                         'package_detail'=>(!empty($package_detail))?serialize($package_detail):'',
                         'event_id'=>$event_id
@@ -579,8 +579,8 @@ class Api extends REST_Controller {
         $subtotal = 0;
         $discount = 0;
         $total = 0;
-        $taxdetail = $this->api_model->getRestaurantTax('restaurant',$this->post('restaurant_id'),$flag='');
-        $currencyDetails  = $this->api_model->getRestaurantCurrency($this->post('restaurant_id'));
+        $taxdetail = $this->api_model->getShopTax('shop',$this->post('shop_id'),$flag='');
+        $currencyDetails  = $this->api_model->getShopCurrency($this->post('shop_id'));
         if(!empty($itemDetail)){
             foreach ($itemDetail['items'] as $key => $value) {
                 $data = $this->api_model->checkExist($value['menu_id']);
@@ -629,7 +629,7 @@ class Api extends REST_Controller {
                             'quantity'=>$value['quantity'],
                             'price'=>$data->price,
                             'offer_price'=>($value['offer_price'])?$value['offer_price']:'',
-                            'is_veg'=>$data->is_veg,
+                            'is_under_20_kg'=>$data->is_under_20_kg,
                             'is_customize'=>1,
                             'is_deal'=>$value['is_deal'],
                             'itemTotal'=>$itemTotal,
@@ -644,7 +644,7 @@ class Api extends REST_Controller {
                             'quantity'=>$value['quantity'],
                             'price'=>$data->price,
                             'offer_price'=>($value['offer_price'])?$value['offer_price']:'',
-                            'is_veg'=>$data->is_veg,
+                            'is_under_20_kg'=>$data->is_under_20_kg,
                             'is_customize'=>0,
                             'itemTotal'=>$itemTotal,
                             'is_deal'=>$value['is_deal']
@@ -663,9 +663,9 @@ class Api extends REST_Controller {
             //check delivery charge available
             $latitude = $this->post('latitude');
             $longitude = $this->post('longitude');
-            // $check = $this->checkGeoFence($latitude,$longitude,$price_charge = true,$this->post('restaurant_id'));
-            $check = $this->getDeliveryByDistance(null, $latitude."~".$longitude, $this->post('restaurant_id'));
-            // $check = $this->checkGeoFence($latitude,$longitude,$price_charge = true,$this->post('restaurant_id'));
+            // $check = $this->checkGeoFence($latitude,$longitude,$price_charge = true,$this->post('shop_id'));
+            $check = $this->getDeliveryByDistance(null, $latitude."~".$longitude, $this->post('shop_id'));
+            // $check = $this->checkGeoFence($latitude,$longitude,$price_charge = true,$this->post('shop_id'));
             if($check){ 
                 $total = $subtotal + $check;
                 $deliveryPrice = $check;
@@ -782,7 +782,7 @@ class Api extends REST_Controller {
         $add_data = array(
             'user_id'=>($user_id)?$user_id:'',
             'items'=> serialize($item),
-            'restaurant_id'=>($this->post('restaurant_id'))?$this->post('restaurant_id'):''
+            'shop_id'=>($this->post('shop_id'))?$this->post('shop_id'):''
         );
         if($cart_id == ''){
             $cart_id = $this->api_model->addRecord('cart_detail',$add_data);
@@ -886,12 +886,12 @@ class Api extends REST_Controller {
         $user_id = $this->post('user_id');
         $tokenres = $this->api_model->checkToken($token, $user_id);
         if($tokenres){
-            $taxdetail = $this->api_model->getRestaurantTax('restaurant',$this->post('restaurant_id'),$flag="order");
+            $taxdetail = $this->api_model->getShopTax('shop',$this->post('shop_id'),$flag="order");
             $total = 0;
             $subtotal = $this->post('subtotal');   
             $add_data = array(              
                 'user_id'=>$this->post('user_id'),
-                'restaurant_id' =>$this->post('restaurant_id'),
+                'shop_id' =>$this->post('shop_id'),
                 'address_id' =>$this->post('address_id'),
                 'coupon_id' =>$this->post('coupon_id'),
                 'order_status' =>'placed',
@@ -990,7 +990,7 @@ class Api extends REST_Controller {
                 'order_id'=>$order_id,
                 'user_detail' => serialize($user_detail),
                 'item_detail' => serialize($add_item),
-                'restaurant_detail' => serialize($taxdetail),
+                'shop_detail' => serialize($taxdetail),
             );
             $this->api_model->addRecord('order_detail',$order_detail);
             $verificationCode = random_string('alnum',25);
@@ -1070,7 +1070,7 @@ class Api extends REST_Controller {
                     die;
                 }
             }
-            $this->response(['restaurant_detail'=>$taxdetail,'order_status'=>$order_status,'order_date'=>date('Y-m-d H:i:s',strtotime($this->post('order_date'))),'status'=>1,'message' => $message], REST_Controller::HTTP_OK); // OK */
+            $this->response(['shop_detail'=>$taxdetail,'order_status'=>$order_status,'order_date'=>date('Y-m-d H:i:s',strtotime($this->post('order_date'))),'status'=>1,'message' => $message], REST_Controller::HTTP_OK); // OK */
         }else{
             $this->response([
                 'status' => -1,
@@ -1105,7 +1105,7 @@ class Api extends REST_Controller {
         $tokenres = $this->api_model->checkToken($token, $user_id);
         if($tokenres){
             $subtotal = $this->post('subtotal');
-            $coupon = $this->api_model->getcouponList($subtotal,$this->post('restaurant_id'),$this->post('order_delivery'));
+            $coupon = $this->api_model->getcouponList($subtotal,$this->post('shop_id'),$this->post('order_delivery'));
             if(!empty($coupon)){
                 $this->response([
                     'coupon_list'=>$coupon,
@@ -1165,23 +1165,23 @@ class Api extends REST_Controller {
                 $users_longitude = $this->post('users_longitude');
                 $user_km = ($this->post('user_km'))?$this->post('user_km'):'';
                 $driver_km = ($this->post('driver_km'))?$this->post('driver_km'):'';
-                // $detail = $this->post('order_delivery') == '24H Delivery' ? true : $this->api_model->checkOrderDelivery($users_latitude,$users_longitude,$user_id,$this->post('restaurant_id'),$request = '',$order_id = '',$user_km,$driver_km);
+                // $detail = $this->post('order_delivery') == '24H Delivery' ? true : $this->api_model->checkOrderDelivery($users_latitude,$users_longitude,$user_id,$this->post('shop_id'),$request = '',$order_id = '',$user_km,$driver_km);
                 // if($detail){
                 if(true){
-                    $restaurantAvail = $this->api_model->checkRestaurantAvailability($users_latitude,$users_longitude,$user_id,$this->post('restaurant_id'),$request = '',$order_id = '',$user_km,$driver_km);
-                    if($restaurantAvail){
+                    $shopAvail = $this->api_model->checkShopAvailability($users_latitude,$users_longitude,$user_id,$this->post('shop_id'),$request = '',$order_id = '',$user_km,$driver_km);
+                    if($shopAvail){
                         $resstatus = 1;
                         $message = $this->lang->line('delivery_available');
                     }
                     else
                     {
                         $resstatus = 0;
-                        $message = $this->lang->line('restaurant_delivery_not_available');
+                        $message = $this->lang->line('shop_delivery_not_available');
                     }
 
                     $this->response([
                         'status' => ($resstatus == 1)?1:0,
-                        //'restaurant_status' => $resstatus, 
+                        //'shop_status' => $resstatus, 
                         'message' => $message
                     ], REST_Controller::HTTP_OK); // NOT_FOUND (404) being the HTTP response code
                      
@@ -1201,16 +1201,16 @@ class Api extends REST_Controller {
     }
 
     public function validatePreOrderDate_post() {
-        $restaurant_id = $this->post('restaurant_id');
+        $shop_id = $this->post('shop_id');
         $pre_order_date = $this->post('pre_order_delivery_date');
         $pre_order_date = $pre_order_date ? strtotime($pre_order_date) : null;
         $ok = false;
-        if($restaurant_id && $pre_order_date)
+        if($shop_id && $pre_order_date)
         {
-            $resto = $this->api_model->getRestaurantTimings($restaurant_id);
+            $shop = $this->api_model->getShopTimings($shop_id);
             $day = date('l', $pre_order_date);
             $hour = date('H', $pre_order_date);
-            $timing = $resto->pre_order_timings[strtolower($day)];
+            $timing = $shop->pre_order_timings[strtolower($day)];
             if( $timing["off"] == "open" && $hour >= $timing['open'] && $hour <= $timing['close']) {
                 $ok = true;
             }
@@ -1296,9 +1296,9 @@ class Api extends REST_Controller {
         }
     }
     //check lat long exist in area
-    public function checkGeoFence($latitude,$longitude,$price_charge,$restaurant_id)
+    public function checkGeoFence($latitude,$longitude,$price_charge,$shop_id)
     {
-        $result = $this->api_model->checkGeoFence('delivery_charge','restaurant_id',$restaurant_id);
+        $result = $this->api_model->checkGeoFence('delivery_charge','shop_id',$shop_id);
         $latlongs =  array($latitude,$longitude);
         $data = '';
         $oddNodes = false;
@@ -1342,11 +1342,11 @@ class Api extends REST_Controller {
     }
 
 
-    public function getDeliveryByDistance($originLatLong, $destinationLatLong, $restaurant_id)
+    public function getDeliveryByDistance($originLatLong, $destinationLatLong, $shop_id)
     {
         if(!$originLatLong)
         {
-            $address = $this->common_model->getRestoLatLong($restaurant_id);
+            $address = $this->common_model->getShopLatLong($shop_id);
             $originLatLong = $address->latitude."~".$address->longitude;
         }
         $origin = explode("~", $originLatLong);
@@ -1359,7 +1359,7 @@ class Api extends REST_Controller {
 		}
         if($distance != null)
         {
-            return $this->getFeeAccordingDistance($distance, $restaurant_id);
+            return $this->getFeeAccordingDistance($distance, $shop_id);
         }
         else
         {
@@ -1410,9 +1410,9 @@ class Api extends REST_Controller {
         }
     } */
 
-    public function getFeeAccordingDistance($distance, $restaurant_id)
+    public function getFeeAccordingDistance($distance, $shop_id)
     {
-        $allDeliveryCharge = $this->common_model->getMultipleRows("delivery_charge", "restaurant_id", $restaurant_id);
+        $allDeliveryCharge = $this->common_model->getMultipleRows("delivery_charge", "shop_id", $shop_id);
         $deliveryFee = "";
         if(!empty($allDeliveryCharge))
         {

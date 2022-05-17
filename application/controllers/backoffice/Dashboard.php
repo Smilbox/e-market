@@ -51,10 +51,10 @@ class Dashboard extends CI_Controller {
                 }
             }
         }
-        $arr['restaurantCount'] = $this->dashboard_model->getRestaurantCount(); 
+        $arr['shopCount'] = $this->dashboard_model->getShopCount(); 
         $arr['user'] = $this->dashboard_model->gettotalAccount(); 
         $arr['totalOrder'] = $this->dashboard_model->getOrderCount();
-        $arr['restaurant'] = $this->dashboard_model->restaurant();
+        $arr['shop'] = $this->dashboard_model->shop();
         $arr['orders'] = $this->dashboard_model->getLastOrders();
         $arr['count'] = $this->dashboard_model->getNotificationCount();
         $arr['template'] = $this->dashboard_model->getEmailTempate(); 

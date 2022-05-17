@@ -7,7 +7,7 @@ class Cart_model extends CI_Model {
 
     public function getDeliveryCharges(){
     	/*echo '<pre>'; print_r($this->session->userdata('UserID')); echo '<br>';
-    	print_r(get_cookie('cart_restaurant')); exit;*/
+    	print_r(get_cookie('cart_shop')); exit;*/
     	return 0;
     }
 }

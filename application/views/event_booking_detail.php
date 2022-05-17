@@ -19,19 +19,19 @@
 					<div class="rest-detail">
 						<div class="rest-detail-img-main">
 							<div class="rest-detail-img">
-								<img src="<?php echo ($restaurant_details['restaurant'][0]['image'])?$restaurant_details['restaurant'][0]['image']:default_img;?>">
+								<img src="<?php echo ($shop_details['shop'][0]['image'])?$shop_details['shop'][0]['image']:default_img;?>">
 							</div>
 						</div>
 						<div class="rest-detail-content">
-							<h2><?php echo $restaurant_details['restaurant'][0]['name']; ?> </h2>
-							<p><i class="iicon-icon-20"></i><?php echo $restaurant_details['restaurant'][0]['address']; ?></p>
+							<h2><?php echo $shop_details['shop'][0]['name']; ?> </h2>
+							<p><i class="iicon-icon-20"></i><?php echo $shop_details['shop'][0]['address']; ?></p>
 							<ul>
-								<li><i class="iicon-icon-05"></i><?php echo ($restaurant_details['restaurant'][0]['ratings'] > 0)?$restaurant_details['restaurant'][0]['ratings']:'<strong class="newres">NEW</strong>'; ?></li>
-								<li><i class="iicon-icon-18"></i><?php echo $restaurant_details['restaurant'][0]['timings']['open'].'-'.$restaurant_details['restaurant'][0]['timings']['close']; ?></li>
-								<li><i class="iicon-icon-19"></i><?php echo $restaurant_details['restaurant'][0]['phone_number']; ?></li>
+								<li><i class="iicon-icon-05"></i><?php echo ($shop_details['shop'][0]['ratings'] > 0)?$shop_details['shop'][0]['ratings']:'<strong class="newres">NEW</strong>'; ?></li>
+								<li><i class="iicon-icon-18"></i><?php echo $shop_details['shop'][0]['timings']['open'].'-'.$shop_details['shop'][0]['timings']['close']; ?></li>
+								<li><i class="iicon-icon-19"></i><?php echo $shop_details['shop'][0]['phone_number']; ?></li>
 							</ul>
-							<?php $closed = ($restaurant_details['restaurant'][0]['timings']['closing'] == "Closed")?'closed':''; ?>
-							<a href="#" class="openclose <?php echo $closed; ?>"><?php echo $restaurant_details['restaurant'][0]['timings']['closing']; ?></a>
+							<?php $closed = ($shop_details['shop'][0]['timings']['closing'] == "Closed")?'closed':''; ?>
+							<a href="#" class="openclose <?php echo $closed; ?>"><?php echo $shop_details['shop'][0]['timings']['closing']; ?></a>
 						</div>
 					</div>
 				</div>
@@ -46,15 +46,15 @@
 				</div>
 			</div>
 		</div>
-		<div class="row restaurant-detail-row">	
+		<div class="row shop-detail-row">	
 			<div class="col-sm-12 col-md-5 col-lg-8">					
 				<div class="detail-list-box-main">
 					<!-- <div class="detail-list-title">
 						<h3>Gold Packages</h3>
 					</div> -->
 					<div class="detail-list-box">
-						<?php if (!empty($restaurant_details['packages'])) { 
-							foreach ($restaurant_details['packages'] as $key => $value) { ?>
+						<?php if (!empty($shop_details['packages'])) { 
+							foreach ($shop_details['packages'] as $key => $value) { ?>
 								<div class="detail-list">
 									<div class="detail-list-img">
 										<div class="list-img">	
@@ -88,14 +88,14 @@
 					<div class="rating-review-main">
 						<div class="review-progress">
 							<div class="progress-main">
-								<div class="review-all"><p class="text-center"><?php echo (!empty($restaurant_reviews))?count($restaurant_reviews):0; ?> <?php echo (!empty($restaurant_reviews))?((count($restaurant_reviews) > 1)?$this->lang->line('reviews'):$this->lang->line('review')):$this->lang->line('review'); ?></p></div>
+								<div class="review-all"><p class="text-center"><?php echo (!empty($shop_reviews))?count($shop_reviews):0; ?> <?php echo (!empty($shop_reviews))?((count($shop_reviews) > 1)?$this->lang->line('reviews'):$this->lang->line('review')):$this->lang->line('review'); ?></p></div>
 								<?php for ($i=5; $i > 0 ; $i--) { ?>
 									<div class="progress-box">
 										<span class="star-icon"><?php echo $i; ?></span>
 										<div class="progress">		
 											<?php 
-											$noOfReviews = $this->restaurant_model->getReviewsNumber($restaurant_details['restaurant'][0]['restaurant_id'],$i);
-											$percentage = $noOfReviews * 100 / count($restaurant_reviews); ?>					
+											$noOfReviews = $this->shop_model->getReviewsNumber($shop_details['shop'][0]['shop_id'],$i);
+											$percentage = $noOfReviews * 100 / count($shop_reviews); ?>					
 											<div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $percentage; ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $percentage.'%'; ?>">									
 										  </div>								  
 										</div> 
@@ -104,27 +104,27 @@
 								<?php } ?>
 							</div>	
 						</div>	
-						<div class="rate-restaurant">	
+						<div class="rate-shop">	
 							<div class="star-rating-main">					
 								<div class="star-rating">
 									<?php for ($i=1; $i < 6; $i++) { 
 										$activeClass = ''; 
-										if ($i <= $restaurant_details['restaurant'][0]['ratings']) {
+										if ($i <= $shop_details['shop'][0]['ratings']) {
 										 	$activeClass = 'active'; ?>
 										<?php } ?>
 										<button class="<?php echo $activeClass; ?>"><i class="iicon-icon-28"></i></button>
 									<?php } ?>
 								</div>
 								<div class="review-all">
-									<span><i class="iicon-icon-05"></i><?php echo $restaurant_details['restaurant'][0]['ratings']; ?></span>
+									<span><i class="iicon-icon-05"></i><?php echo $shop_details['shop'][0]['ratings']; ?></span>
 								</div>
 							</div>								
 						</div>
 					</div>
 					<div class="review-box-main">
 						<div id="limited-reviews">
-							<?php if (!empty($restaurant_reviews)) {
-								foreach ($restaurant_reviews as $key => $value) { 
+							<?php if (!empty($shop_reviews)) {
+								foreach ($shop_reviews as $key => $value) { 
 									if ($key <= 4) { ?>
 										<div class="review-list">
 											<div class="review-img">
@@ -150,8 +150,8 @@
 							} ?>
 						</div>
 						<div id="all_reviews" class="display-no" >
-							<?php if (!empty($restaurant_reviews)) {
-								foreach ($restaurant_reviews as $key => $value) {
+							<?php if (!empty($shop_reviews)) {
+								foreach ($shop_reviews as $key => $value) {
 									if ($key > 4) { ?>
 										<div class="review-list">
 											<div class="review-img">
@@ -176,7 +176,7 @@
 								}
 							} ?>
 						</div>
-						<?php if (count($restaurant_reviews) > 4) { ?>
+						<?php if (count($shop_reviews) > 4) { ?>
 							<button id="review_button" class="btn btn-success danger-btn" onclick="showAllReviews()"><?php echo $this->lang->line('all_reviews') ?></button>
 						<?php } ?>
 					</div>
@@ -188,7 +188,7 @@
 						<h3><i class="iicon-icon-27"></i><?php echo $this->lang->line('your_booking') ?></h3>
 					</div>
 					<form id="check_event_availability" name="check_event_availability" method="post" class="form-horizontal float-form">
-						<input type="hidden" name="restaurant_id" id="restaurant_id" value="<?php echo $restaurant_details['restaurant'][0]['restaurant_id']; ?>">
+						<input type="hidden" name="shop_id" id="shop_id" value="<?php echo $shop_details['shop'][0]['shop_id']; ?>">
 						<input type="hidden" name="user_id" id="user_id" value="<?php echo $this->session->userdata('UserID'); ?>">
 						<input type="hidden" name="name" id="name" value="<?php echo $this->session->userdata('userFirstname').' '.$this->session->userdata('userLastname'); ?>">
 						<div class="booking-option-main">

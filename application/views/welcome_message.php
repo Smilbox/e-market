@@ -71,7 +71,7 @@
                 <div class=" row">
                     <div class="col-md-7 banner-content wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.4s">
                         <h1>Welcome to Eatance Food Delivery & Driver App -<small> Live order tracking & food delivery app!</small></h1>
-                        <p>Eatance Food Delivery & Driver app is the best and most convenient food logistics app to manage & organize everyday pickup/delivery service. It keeps the restaurant owner, driver and customer synchronized for the orders placed.</p>
+                        <p>Eatance Food Delivery & Driver app is the best and most convenient food logistics app to manage & organize everyday pickup/delivery service. It keeps the shop owner, driver and customer synchronized for the orders placed.</p>
                         <a href="https://apps.apple.com/in/app/eatance-driver/id1480513875" target="_blank" class="buttons">
                             <i class="fab fa-apple"></i>
                             <span class="inner">
@@ -102,7 +102,7 @@
                 <div class="row">
                     <div class="col-lg-7 col-md-12 page-content left-block order-lg-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.4s">
                         <h2><span>Delivering Not Just </span>Only Food But Great Experience!</h2>
-                        <p>Eatance Food Delivery & Driver app puts your food business into the spotlight. From a stunning display of multiple restaurants to the categorized food menu - the app does it all! Blazing fast speed of the app with responsive design is surely going to mesmerize the users.<span id="moreText3" class="collapse"> It allows you to easily search for a restaurant or track orders in real-time. The intuitive and interactive user interface compels your users to choose you over your competition, allowing your food business to grow by leaps and bounds.</span></p>
+                        <p>Eatance Food Delivery & Driver app puts your food business into the spotlight. From a stunning display of multiple shops to the categorized food menu - the app does it all! Blazing fast speed of the app with responsive design is surely going to mesmerize the users.<span id="moreText3" class="collapse"> It allows you to easily search for a shop or track orders in real-time. The intuitive and interactive user interface compels your users to choose you over your competition, allowing your food business to grow by leaps and bounds.</span></p>
                         <a class="readMore read-more" data-toggle="collapse" href="#moreText3">See More</a>
                     </div>
                     <div class="col-lg-5 col-md-12 right-block wow fadeInUp " data-wow-duration="1s" data-wow-delay="0.4s">
@@ -123,8 +123,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-7 col-md-12 left-block page-content  wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.4s">
-                        <h2><span>The Art Of Restaurant</span><br /> Management</h2>
-                        <p>To rank amongst the progressive restaurants, you should leverage mobile apps to increase customer engagement, and improve operational efficiency. The app creates a visual image of your restaurant menu to evoke your brand value. Eatance is a comprehensive mobile application, which offers one-stop solutions for your food business, may it be, kitchen, delivery or menu display management.<span id="moreText2" class="collapse"> You can also share promotional offers with your customers. The application has many exciting features, so why to wait, download and enjoy the app today!</span></p>
+                        <h2><span>The Art Of Shop</span><br /> Management</h2>
+                        <p>To rank amongst the progressive shops, you should leverage mobile apps to increase customer engagement, and improve operational efficiency. The app creates a visual image of your shop menu to evoke your brand value. Eatance is a comprehensive mobile application, which offers one-stop solutions for your food business, may it be, kitchen, delivery or menu display management.<span id="moreText2" class="collapse"> You can also share promotional offers with your customers. The application has many exciting features, so why to wait, download and enjoy the app today!</span></p>
                         <a class="readMore read-more" data-toggle="collapse" href="#moreText2">See More</a>
                     </div>
                     <div class="col-lg-5 col-md-12 right-block wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.4s">
@@ -239,7 +239,7 @@
                         <div class="features-item">
                             <span class="icon"><img src="<?php echo base_url();?>assets/front/images/icons/icon-6.png" alt="icon"></span>
                             <h4 class="title">Convenient</h4>
-                            <p class="detail">A customer can search restaurant based on location, check offers/deals, and even search for their favourite recipe or dish.</p>
+                            <p class="detail">A customer can search shop based on location, check offers/deals, and even search for their favourite recipe or dish.</p>
                         </div>
                     </div>
                 </div>
@@ -249,8 +249,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-7 col-md-12 page-content left-block order-lg-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.4s">
-                        <h2><span>Your Restaurant </span>Accelerator App</h2>
-                        <p>There isn’t a single stone which is left unturned by the Eatance - Food Delivery & Driver app for your restaurant business. In the food industry, it is essential to make sure that all the aspects of the eatery business operations are running smoothly, starting from managing orders until the food delivery.<span id="moreText" class="collapse"> Eatance helps you to manage everything from sourcing ingredients to keeping your restaurant up to the code.</span></p>
+                        <h2><span>Your Shop </span>Accelerator App</h2>
+                        <p>There isn’t a single stone which is left unturned by the Eatance - Food Delivery & Driver app for your shop business. In the food industry, it is essential to make sure that all the aspects of the eatery business operations are running smoothly, starting from managing orders until the food delivery.<span id="moreText" class="collapse"> Eatance helps you to manage everything from sourcing ingredients to keeping your shop up to the code.</span></p>
                         <a class="readMore read-more"  data-toggle="collapse" href="#moreText">See More</a>
                     </div>
                     <div class="col-lg-5 col-md-12 right-block wow fadeInUp " data-wow-duration="1s" data-wow-delay="0.4s">

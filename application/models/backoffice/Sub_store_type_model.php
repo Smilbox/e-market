@@ -60,7 +60,7 @@ class Sub_store_type_model extends CI_Model {
             $this->db->like('sub_store_type.name_en', $this->input->post('name_en'));
         } 
         /*if($this->session->userdata('UserType') == 'Admin'){     
-            $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+            $this->db->where('shop.created_by',$this->session->userdata('UserID'));
         }*/             
         $this->db->select('sub_store_type.name_fr,sub_store_type.name_en,sub_store_type.entity_id, sub_store_type.store_type_id, store_type.name_en as store_type');
         $this->db->join('store_type','sub_store_type.store_type_id = store_type.entity_id','left');

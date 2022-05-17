@@ -34,11 +34,11 @@ class Home extends CI_Controller {
 
 		$data['current_page'] = 'HomePage';
 		$data['page_title'] = $this->lang->line('home_page'). ' | ' . $this->lang->line('site_title');
-		/* $data['restaurants'] = $this->home_model->getRestaurants();
-		if (!empty($data['restaurants'])) {
-			foreach ($data['restaurants'] as $key => $value) {
-				$ratings = $this->home_model->getRestaurantReview($value['MainRestaurantID']);
-				$data['restaurants'][$key]['ratings'] = $ratings;
+		/* $data['shops'] = $this->home_model->getShops();
+		if (!empty($data['shops'])) {
+			foreach ($data['shops'] as $key => $value) {
+				$ratings = $this->home_model->getShopReview($value['MainShopID']);
+				$data['shops'][$key]['ratings'] = $ratings;
 			}
 		}
 		$data['categories'] = $this->home_model->getAllCategories();
@@ -48,8 +48,8 @@ class Home extends CI_Controller {
 		foreach($stores as $key => $store) {
 			$data['store_types'][$key] = $store;
 			$data['store_types'][$key]->link =  base_url().'order/'.$store->entity_id;
-			/*if($store->name_en == 'Restaurants') {
-				$data['store_types'][$key]->link = base_url().'restaurants';
+			/*if($store->name_en == 'Shops') {
+				$data['store_types'][$key]->link = base_url().'shops';
 			}*/
 			if($store->name_en == 'Telma') {
 				$data['store_types'][$key]->link = base_url().'telma';
@@ -58,7 +58,7 @@ class Home extends CI_Controller {
 		}
 		// $data['store_type_variables'] = $this->globalData['store_type_variables'];
 		$data['promotion_settings'] = [];
-		$promotion_settings = $this->promotion_settings_model->getAllPromotionWithResto();
+		$promotion_settings = $this->promotion_settings_model->getAllPromotionWithShop();
 		$i = 0;
 		if(!empty($promotion_settings))
 		{
@@ -78,17 +78,17 @@ class Home extends CI_Controller {
 		$this->load->view('main_home_page',$data);
 	}
 	
-	// get restaurants home page
-	public function restaurants()
+	// get shops home page
+	public function shops()
 	{ 
 
 		$data['current_page'] = 'HomePage';
 		$data['page_title'] = $this->lang->line('home_page'). ' | ' . $this->lang->line('site_title');
-		$data['restaurants'] = $this->home_model->getRestaurants();
-		if (!empty($data['restaurants'])) {
-			foreach ($data['restaurants'] as $key => $value) {
-				$ratings = $this->home_model->getRestaurantReview($value['MainRestaurantID']);
-				$data['restaurants'][$key]['ratings'] = $ratings;
+		$data['shops'] = $this->home_model->getShops();
+		if (!empty($data['shops'])) {
+			foreach ($data['shops'] as $key => $value) {
+				$ratings = $this->home_model->getShopReview($value['MainShopID']);
+				$data['shops'][$key]['ratings'] = $ratings;
 			}
 		}
 		$data['lang'] = $this->session->userdata('language_slug');
@@ -448,29 +448,29 @@ class Home extends CI_Controller {
     }
 	// get Popular Resturants
 	public function getPopularResturants(){
-		$data['page_title'] = $this->lang->line('popular_restaurants').' | '.$this->lang->line('site_title');
+		$data['page_title'] = $this->lang->line('popular_shops').' | '.$this->lang->line('site_title');
 		$address = $this->getAddress($this->input->post('latitude'),$this->input->post('longitude'));
-		$restaurants = $this->home_model->getRestaurants($this->input->post('store_type_id'));
-		if (!empty($restaurants)) {
-			foreach ($restaurants as $key => $value) {
+		$shops = $this->home_model->getShops($this->input->post('store_type_id'));
+		if (!empty($shops)) {
+			foreach ($shops as $key => $value) {
 				$distance = $this->_getDistance($this->input->post('latitude'),$this->input->post('longitude'), $value['latitude'], $value['longitude']);
 				// $distance = $this->getDistance($this->input->post('latitude')."~".$this->input->post('longitude'), $value['latitude']."~".$value['longitude']);
 				if ($distance && $distance < MAXIMUM_RANGE) {
-					$nearbyRestaurants[] = $restaurants[$key];
+					$nearbyShops[] = $shops[$key];
 				}
 			}
 		}
-		if (!empty($nearbyRestaurants)) {
-			foreach ($nearbyRestaurants as $key => $value) {
-				$ratings = $this->home_model->getRestaurantReview($value['restaurant_id']);
-				$nearbyRestaurants[$key]['ratings'] = $ratings;
+		if (!empty($nearbyShops)) {
+			foreach ($nearbyShops as $key => $value) {
+				$ratings = $this->home_model->getShopReview($value['shop_id']);
+				$nearbyShops[$key]['ratings'] = $ratings;
 			}
 		}
-		$data['nearbyRestaurants'] = $nearbyRestaurants;
+		$data['nearbyShops'] = $nearbyShops;
 		// $data['storeTypeId'] = $this->input->post('store_type_id');
 		$data['storeType'] = $this->store_type_model->getById($this->input->post('store_type_id'));
-		if(!empty($nearbyRestaurants)) {
-			$this->load->view('popular_restaurants',$data);
+		if(!empty($nearbyShops)) {
+			$this->load->view('popular_shops',$data);
 		} else {
 			return '<span></span>';
 		}
@@ -580,24 +580,24 @@ class Home extends CI_Controller {
 	}
 	// categories search
 	public function quickCategorySearch(){
-		$data['page_title'] = $this->lang->line('popular_restaurants').' | '.$this->lang->line('site_title');
-		$restaurants = $this->home_model->searchRestaurants($this->input->post('category_id'));
-		if (!empty($restaurants)) {
-			foreach ($restaurants as $key => $value) {
+		$data['page_title'] = $this->lang->line('popular_shops').' | '.$this->lang->line('site_title');
+		$shops = $this->home_model->searchShops($this->input->post('category_id'));
+		if (!empty($shops)) {
+			foreach ($shops as $key => $value) {
 				$distance = $this->getDistance($this->session->userdata('latitude'),$this->session->userdata('longitude'), $value['latitude'], $value['longitude']);
 				if ($distance < 500) {
-					$nearbyRestaurants[] = $restaurants[$key];
+					$nearbyShops[] = $shops[$key];
 				}
 			}
 		}
-		if (!empty($nearbyRestaurants)) {
-			foreach ($nearbyRestaurants as $key => $value) {
-				$ratings = $this->home_model->getRestaurantReview($value['restaurant_id']);
-				$nearbyRestaurants[$key]['ratings'] = $ratings;
+		if (!empty($nearbyShops)) {
+			foreach ($nearbyShops as $key => $value) {
+				$ratings = $this->home_model->getShopReview($value['shop_id']);
+				$nearbyShops[$key]['ratings'] = $ratings;
 			}
 		}
-		$data['nearbyRestaurants'] = $nearbyRestaurants;
-		$this->load->view('popular_restaurants',$data);
+		$data['nearbyShops'] = $nearbyShops;
+		$this->load->view('popular_shops',$data);
 	}
 	// function to get  the address
 	function get_lat_long($address){

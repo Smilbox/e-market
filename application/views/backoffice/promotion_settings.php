@@ -111,7 +111,7 @@
                                             </tr>
                                             <tr role="row" class="filter">
                                                 <td></td>  
-                                                <td><input type="text" class="form-control form-filter input-sm" name="restaurant_name"></td>                                     
+                                                <td><input type="text" class="form-control form-filter input-sm" name="shop_name"></td>                                     
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>

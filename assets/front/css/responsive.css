@@ -76,7 +76,7 @@
 	.rest-box-row .col-lg-4 {
 		max-width: 27%;
 	}
-	.order-food-section .restaurant-box-row .col-lg-6 {
+	.order-food-section .shop-box-row .col-lg-6 {
 		max-width: 33.33%;
 		padding: 0 15px;
 	}
@@ -234,7 +234,7 @@
 }
 
 @media (max-width:767px) {
-	.order-food-section .restaurant-box-row .col-lg-6 {
+	.order-food-section .shop-box-row .col-lg-6 {
 	    margin-bottom: 20px;
 	}
 
@@ -259,20 +259,20 @@
 		font-size: 12px;
 
 	}
-	.popular-rest-box .popular-rest-img , .order-food-section .restaurant-box-row .popular-rest-img {
+	.popular-rest-box .popular-rest-img , .order-food-section .shop-box-row .popular-rest-img {
 		height: 130px;
 	}
-	.rest-box-row .col-sm-12:nth-child(even)  , .order-food-section .restaurant-box-row .col-lg-6:nth-child(even) {
+	.rest-box-row .col-sm-12:nth-child(even)  , .order-food-section .shop-box-row .col-lg-6:nth-child(even) {
 		padding-left: 5px;
 	}
-	.rest-box-row .col-sm-12:nth-child(odd) , .order-food-section .restaurant-box-row .col-lg-6:nth-child(odd) {
+	.rest-box-row .col-sm-12:nth-child(odd) , .order-food-section .shop-box-row .col-lg-6:nth-child(odd) {
 		padding-right: 5px;
 	}
 	.type-food-option .detail-list {
     	padding-left: 25px;
 	}
 
-	.rest-box-row .col-sm-12 , .order-food-section .restaurant-box-row .col-lg-6 {
+	.rest-box-row .col-sm-12 , .order-food-section .shop-box-row .col-lg-6 {
 		max-width: 50%;
 		padding: 0 9px;
 	}
@@ -374,7 +374,7 @@
 	.driver-app-content {
 		text-align: center;
 	}
-	.search-restaurant input[type="button"] {
+	.search-shop input[type="button"] {
 		height: 50px;
 		line-height: 1;
 	}
@@ -392,7 +392,7 @@
 	.float-form .form-control:not(:placeholder-shown)~label {
 		font-size: 16px;
 	}
-	.order-food-section .rest-box-row .col-sm-12, .popular-restaurants .rest-box-row .col-sm-12 {
+	.order-food-section .rest-box-row .col-sm-12, .popular-shops .rest-box-row .col-sm-12 {
 		max-width: 100%;
 		padding: 0 15px;
 	}
@@ -461,10 +461,10 @@
 		font-size: 16px;
 		line-height: 10px;
 	}
-	.order-food-section .restaurant-box-row .col-lg-6 {
+	.order-food-section .shop-box-row .col-lg-6 {
 		max-width: 100%;
 	}
-	.order-food-section .restaurant-box-row .order-btn {
+	.order-food-section .shop-box-row .order-btn {
 		display: none;
 	}
 	.order-btn a.btn {
@@ -523,7 +523,7 @@
 	.current-location>h5 {
 		margin-bottom: 12px;
 	}
-	.inner-pages-form .form-group.search-restaurant input[type="button"] {
+	.inner-pages-form .form-group.search-shop input[type="button"] {
 		border-radius: 0 5px 5px 0;
 		padding-left: 20px;
 		padding-right: 20px;
@@ -535,15 +535,15 @@
 		width: auto;
 		height: 40px !important;
 	}
-	.inner-pages-form .form-group.search-restaurant input[type="button"]:focus,.inner-pages-form .form-group.search-restaurant input[type="button"]:hover, .inner-pages-form .form-group.search-restaurant input[type="button"]:active {
+	.inner-pages-form .form-group.search-shop input[type="button"]:focus,.inner-pages-form .form-group.search-shop input[type="button"]:hover, .inner-pages-form .form-group.search-shop input[type="button"]:active {
 		background-color: #bd0926;
     	background-color:  var(--main-color);
     	background-image: url(../images/search.svg);
 	}
-	.inner-pages-form .form-group.search-restaurant .bootstrap-tagsinput {
+	.inner-pages-form .form-group.search-shop .bootstrap-tagsinput {
     	width: calc(100% - 44px);
 	}
-	.inner-pages-form .form-group.search-restaurant .bootstrap-tagsinput input[type="text"] {
+	.inner-pages-form .form-group.search-shop .bootstrap-tagsinput input[type="text"] {
 		width: 100%;
 	}
 	.detail-content-middel .detail-list-content .detail-list-text h4 {
@@ -671,7 +671,7 @@
 }
 
 @media (max-width: 400px) {
-	  .popular-rest-box .popular-rest-img  , .order-food-section .restaurant-box-row .popular-rest-img{
+	  .popular-rest-box .popular-rest-img  , .order-food-section .shop-box-row .popular-rest-img{
       height: 100px;
     }
 	.cart-content-table table>tbody>tr>td.item-name {

@@ -17,7 +17,7 @@
 </section>
 
 <div id="choose-service">
-	<section class="popular-restaurants">
+	<section class="popular-shops">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -53,107 +53,17 @@
 	</section>
 </div>
 
-<?php /*
-if(!empty($store_type_variables)) {
-    foreach($store_type_variables as $typeName => $typeId) {
-        ?>
-        <div id="popular-restaurants-<?php echo $typeId?>">
-            <section class="popular-restaurants">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="heading-title">
-								<?php $title = $this->lang->line('current_lang') == "fr" ? $typeName.' '.$this->lang->line('nearby') : $this->lang->line('nearby').' '.$typeName; ?>
-                                <h2><?php echo $title ?></h2>
-                                <?php if (!empty($restaurants)) {
-                                    if(/*count($restaurants) > 9 false){ ?>
-                                        <a href="<?php echo base_url() . 'restaurant'; ?>"><div class="view-all btn"> <?php echo $this->lang->line('view_all'); ?></div> </a>
-                                    <?php }
-                                }?>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row rest-box-row main-rest-box-row">
-                    </div>
-                </div>
-            </section>
-        </div>
-        <?php
-    }
-} */
-?>
-
-<!--    <div id="popular-restaurants">-->
-<!--        <section class="popular-restaurants">-->
-<!--            <div class="container">-->
-<!--                <div class="row">-->
-<!--                    <div class="col-lg-12">-->
-<!--                        <div class="heading-title">-->
-<!--                            <h2>--><?php //echo $this->lang->line('nearby_store') ?><!--</h2>-->
-<!--                            --><?php //if (!empty($restaurants)) {
-//                                if(/*count($restaurants) > 9*/ false){ ?>
-<!--                                    <a href="--><?php //echo base_url() . 'restaurant'; ?><!--"><div class="view-all btn"> --><?php //echo $this->lang->line('view_all'); ?><!--</div> </a>-->
-<!--                                --><?php //}
-//                            }?>
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="row rest-box-row main-rest-box-row">-->
-<!--                    --><?php //if (!empty($restaurants)) {
-//                        foreach ($restaurants as $key => $value) {
-//                            $featured_image = $value('featured_image') ? $value['featured_image'] : ($value('image') ? $value['image']: default_img);
-//                            if ($key <= 8) { ?>
-<!--                                <div class="col-sm-12 col-md-6 col-lg-4">-->
-<!--                                    <div class="popular-rest-box">-->
-<!--                                        <a href="--><?php //echo base_url().'restaurant/restaurant-detail/'.$value['shop_slug'];?><!--">-->
-<!--                                            <div class="popular-rest-img">-->
-<!--                                                <img style="object-fit:--><?php //echo $value['object_fit'] ?><!--" src="--><?php //echo $featured_image ?><!--" alt="--><?php //echo $value['name']; ?><!--">-->
-<!--                                                <div class="middle">-->
-<!--                                                    --><?php //if(!empty($value['image'])) { ?>
-<!--                                                        <img  style="object-fit:--><?php //echo $value['object_fit'] ?><!--" src="--><?php //echo ($value['image'])?$value['image']:default_img;?><!--" alt="--><?php //echo $value['name']; ?><!--">-->
-<!--                                                    --><?php //} ?>
-<!--                                                </div>-->
-<!--                                                --><?php //echo ($value['ratings'] > 0)?'<strong>'.$value['ratings'].'</strong>':'<strong class="newres">NEW</strong>'; ?>
-<!--                                                <div class="openclose-btn">-->
-<!--                                                    <a href="javascript:void(0)" class="openclose --><?php //echo ($value['timings']['closing'] == "Closed")?"closed":""; ?><!--"> --><?php //echo ($value['timings']['closing'] == "Closed")?$this->lang->line('closed'):$this->lang->line('open'); ?><!-- </a>-->
-<!--                                                    --><?php ////echo $value['timings']['closing']; ?><!-- -->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                            <div class="popular-rest-content">-->
-<!--                                                <h3>--><?php //echo $value['name']; ?><!--</h3>-->
-<!--                                                <div class="popular-rest-text">-->
-<!--                                                    <p class="address-icon">--><?php //echo $value['address']; ?><!-- </p>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </a>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            --><?php //}
-//                        }
-//                    } else { ?>
-<!--                        <div class="row">-->
-<!--                            <div class="col-lg-12">-->
-<!--                                <div><h6>--><?php //echo $this->lang->line('no_such_res_found') ?><!--</h6></div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    --><?php //} ?>
-<!--                </div>-->
-<!--            </div>-->
-<!--        </section>-->
-<!--    </div>-->
-
-
-<section class="restaurant-app">
+<section class="shop-app">
 	<div class="container">	
-		<div class="restaurant-app-content">
+		<div class="shop-app-content">
 			<div class="row">
 				<div class="col-md-6 col-sm-12">
-					<div class="restaurant-app-img wow pulse">
-						<img src="<?php echo base_url();?>assets/front/images/restaurant-app.png" alt="Restaurant app">
+					<div class="shop-app-img wow pulse">
+						<img src="<?php echo base_url();?>assets/front/images/shop-app.png" alt="Shop app">
 					</div>
 				</div>
 				<div class="col-md-6 col-sm-12">
-					<div class="restaurant-app-text">
+					<div class="shop-app-text">
 						<div class="heading-title-02">
 							<h4><?php echo $this->lang->line('download-app') ?></span></h4>
 						</div>	

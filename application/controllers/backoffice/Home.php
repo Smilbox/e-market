@@ -61,16 +61,16 @@ class Home extends CI_Controller {
                   'language_directory'=>$lang->language_directory
                 )
               );
-              //get restaurant
-              $restaurant = $this->common_model->getRestaurantinSession('restaurant',$this->session->userdata('UserID'));
-              if(!empty($restaurant))
+              //get shop
+              $shop = $this->common_model->getShopinSession('shop',$this->session->userdata('UserID'));
+              if(!empty($shop))
               {
-                  $restaurant = array_column($restaurant, 'entity_id');
-                  $this->session->set_userdata('restaurant',$restaurant);
+                  $shop = array_column($shop, 'entity_id');
+                  $this->session->set_userdata('shop',$shop);
               }
               else
               {
-                  $this->session->set_userdata('restaurant',array());
+                  $this->session->set_userdata('shop',array());
               }
               
                 // remember ME
@@ -220,7 +220,7 @@ class Home extends CI_Controller {
 
   // get restuarent currency
   public function getCurrencySymbol(){
-    $currency_symbol = $this->common_model->getRestaurantCurrencySymbol($this->input->post('restaurant_id'));
+    $currency_symbol = $this->common_model->getShopCurrencySymbol($this->input->post('shop_id'));
     echo $currency_symbol->currency_symbol;
   }
 

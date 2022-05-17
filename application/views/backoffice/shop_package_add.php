@@ -12,7 +12,7 @@ if($this->input->post()){
     $$key = @htmlspecialchars($this->input->post($key));
   } 
 } else {
-  $FieldsArray = array('content_id','entity_id','restaurant_id','name','price','detail','availability','image');
+  $FieldsArray = array('content_id','entity_id','shop_id','name','price','detail','availability','image');
   foreach ($FieldsArray as $key) {
     $$key = @htmlspecialchars($edit_records->$key);
   }
@@ -46,7 +46,7 @@ else
                             <i class="fa fa-angle-right"></i>
                         </li>
                         <li>
-                            <a href="<?php echo base_url().ADMIN_URL?>/restaurant/view_package"><?php $this->lang->line('package') ?></a>
+                            <a href="<?php echo base_url().ADMIN_URL?>/shop/view_package"><?php $this->lang->line('package') ?></a>
                             <i class="fa fa-angle-right"></i>
                         </li>
                         <li>
@@ -83,11 +83,11 @@ else
                                     <div class="form-group">
                                         <label class="control-label col-md-3"><?php echo $this->lang->line('res_name') ?><span class="required">*</span></label>
                                         <div class="col-md-8">
-                                        <select name="restaurant_id" class="form-control" id="restaurant_id" onchange="getCurrency(this.value)">
+                                        <select name="shop_id" class="form-control" id="shop_id" onchange="getCurrency(this.value)">
                                             <option value=""><?php echo $this->lang->line('select') ?></option>
-                                            <?php if(!empty($restaurant)){
-                                                foreach ($restaurant as $key => $value) { ?>
-                                                   <option value="<?php echo $value->entity_id ?>" <?php echo ($value->entity_id == $restaurant_id)?"selected":"" ?>><?php echo $value->name ?></option>
+                                            <?php if(!empty($shop)){
+                                                foreach ($shop as $key => $value) { ?>
+                                                   <option value="<?php echo $value->entity_id ?>" <?php echo ($value->entity_id == $shop_id)?"selected":"" ?>><?php echo $value->name ?></option>
                                             <?php } } ?>  
                                         </select></div>
                                     </div>

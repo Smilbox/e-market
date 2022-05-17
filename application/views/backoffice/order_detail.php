@@ -19,9 +19,9 @@
 		<div class="bill-ship-details">
 	      <div class="colm fleft">
 		  <h3>From</h3>
-	        <?php $restaurant_detail = unserialize($menu_item->restaurant_detail);
-	        if(!empty($restaurant_detail)){ ?>
-	        <p><?php echo $restaurant_detail->name.'<br>' .$restaurant_detail->address.'<br> '.$restaurant_detail->landmark.'<br>'.$restaurant_detail->city.' '.$restaurant_detail->zipcode ?></p>
+	        <?php $shop_detail = unserialize($menu_item->shop_detail);
+	        if(!empty($shop_detail)){ ?>
+	        <p><?php echo $shop_detail->name.'<br>' .$shop_detail->address.'<br> '.$shop_detail->landmark.'<br>'.$shop_detail->city.' '.$shop_detail->zipcode ?></p>
 	  	    <?php }else{ ?>
 	  	    <p><?php echo $order_records->name ?></p>
 	  	    <?php	} ?>
@@ -32,7 +32,7 @@
 	        if(!empty($user_detail)){ ?>
 	        <p><?php echo $user_detail['first_name'].' '.$user_detail['last_name'].'<br>' . ($order_records->phone_number ? $order_records->phone_number : $order_records->mobile_number) .'<br>' .$user_detail['address'].'<br> '.$user_detail['landmark'].'<br>'.$user_detail['city'].' '.$user_detail['zipcode'] ?></p>
 	       	<?php }else{ ?>
-	       		<p>Order By Restaurant</p>
+	       		<p>Order By Shop</p>
 	       	<?php } ?>
 	      </div>
 	    </div>
@@ -76,9 +76,9 @@
 	            <div  class="b0">
 	            	<div  class="div_1"><?php echo $i ?></div>
 		            <div class="div_2" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" role="text" title="<?php echo $value['item_name']; ?><?php echo $addons_name_list; ?>"><?php echo $value['item_name']; ?><?php echo $addons_name_list; ?></div>
-		            <div class="center div_3"><?php echo $restaurant_detail->currency_symbol; ?><?php echo ($Subtotal)?number_format_unchanged_precision($Subtotal,$restaurant_detail->currency_code):number_format_unchanged_precision($price,$restaurant_detail->currency_code) ?></div>
+		            <div class="center div_3"><?php echo $shop_detail->currency_symbol; ?><?php echo ($Subtotal)?number_format_unchanged_precision($Subtotal,$shop_detail->currency_code):number_format_unchanged_precision($price,$shop_detail->currency_code) ?></div>
 		            <div class="center div_4"><?php echo $value['qty_no'] ?></div>
-		            <div  class="center div_5"><?php echo $restaurant_detail->currency_symbol; ?><?php echo ($Subtotal)?number_format_unchanged_precision($Subtotal * $value['qty_no'],$restaurant_detail->currency_code):number_format_unchanged_precision($price * $value['qty_no'],$restaurant_detail->currency_code); ?></div>
+		            <div  class="center div_5"><?php echo $shop_detail->currency_symbol; ?><?php echo ($Subtotal)?number_format_unchanged_precision($Subtotal * $value['qty_no'],$shop_detail->currency_code):number_format_unchanged_precision($price * $value['qty_no'],$shop_detail->currency_code); ?></div>
 	           </div>
            <?php }  } ?>
         </div>
@@ -87,15 +87,15 @@
           <tr>
             <td rowspan="4"  class="width60"><?php echo ($order_records->extra_comment)?'Preferences: '.$order_records->extra_comment:'' ?></td>
             <td class="align-right" class="width15"><strong>Subtotal</strong></td>
-            <td class="align-left"  class="width20"><?php echo $restaurant_detail->currency_symbol; ?><?php echo number_format_unchanged_precision($order_records->subtotal,$restaurant_detail->currency_code) ?></td>
+            <td class="align-left"  class="width20"><?php echo $shop_detail->currency_symbol; ?><?php echo number_format_unchanged_precision($order_records->subtotal,$shop_detail->currency_code) ?></td>
           </tr>
           <tr>
             <td class="align-right"><strong>Delivery Charge</strong></td>
-            <td class="align-left"><?php echo ($order_records->delivery_charge)?$restaurant_detail->currency_symbol.number_format_unchanged_precision($order_records->delivery_charge,$restaurant_detail->currency_code):'-'; ?></td>
+            <td class="align-left"><?php echo ($order_records->delivery_charge)?$shop_detail->currency_symbol.number_format_unchanged_precision($order_records->delivery_charge,$shop_detail->currency_code):'-'; ?></td>
           </tr>
           <tr>
             <td class="align-right"><strong>Discount</strong></td>
-            <td class="align-left"><?php echo ($order_records->coupon_amount)?(($order_records->coupon_type == 'Amount')?$restaurant_detail->currency_symbol:'').number_format_unchanged_precision($order_records->coupon_amount,$restaurant_detail->currency_code):'-'; ?><?php echo ($order_records->coupon_type == 'Percentage')?'% ('.$order_records->coupon_discount.')':'' ?></td>
+            <td class="align-left"><?php echo ($order_records->coupon_amount)?(($order_records->coupon_type == 'Amount')?$shop_detail->currency_symbol:'').number_format_unchanged_precision($order_records->coupon_amount,$shop_detail->currency_code):'-'; ?><?php echo ($order_records->coupon_type == 'Percentage')?'% ('.$order_records->coupon_discount.')':'' ?></td>
           </tr>
           <!-- <tr>
             <td class="align-right"><strong>Sales Tax</strong></td>
@@ -103,7 +103,7 @@
           </tr> -->
           <tr>
             <td class="align-right grand-total"><strong>TOTAL</strong></td>
-            <td class="align-left grand-total"><?php echo $restaurant_detail->currency_symbol; ?><?php echo number_format_unchanged_precision($order_records->total_rate,$restaurant_detail->currency_code); ?></td>
+            <td class="align-left grand-total"><?php echo $shop_detail->currency_symbol; ?><?php echo number_format_unchanged_precision($order_records->total_rate,$shop_detail->currency_code); ?></td>
           </tr>
     </table>
     <!-- Footer part for Price end -->

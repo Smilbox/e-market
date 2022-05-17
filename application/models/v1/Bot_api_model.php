@@ -36,16 +36,16 @@ class Bot_api_model extends CI_Model {
     }
 
     // RESTAURANT OPERATION
-    public function getRestaurantRecords($store_type)
+    public function getShopRecords($store_type)
     {
-        $this->db->select("res.entity_id as restaurant_id,res.store_type_id, res.allow_24_delivery, res.flat_rate_24, res.shop_slug, res.language_slug ,res.name,res.timings,res.image,address.address,address.landmark,address.latitude, address.longitude,AVG(review.rating) as rating");
-        $this->db->join('restaurant_address as address','res.entity_id = address.resto_entity_id','left');
-        $this->db->join('review','res.entity_id = review.restaurant_id','left');
+        $this->db->select("res.entity_id as shop_id,res.store_type_id, res.allow_24_delivery, res.flat_rate_24, res.shop_slug, res.language_slug ,res.name,res.timings,res.image,address.address,address.landmark,address.latitude, address.longitude,AVG(review.rating) as rating");
+        $this->db->join('shop_address as address','res.entity_id = address.shop_entity_id','left');
+        $this->db->join('review','res.entity_id = review.shop_id','left');
         $this->db->where('res.status', 1);
         $this->db->where('res.store_type_id',$store_type);
         $this->db->where('res.language_slug', 'fr');
         $this->db->group_by(array('res.entity_id', 'address.address', 'address.landmark'));
-        $result =  $this->db->get('restaurant as res')->result();
+        $result =  $this->db->get('shop as res')->result();
         foreach ($result as $key => $value) {
             $timing = $value->timings;
             if($timing){
@@ -113,15 +113,15 @@ class Bot_api_model extends CI_Model {
         return array_values($res);
     }
 
-    //search restaurant
-    public function searchRestaurants($searchItem,$language_slug = "fr", $store_type=NULL)
+    //search shop
+    public function searchShops($searchItem,$language_slug = "fr", $store_type=NULL)
     {
 
         $this->db->select("res.content_id,res.entity_id,res.name,res.timings,res.image,res.featured_image,res.language_slug,res.store_type_id,res.status,res.sub_store_type_id,address.address,address.landmark");
-        $this->db->join('restaurant_address as address','res.entity_id = address.resto_entity_id','left');
-        $this->db->join('review','res.entity_id = review.restaurant_id','left');
+        $this->db->join('shop_address as address','res.entity_id = address.shop_entity_id','left');
+        $this->db->join('review','res.entity_id = review.shop_id','left');
         if($searchItem){
-            $this->db->join('restaurant_menu_item as menu','res.entity_id = menu.restaurant_id','left');
+            $this->db->join('shop_menu_item as menu','res.entity_id = menu.shop_id','left');
             $this->db->join('category','menu.category_id = category.entity_id','left');
             $where = "(menu.name like '%".$searchItem."%' OR res.name like '%".$searchItem."%' OR category.name like '%".$searchItem."%')";
             $this->db->where($where);
@@ -133,14 +133,14 @@ class Bot_api_model extends CI_Model {
         $this->db->where('res.language_slug',$language_slug);
 
         if (!empty($searchItem)) {
-            $restoLng = $this->db->get('restaurant as res')->result_array();
-            $restoFiltered = array_filter($restoLng, function($resto) use ($language_slug) {
-                return $resto['language_slug'] == $language_slug && $resto['status'] == "1";
+            $shopLng = $this->db->get('shop as res')->result_array();
+            $shopFiltered = array_filter($shopLng, function($shop) use ($language_slug) {
+                return $shop['language_slug'] == $language_slug && $shop['status'] == "1";
             });
-            $result = $this->group_by_uniq('content_id', $restoFiltered);
+            $result = $this->group_by_uniq('content_id', $shopFiltered);
         } else {
             $this->db->group_by('res.content_id');
-            $result = $this->db->get_where('restaurant as res', array('res.status' => 1))->result_array();
+            $result = $this->db->get_where('shop as res', array('res.status' => 1))->result_array();
         }
 
         // Another layer of filter
@@ -156,8 +156,8 @@ class Bot_api_model extends CI_Model {
 
 
     // MENU OPERATION
-    public function searchMenuRecords($restaurant_id, $searchItem){
-        $this->db->select('menu.entity_id as menu_id,menu.name,menu.price,menu.menu_detail,menu.image,menu.image_group,menu.is_veg,availability,c.name as category,c.entity_id as category_id');
+    public function searchMenuRecords($shop_id, $searchItem){
+        $this->db->select('menu.entity_id as menu_id,menu.name,menu.price,menu.menu_detail,menu.image,menu.image_group,menu.is_under_20_kg,availability,c.name as category,c.entity_id as category_id');
         $this->db->join('category as c','menu.category_id = c.entity_id','left');
         $this->db->where('menu.status',1); 
         
@@ -166,17 +166,17 @@ class Bot_api_model extends CI_Model {
             $this->db->where($where);
         }
         
-        $this->db->where('menu.restaurant_id',$restaurant_id);
+        $this->db->where('menu.shop_id',$shop_id);
        
-        $result = $this->db->get('restaurant_menu_item as menu')->result();
+        $result = $this->db->get('shop_menu_item as menu')->result();
         
         return $result;
     }
     
-    public function getMenuRecords($restaurant_id, $price, $food = '', $groupByCategory = false){
-        $this->db->select('menu.entity_id as menu_id,menu.name,menu.price,menu.menu_detail,menu.image,menu.image_group,menu.is_veg,availability,c.name as category,c.entity_id as category_id');
+    public function getMenuRecords($shop_id, $price, $food = '', $groupByCategory = false){
+        $this->db->select('menu.entity_id as menu_id,menu.name,menu.price,menu.menu_detail,menu.image,menu.image_group,menu.is_under_20_kg,availability,c.name as category,c.entity_id as category_id');
         $this->db->join('category as c','menu.category_id = c.entity_id','left');
-        $this->db->where('menu.restaurant_id',$restaurant_id);
+        $this->db->where('menu.shop_id',$shop_id);
         $this->db->where('menu.status',1); 
         if($price == 1){
             $this->db->order_by('menu.price','desc');
@@ -184,9 +184,9 @@ class Bot_api_model extends CI_Model {
             $this->db->order_by('menu.price','asc');
         }
         if($food != ''){
-            $this->db->where('menu.is_veg',$food);
+            $this->db->where('menu.is_under_20_kg',$food);
         }
-        $result = $this->db->get('restaurant_menu_item as menu')->result();
+        $result = $this->db->get('shop_menu_item as menu')->result();
         if($groupByCategory)
         {
             $menu = array();
@@ -198,7 +198,7 @@ class Bot_api_model extends CI_Model {
                     $menu[$value->category_id]['category_name'] = $value->category;  
                 }
                 $image = file_exists(FCPATH.'uploads/'.$value->image) && file_get_contents(FCPATH.'uploads/'.$value->image)?$value->image:'';
-                $menu[$value->category_id]['items'][]  = array('menu_id'=>$value->menu_id,'name' => $value->name,'price' => $value->price,'menu_detail' => $value->menu_detail,'image'=>$image,'availability'=>$value->availability,'is_veg'=>$value->is_veg);
+                $menu[$value->category_id]['items'][]  = array('menu_id'=>$value->menu_id,'name' => $value->name,'price' => $value->price,'menu_detail' => $value->menu_detail,'image'=>$image,'availability'=>$value->availability,'is_under_20_kg'=>$value->is_under_20_kg);
             }
             $finalArray = array();
             foreach ($menu as $nm => $va) {
@@ -227,15 +227,15 @@ class Bot_api_model extends CI_Model {
     }
     //get order detail
     public function getOrderDetail($flag,$user_id,$order_id){
-        $this->db->select('order_master.*,order_detail.*,order_driver_map.driver_id,status.order_status as ostatus,status.time,users.first_name,users.last_name,users.mobile_number,users.phone_code,users.image,driver_traking_map.latitude,driver_traking_map.longitude,restaurant_address.latitude as resLat,restaurant_address.longitude as resLong,restaurant_address.address,restaurant.timings,restaurant.image as rest_image,restaurant.name,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
+        $this->db->select('order_master.*,order_detail.*,order_driver_map.driver_id,status.order_status as ostatus,status.time,users.first_name,users.last_name,users.mobile_number,users.phone_code,users.image,driver_traking_map.latitude,driver_traking_map.longitude,shop_address.latitude as resLat,shop_address.longitude as resLong,shop_address.address,shop.timings,shop.image as rest_image,shop.name,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
         $this->db->join('order_detail','order_master.entity_id = order_detail.order_id','left');
         $this->db->join('order_status as status','order_master.entity_id = status.order_id','left');
         $this->db->join('order_driver_map','order_master.entity_id = order_driver_map.order_id AND order_driver_map.is_accept = 1','left');
         $this->db->join('users','order_driver_map.driver_id = users.entity_id AND order_driver_map.is_accept = 1','left');
         $this->db->join('driver_traking_map','order_driver_map.driver_id = driver_traking_map.driver_id','left');
-        $this->db->join('restaurant_address','order_master.restaurant_id = restaurant_address.resto_entity_id','left');
-        $this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
+        $this->db->join('shop_address','order_master.shop_id = shop_address.shop_entity_id','left');
+        $this->db->join('shop','order_master.shop_id = shop.entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
         if($flag == 'process'){
             $this->db->where('(order_master.order_status != "delivered" AND order_master.order_status != "cancel" AND order_master.order_status != "complete")');
         } 
@@ -264,10 +264,10 @@ class Bot_api_model extends CI_Model {
             if(isset($items[$value->order_id])) 
             {        
                 $items[$value->order_id]['order_id'] = $value->order_id;
-                $items[$value->order_id]['restaurant_id'] = $value->restaurant_id;
-                $items[$value->order_id]['restaurant_name'] = $value->name;
-                $items[$value->order_id]['restaurant_image'] = $value->rest_image;
-                $items[$value->order_id]['restaurant_address'] = $value->address;
+                $items[$value->order_id]['shop_id'] = $value->shop_id;
+                $items[$value->order_id]['shop_name'] = $value->name;
+                $items[$value->order_id]['shop_image'] = $value->rest_image;
+                $items[$value->order_id]['shop_address'] = $value->address;
                 if($value->coupon_name){
                     $discount = array('label'=>$this->lang->line('discount').'('.$value->coupon_name.')','value'=>$value->coupon_discount,'label_key'=>"Discount");
                 }else{
@@ -333,9 +333,9 @@ class Bot_api_model extends CI_Model {
                     $count = 0;
                     foreach ($item_detail as $key => $valuee) {
                         $valueee = array();
-                        $this->db->select('image,is_veg,status');
+                        $this->db->select('image,is_under_20_kg,status');
                         $this->db->where('entity_id',$valuee['item_id']);
-                        $data = $this->db->get('restaurant_menu_item')->first_row();
+                        $data = $this->db->get('shop_menu_item')->first_row();
                         // get order availability count
                         if (!empty($data)) {
                             if($data->status == 0) {
@@ -343,9 +343,9 @@ class Bot_api_model extends CI_Model {
                             }
                         }
                         $data1['image'] = (!empty($data) && $data->image != '')?$data->image:'';
-                        $data1['is_veg'] = (!empty($data) && $data->is_veg != '')?$data->is_veg:'';
+                        $data1['is_under_20_kg'] = (!empty($data) && $data->is_under_20_kg != '')?$data->is_under_20_kg:'';
                         $valueee['image'] = (!empty($data) && $data->image != '')?image_url.$data1['image']:'';
-                        $valueee['is_veg'] = (!empty($data) && $data->is_veg != '')?$data1['is_veg']:'';
+                        $valueee['is_under_20_kg'] = (!empty($data) && $data->is_under_20_kg != '')?$data1['is_under_20_kg']:'';
                         
                         if($valuee['is_customize'] == 1){
                             $customization = array();

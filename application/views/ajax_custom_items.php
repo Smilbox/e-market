@@ -9,7 +9,7 @@
 		<div class="modal-body">
       		<form id="custom_items_form">
 	      	<div class="popup-radio-btn-main">
-	      		<input type="hidden" name="restaurant_id" id="restaurant_id" value="<?php echo $result[0]['items'][0]['restaurant_id']; ?>">
+	      		<input type="hidden" name="shop_id" id="shop_id" value="<?php echo $result[0]['items'][0]['shop_id']; ?>">
 	      		<input type="hidden" name="user_id" id="user_id" value="<?php echo ($this->session->userdata('UserID'))?$this->session->userdata('UserID'):''; ?>">
 	      		<div class="item-price-label">
 	      					<span><?php echo $this->lang->line('item') ?></span>

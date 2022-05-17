@@ -135,7 +135,7 @@ class Addons_category extends CI_Controller {
         $content_id = ($this->input->post('content_id') != '')?$this->input->post('content_id'):'';
         $this->addons_category_model->ajaxDeleteAll('add_ons_category',$content_id);
     }
-    // method to change restaurant status
+    // method to change shop status
     public function ajaxDisable() {
         $entity_id = ($this->input->post('entity_id') != '')?$this->input->post('entity_id'):'';
         if($entity_id != ''){

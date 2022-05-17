@@ -13,7 +13,7 @@ class Track_drivers extends CI_Controller {
             $this->load->model(ADMIN_URL.'/common_model');
     }
 
-    // view restaurant menu
+    // view shop menu
     public function view(){
         $data['meta_title'] = $this->lang->line('track_drivers').' | '.$this->lang->line('site_title');
         $data['drivers_position'] = $this->common_model->getLatestDriverPosition();

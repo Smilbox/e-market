@@ -427,7 +427,7 @@ class Users extends CI_Controller {
         $sortCol = ($this->input->post('iSortCol_0'))?intval($this->input->post('iSortCol_0')):'';
         $sortOrder = ($this->input->post('sSortDir_0'))?$this->input->post('sSortDir_0'):'ASC';
         
-        $sortfields = array(1=>'first_name',2=>'restaurant.name',3=>'phone_number',3=>'status',4=>'created_date');
+        $sortfields = array(1=>'first_name',2=>'shop.name',3=>'phone_number',3=>'status',4=>'created_date');
         $sortFieldName = '';
         if(array_key_exists($sortCol, $sortfields))
         {
@@ -485,12 +485,12 @@ class Users extends CI_Controller {
         $records["aaData"] = array(); 
         $nCount = ($displayStart != '')?$displayStart+1:1;
         foreach ($grid_data['data'] as $key => $val) {
-            $restaurant = unserialize($val->restaurant_detail);
+            $shop = unserialize($val->shop_detail);
             $disableCheckbox = ($val->commission_status == 'Paid')?'disabled':'';
             $records["aaData"][] = array(
                 '<input type="checkbox" '.$disableCheckbox.' name="ids[]" value="'.$val->driver_map_id.'">',
                 $val->first_name.' '.$val->last_name,
-                ($restaurant)?$restaurant->name:'',
+                ($shop)?$shop->name:'',
                 $val->commission,
                 ($val->date)?date('m-d-Y',strtotime($val->date)):'',
                 ($val->commission_status)?$val->commission_status:''
@@ -529,7 +529,7 @@ class Users extends CI_Controller {
         $records["aaData"] = array(); 
         $nCount = ($displayStart != '')?$displayStart+1:1;
         foreach ($grid_data['data'] as $key => $val) {
-            $restaurant = unserialize($val->restaurant_detail);
+            $shop = unserialize($val->shop_detail);
             $records["aaData"][] = array(
                 $nCount,
                 $val->first_name.' '.$val->last_name,

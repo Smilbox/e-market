@@ -100,7 +100,7 @@ jQuery('#form_add_ad').validate({
     },
   }
 });
-//add restaurant
+//add shop
 jQuery('#form_add_re').validate({
   rules:{
     name:{
@@ -111,14 +111,6 @@ jQuery('#form_add_re').validate({
     },
     email:{
       required:true
-    },
-    capacity:{
-      required:true,
-      number:true
-    },
-    no_of_table:{
-      required:true,
-      number:true
     },
     address:{
       required:true,
@@ -204,7 +196,7 @@ jQuery('#form_add_menu').validate({
     name:{
       required:true
     },
-    restaurant_id:{
+    shop_id:{
       required:true
     },
     category_id:{
@@ -249,7 +241,7 @@ jQuery('#form_add_pac').validate({
     name:{
       required:true
     },
-    restaurant_id:{
+    shop_id:{
       required:true
     },
     category_id:{
@@ -294,14 +286,6 @@ jQuery('#form_add_br').validate({
     },
     email:{
       required:true
-    },
-    capacity:{
-      required:true,
-      number:true
-    },
-    no_of_table:{
-      required:true,
-      number:true
     },
     address:{
       required:true,
@@ -365,7 +349,7 @@ jQuery('#form_add_cpn').validate({
     name:{
       required:true
     },
-    'restaurant_id[]':{
+    'shop_id[]':{
       required:true
     },
     description:{
@@ -431,9 +415,9 @@ jQuery('#form_add_cpn').validate({
     {
       error.insertAfter(element);
     }
-    if (element.attr("id") == "restaurant_id") 
+    if (element.attr("id") == "shop_id") 
     {
-      error.insertAfter('.sumo_restaurant_id');
+      error.insertAfter('.sumo_shop_id');
     } 
     if (element.attr("id") == "item_id") 
     {
@@ -447,7 +431,7 @@ jQuery('#form_add_order').validate({
     user_id:{
       required:true
     },
-    restaurant_id:{
+    shop_id:{
       required:true
     },
     address_id:{
@@ -473,14 +457,10 @@ jQuery('#form_add_event').validate({
       required:true,
       digits:true
     },
-    no_of_table:{
-      required:true,
-      digits:true
-    },
     booking_date:{
       required:true
     },
-    restaurant_id:{
+    shop_id:{
       required:true
     },
     user_id:{
@@ -603,7 +583,7 @@ jQuery('#send_email').validate({
 //generate Amount
 jQuery('#generate_report').validate({
   rules:{
-    restaurant_id:{
+    shop_id:{
       required:true
     }
   }
@@ -611,7 +591,7 @@ jQuery('#generate_report').validate({
 //generate Amount
 jQuery('#event_generate_report').validate({
   rules:{
-    restaurant_id:{
+    shop_id:{
       required:true
     }
   }
@@ -647,7 +627,7 @@ jQuery('#form_add_deal').validate({
     name:{
       required:true
     },
-    restaurant_id:{
+    shop_id:{
       required:true
     },
     category_id:{
@@ -744,7 +724,7 @@ function getCurrency(value){
     $.ajax({
       type: "POST",
       url: BASEURL+"backoffice/home/getCurrencySymbol",
-      data: 'restaurant_id=' + value ,
+      data: 'shop_id=' + value ,
       cache: false,
       success: function(response) {
         if (response) {

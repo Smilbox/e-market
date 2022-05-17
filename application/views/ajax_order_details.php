@@ -11,14 +11,14 @@
         <div class="order-detail-head">      
             <div class="order-detail-img-main">
                 <div class="order-detail-img">
-                    <?php $image = ($order_details[0]['restaurant_image'])?(base_url().'uploads/'.$order_details[0]['restaurant_image']):(default_img); ?>
+                    <?php $image = ($order_details[0]['shop_image'])?(base_url().'uploads/'.$order_details[0]['shop_image']):(default_img); ?>
                     <img src="<?php echo $image;?>">  
                 </div>
             </div>
             <div class="detail-content">
-                <h6><?php echo $order_details[0]['restaurant_name']; ?> <?php echo ($order_details[0]['ratings'] > 0)?'<strong>'.$order_details[0]['ratings'].'</strong>':'<strong class="newres">NEW</strong>'; ?> </h6>
+                <h6><?php echo $order_details[0]['shop_name']; ?> <?php echo ($order_details[0]['ratings'] > 0)?'<strong>'.$order_details[0]['ratings'].'</strong>':'<strong class="newres">NEW</strong>'; ?> </h6>
                 <span>#<?php echo $this->lang->line('orderid') ?> - <?php echo $order_details[0]['order_id']; ?></span>
-                <p><?php echo $order_details[0]['restaurant_address']; ?> </p>
+                <p><?php echo $order_details[0]['shop_address']; ?> </p>
             </div>
         </div>
         <div class="detail-content-middel">
@@ -28,8 +28,8 @@
             <div class="detail-list-box type-food-option">
                 <?php if (!empty($order_details[0]['items'])) {
                     foreach ($order_details[0]['items'] as $key => $item_value) {
-                    $is_veg = ($item_value['is_veg'] == 1)?'veg':'non-veg'; ?>
-                        <div class="detail-list <?php echo $is_veg; ?>">
+                    $is_under_20_kg = ($item_value['is_under_20_kg'] == 1)?'veg':'non-veg'; ?>
+                        <div class="detail-list <?php echo $is_under_20_kg; ?>">
                             <div class="detail-list-content"> 
                                 <div class="detail-list-text">
                                     <h4><?php echo $item_value['name']; ?></h4>

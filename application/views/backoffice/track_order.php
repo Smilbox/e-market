@@ -124,9 +124,9 @@ jQuery(document).ready(function() {
         <?php endif ?>
 
         <?php if (!empty($latestOrder->resLat) && !empty($latestOrder->resLong)): ?>
-	        // restaurant location
+	        // shop location
 	        var position = {lat: <?php echo $latestOrder->resLat; ?>,lng: <?php echo $latestOrder->resLong; ?>};
-	        var icon = '<?php echo base_url(); ?>'+'assets/front/images/restaurant.png';
+	        var icon = '<?php echo base_url(); ?>'+'assets/front/images/shop.png';
 	        marker = new google.maps.Marker({
 	            position: position,
 	            map: map,

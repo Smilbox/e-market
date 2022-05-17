@@ -251,10 +251,10 @@ tr, td, th {
 	<div class="main-container">
 		<div class="bill-ship-details">
 	      <div class="colm last">
-	      	<?php $restaurant = unserialize($event_records->restaurant_detail); ?>
-	        <h3>Restaurant</h3>
-	        <?php if(!empty($restaurant)){ ?>
-	        	<p><?php echo $restaurant->name.'<br>' . $restaurant->address.'<br> '.$restaurant->landmark.'<br>'.$restaurant->city.' '.$restaurant->zipcode ?></p>
+	      	<?php $shop = unserialize($event_records->shop_detail); ?>
+	        <h3>Shop</h3>
+	        <?php if(!empty($shop)){ ?>
+	        	<p><?php echo $shop->name.'<br>' . $shop->address.'<br> '.$shop->landmark.'<br>'.$shop->city.' '.$shop->zipcode ?></p>
 	  	    <?php } ?>
 	      </div>
 	    </div>

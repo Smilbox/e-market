@@ -7,8 +7,8 @@ class Review_model extends CI_Model {
     // method for getting all users
     public function getGridList($sortFieldName = '', $sortOrder = 'ASC', $displayStart = 0, $displayLength = 10)
     {
-        if($this->input->post('restaurant') != ''){
-            $this->db->like('res.name', $this->input->post('restaurant'));
+        if($this->input->post('shop') != ''){
+            $this->db->like('res.name', $this->input->post('shop'));
         }
         if($this->input->post('Status') != ''){
             $this->db->like('status', $this->input->post('Status'));
@@ -20,8 +20,8 @@ class Review_model extends CI_Model {
             $this->db->like('rating', $this->input->post('rating'));
         }
         $this->db->select('review.*,res.name as rname');
-        $this->db->join('restaurant as res','review.restaurant_id = res.entity_id','left'); 
-        $this->db->where('review.restaurant_id !=', '');     
+        $this->db->join('shop as res','review.shop_id = res.entity_id','left'); 
+        $this->db->where('review.shop_id !=', '');     
         if($this->session->userdata('UserType') == 'Admin'){
             $this->db->where('res.created_by',$this->session->userdata('UserID'));      
         }
@@ -29,8 +29,8 @@ class Review_model extends CI_Model {
         if($sortFieldName != '')
             $this->db->order_by($sortFieldName, $sortOrder);
         
-        if($this->input->post('restaurant') != ''){
-            $this->db->like('res.name', $this->input->post('restaurant'));
+        if($this->input->post('shop') != ''){
+            $this->db->like('res.name', $this->input->post('shop'));
         }
         if($this->input->post('Status') != ''){
             $this->db->like('status', $this->input->post('Status'));
@@ -44,8 +44,8 @@ class Review_model extends CI_Model {
         if($displayLength>1)
             $this->db->limit($displayLength,$displayStart); 
         $this->db->select('review.*,res.name as rname');
-        $this->db->join('restaurant as res','review.restaurant_id = res.entity_id','left');      
-        $this->db->where('review.restaurant_id !=', '');     
+        $this->db->join('shop as res','review.shop_id = res.entity_id','left');      
+        $this->db->where('review.shop_id !=', '');     
         if($this->session->userdata('UserType') == 'Admin'){
             $this->db->where('res.created_by',$this->session->userdata('UserID'));  
         }

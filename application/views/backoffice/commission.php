@@ -72,7 +72,7 @@
                                             <tr role="row" class="heading">
                                                 <th class="table-checkbox"><label><input type="checkbox" class="group-checkable"></label></th>
                                                 <th><?php echo $this->lang->line('name')?></th>
-                                                <th><?php echo $this->lang->line('restaurant')?></th>
+                                                <th><?php echo $this->lang->line('shop')?></th>
                                                 <th><?php echo $this->lang->line('commission')?></th>
                                                 <th><?php echo $this->lang->line('date')?></th>
                                                 <th><?php echo $this->lang->line('action')?></th>
@@ -80,7 +80,7 @@
                                             <tr role="row" class="filter">
                                                 <td></td>                                       
                                                 <td><input type="text" class="form-control form-filter input-sm" name="name"></td>
-                                                <td><input type="text" class="form-control form-filter input-sm" name="restaurant"></td>
+                                                <td><input type="text" class="form-control form-filter input-sm" name="shop"></td>
                                                 
                                                 <td><input type="text" class="form-control form-filter input-sm" name="commission"></td>
                                                 <td><input type="text" class="form-control form-filter input-sm datepicker" name="date"></td>

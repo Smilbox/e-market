@@ -19,9 +19,9 @@ class Coupon_model extends CI_Model {
         if($this->session->userdata('UserType') == 'Admin'){
             $this->db->where('created_by',$this->session->userdata('UserID'));
         } 
-        $this->db->select('coupon.*,restaurant.currency_id');
-        $this->db->join('coupon_restaurant_map','coupon.entity_id = coupon_restaurant_map.coupon_id','left');
-        $this->db->join('restaurant','coupon_restaurant_map.restaurant_id = restaurant.entity_id','left');
+        $this->db->select('coupon.*,shop.currency_id');
+        $this->db->join('coupon_shop_map','coupon.entity_id = coupon_shop_map.coupon_id','left');
+        $this->db->join('shop','coupon_shop_map.shop_id = shop.entity_id','left');
         $this->db->group_by('coupon.entity_id');
         $result['total'] = $this->db->count_all_results('coupon');
         if($sortFieldName != '')
@@ -41,9 +41,9 @@ class Coupon_model extends CI_Model {
         if($this->session->userdata('UserType') == 'Admin'){
             $this->db->where('created_by',$this->session->userdata('UserID'));  
         }  
-        $this->db->select('coupon.*,restaurant.currency_id');
-        $this->db->join('coupon_restaurant_map','coupon.entity_id = coupon_restaurant_map.coupon_id','left');
-        $this->db->join('restaurant','coupon_restaurant_map.restaurant_id = restaurant.entity_id','left');
+        $this->db->select('coupon.*,shop.currency_id');
+        $this->db->join('coupon_shop_map','coupon.entity_id = coupon_shop_map.coupon_id','left');
+        $this->db->join('shop','coupon_shop_map.shop_id = shop.entity_id','left');
         $this->db->group_by('coupon.entity_id');
         $result['data'] = $this->db->get('coupon')->result();       
         return $result;
@@ -104,21 +104,21 @@ class Coupon_model extends CI_Model {
     }
     //get items
     public function getItem($entity_id,$coupon_type){
-        $this->db->select('restaurant_menu_item.entity_id,restaurant_menu_item.name,restaurant_menu_item.price,restaurant.name as restaurant_name,restaurant_menu_item.restaurant_id');
-        $this->db->join('restaurant','restaurant_menu_item.restaurant_id = restaurant.entity_id','left');
-        $this->db->where_in('restaurant_menu_item.restaurant_id',$entity_id);
-        $this->db->where('restaurant_menu_item.status',1);
+        $this->db->select('shop_menu_item.entity_id,shop_menu_item.name,shop_menu_item.price,shop.name as shop_name,shop_menu_item.shop_id');
+        $this->db->join('shop','shop_menu_item.shop_id = shop.entity_id','left');
+        $this->db->where_in('shop_menu_item.shop_id',$entity_id);
+        $this->db->where('shop_menu_item.status',1);
         if($coupon_type == 'discount_on_combo'){
-            $this->db->where('restaurant_menu_item.is_deal',1);
+            $this->db->where('shop_menu_item.is_deal',1);
         }
-        $result =  $this->db->get('restaurant_menu_item')->result();
+        $result =  $this->db->get('shop_menu_item')->result();
         $res = array();
         if(!empty($result)){
             foreach ($result as $key => $value) {
-                if(!isset($res[$value->restaurant_id])){
-                    $res[$value->restaurant_id] = array();
+                if(!isset($res[$value->shop_id])){
+                    $res[$value->shop_id] = array();
                 }
-                array_push($res[$value->restaurant_id], $value);
+                array_push($res[$value->shop_id], $value);
             }
         }
         return $res;

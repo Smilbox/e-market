@@ -51,7 +51,8 @@ class email_template_model extends CI_Model {
             if($displayLength>1)
                 $this->db->limit($displayLength,$displayStart);
             $cmsData = $this->db->get('email_template')->result();                      
-            $ContentID = array();               
+            $ContentID = array();       
+            $OrderByID = "";        
             foreach ($cmsData as $key => $value) {
                 $OrderByID = $OrderByID.','.$value->entity_id;
                 $ContentID[] = $value->content_id;

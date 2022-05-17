@@ -15,7 +15,7 @@ if($this->input->post()){
     $$key = @htmlspecialchars($this->input->post($key));
   } 
 } else {
-  $FieldsArray = array('entity_id','restaurant_id','name','description','amount_type','amount','start_date','end_date','max_amount','coupon_type','image');
+  $FieldsArray = array('entity_id','shop_id','name','description','amount_type','amount','start_date','end_date','max_amount','coupon_type','image');
   foreach ($FieldsArray as $key) {
     $$key = @htmlspecialchars($edit_records->$key);
   }
@@ -24,15 +24,15 @@ if(isset($edit_records) && $edit_records !="")
 {
     $add_label    = $this->lang->line('title_admin_couponedit');        
     $user_action  = base_url().ADMIN_URL.'/'.$this->controller_name."/edit/".str_replace(array('+', '/', '='), array('-', '_', '~'), $this->encryption->encrypt($edit_records->entity_id));
-    $restaurant_map = array_column($restaurant_map, 'restaurant_id');
+    $shop_map = array_column($shop_map, 'shop_id');
     $item_map = ($coupon_type == 'discount_on_combo')?array_column($item_map,'package_id'):array_column($item_map,'item_id');
-    $itemDetail = $this->coupon_model->getItem($restaurant_map,$coupon_type);
+    $itemDetail = $this->coupon_model->getItem($shop_map,$coupon_type);
 }
 else
 {
     $add_label    = $this->lang->line('title_admin_couponadd');       
     $user_action  = base_url().ADMIN_URL.'/'.$this->controller_name."/add";
-    $restaurant_map = array();
+    $shop_map = array();
     $item_map = array();
     $itemDetail = array();
 }
@@ -112,12 +112,12 @@ else
                                           </div>
                                       </div>
                                       <div class="form-group">
-                                          <label class="control-label col-md-3"><?php echo $this->lang->line('restaurant'); ?><span class="required">*</span></label>
+                                          <label class="control-label col-md-3"><?php echo $this->lang->line('shop'); ?><span class="required">*</span></label>
                                           <div class="col-md-8">
-                                              <select name="restaurant_id[]" multiple="" class="form-control" id="restaurant_id">
-                                                   <?php if(!empty($restaurant)){
-                                                      foreach ($restaurant as $key => $value) { ?>
-                                                          <option value="<?php echo $value['entity_id'] ?>" <?php echo in_array($value['entity_id'], $restaurant_map)?'selected':'' ?>><?php echo $value['name'] ?></option>    
+                                              <select name="shop_id[]" multiple="" class="form-control" id="shop_id">
+                                                   <?php if(!empty($shop)){
+                                                      foreach ($shop as $key => $value) { ?>
+                                                          <option value="<?php echo $value['entity_id'] ?>" <?php echo in_array($value['entity_id'], $shop_map)?'selected':'' ?>><?php echo $value['name'] ?></option>    
                                                   <?php } } ?>
                                               </select>
                                           </div>
@@ -129,7 +129,7 @@ else
                                               <select name="item_id[]" multiple="" class="form-control" id="item_id">
                                                   <?php if(!empty($itemDetail)){
                                                       foreach ($itemDetail as $key => $value) { ?>
-                                                          <optgroup label="<?php echo $value[0]->restaurant_name ?>">
+                                                          <optgroup label="<?php echo $value[0]->shop_name ?>">
                                                           <?php foreach ($value as $k => $val) { ?>
                                                               <option value="<?php echo $val->entity_id ?>" <?php echo in_array($val->entity_id,$item_map)?'selected':'' ?>><?php echo $val->name ?></option>    
                                                           <?php } ?>
@@ -241,7 +241,7 @@ jQuery(document).ready(function() {
 });
 
 $('#item_id').SumoSelect({selectAll:true});
-$('#restaurant_id').SumoSelect({selectAll:true});
+$('#shop_id').SumoSelect({selectAll:true});
 
 //check coupon exist
 function checkExist(coupon){
@@ -313,27 +313,27 @@ function getCouponType(value){
   if(value == 'free_delivery'){
     $('.hidden-row').hide();
     $('.show-hidden-row').hide();
-    $('#restaurant_id').val('');
-    $('#restaurant_id')[0].sumo.reload();
-    $('#restaurant_id').SumoSelect({selectAll:true});
+    $('#shop_id').val('');
+    $('#shop_id')[0].sumo.reload();
+    $('#shop_id').SumoSelect({selectAll:true});
   }else if(value == 'discount_on_cart' || value == 'user_registration'){
     $('.hidden-row').hide();
     $('.show-hidden-row').show();
-    $('#restaurant_id').val('');
-    $('#restaurant_id')[0].sumo.reload();
-    $('#restaurant_id').SumoSelect({selectAll:true});
+    $('#shop_id').val('');
+    $('#shop_id')[0].sumo.reload();
+    $('#shop_id').SumoSelect({selectAll:true});
   }else{
     $('.hidden-row').show();
     $('.show-hidden-row').show();
     $('#amount').attr('required',true);
-    $('#restaurant_id').val('');
-    $('#restaurant_id')[0].sumo.reload();
-    $('#restaurant_id').SumoSelect({search: true, searchText: 'Enter here.'});
+    $('#shop_id').val('');
+    $('#shop_id')[0].sumo.reload();
+    $('#shop_id').SumoSelect({search: true, searchText: 'Enter here.'});
   }
 }
-//get items of restaurant
+//get items of shop
 $( document ).ready(function() {
-  $('#restaurant_id').change(function (event) {
+  $('#shop_id').change(function (event) {
     var coupon_type = $('#coupon_type').val();
     var items = [];
     if($(this).val() != null){

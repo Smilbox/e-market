@@ -96,14 +96,14 @@ class Myprofile extends CI_Controller {
 		$data['in_process_orders'] = $this->myprofile_model->getOrderDetail('process',$this->session->userdata('UserID'),'');  
 		if (!empty($data['in_process_orders'])) {
 			foreach ($data['in_process_orders'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['in_process_orders'][$key]['ratings'] = $ratings;
 			}
 		}
         $data['past_orders'] = $this->myprofile_model->getOrderDetail('past',$this->session->userdata('UserID'),'');
         if (!empty($data['past_orders'])) {
 			foreach ($data['past_orders'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['past_orders'][$key]['ratings'] = $ratings;
 			}
 		}
@@ -112,13 +112,13 @@ class Myprofile extends CI_Controller {
 		$data['past_events'] = $this->myprofile_model->getBooking($this->session->userdata('UserID'),'past');  
 		if (!empty($data['upcoming_events'])) {
 			foreach ($data['upcoming_events'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['upcoming_events'][$key]['ratings'] = $ratings;
 			}
 		}
 		if (!empty($data['past_events'])) {
 			foreach ($data['past_events'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['past_events'][$key]['ratings'] = $ratings;
 			}
 		}*/
@@ -135,7 +135,7 @@ class Myprofile extends CI_Controller {
 			$data['order_details'] = $this->myprofile_model->getOrderDetail('','',$this->input->post('order_id'));
 			if (!empty($data['order_details'])) {
 				foreach ($data['order_details'] as $key => $value) {
-					$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+					$ratings = $this->common_model->getShopReview($value['shop_id']);
 					$data['order_details'][$key]['ratings'] = $ratings;
 				}
 			} 
@@ -148,14 +148,14 @@ class Myprofile extends CI_Controller {
 		$data['in_process_orders'] = $this->myprofile_model->getOrderDetail('process',$this->session->userdata('UserID'),'');  
 		if (!empty($data['in_process_orders'])) {
 			foreach ($data['in_process_orders'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['in_process_orders'][$key]['ratings'] = $ratings;
 			}
 		}
         $data['past_orders'] = $this->myprofile_model->getOrderDetail('past',$this->session->userdata('UserID'),'');
         if (!empty($data['past_orders'])) {
 			foreach ($data['past_orders'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['past_orders'][$key]['ratings'] = $ratings;
 			}
 		} 
@@ -168,13 +168,13 @@ class Myprofile extends CI_Controller {
 		$data['past_events'] = $this->myprofile_model->getBooking($this->session->userdata('UserID'),'past');  
 		if (!empty($data['upcoming_events'])) {
 			foreach ($data['upcoming_events'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['upcoming_events'][$key]['ratings'] = $ratings;
 			}
 		}
 		if (!empty($data['past_events'])) {
 			foreach ($data['past_events'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['past_events'][$key]['ratings'] = $ratings;
 			}
 		}
@@ -188,7 +188,7 @@ class Myprofile extends CI_Controller {
 			$data['booking_details'] = $this->myprofile_model->getBooking($this->session->userdata('UserID'),'',$this->input->post('event_id'));
 			if (!empty($data['booking_details'])) {
 				foreach ($data['booking_details'] as $key => $value) {
-					$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+					$ratings = $this->common_model->getShopReview($value['shop_id']);
 					$data['booking_details'][$key]['ratings'] = $ratings;
 				}
 			} 
@@ -219,14 +219,14 @@ class Myprofile extends CI_Controller {
 		$data['in_process_orders'] = $this->myprofile_model->getOrderDetail('process',$this->session->userdata('UserID'),'');  
 		if (!empty($data['in_process_orders'])) {
 			foreach ($data['in_process_orders'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['in_process_orders'][$key]['ratings'] = $ratings;
 			}
 		}
         $data['past_orders'] = $this->myprofile_model->getOrderDetail('past',$this->session->userdata('UserID'),'');
         if (!empty($data['past_orders'])) {
 			foreach ($data['past_orders'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['past_orders'][$key]['ratings'] = $ratings;
 			}
 		} 
@@ -235,13 +235,13 @@ class Myprofile extends CI_Controller {
 		$data['past_events'] = $this->myprofile_model->getBooking($this->session->userdata('UserID'),'past');  
 		if (!empty($data['upcoming_events'])) {
 			foreach ($data['upcoming_events'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['upcoming_events'][$key]['ratings'] = $ratings;
 			}
 		}
 		if (!empty($data['past_events'])) {
 			foreach ($data['past_events'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['past_events'][$key]['ratings'] = $ratings;
 			}
 		}
@@ -259,14 +259,14 @@ class Myprofile extends CI_Controller {
 		$data['in_process_orders'] = $this->myprofile_model->getOrderDetail('process',$this->session->userdata('UserID'),'');  
 		if (!empty($data['in_process_orders'])) {
 			foreach ($data['in_process_orders'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['in_process_orders'][$key]['ratings'] = $ratings;
 			}
 		}
         $data['past_orders'] = $this->myprofile_model->getOrderDetail('past',$this->session->userdata('UserID'),'');
         if (!empty($data['past_orders'])) {
 			foreach ($data['past_orders'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['past_orders'][$key]['ratings'] = $ratings;
 			}
 		} 
@@ -275,13 +275,13 @@ class Myprofile extends CI_Controller {
 		$data['past_events'] = $this->myprofile_model->getBooking($this->session->userdata('UserID'),'past');  
 		if (!empty($data['upcoming_events'])) {
 			foreach ($data['upcoming_events'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['upcoming_events'][$key]['ratings'] = $ratings;
 			}
 		}
 		if (!empty($data['past_events'])) {
 			foreach ($data['past_events'] as $key => $value) {
-				$ratings = $this->common_model->getRestaurantReview($value['restaurant_id']);
+				$ratings = $this->common_model->getShopReview($value['shop_id']);
 				$data['past_events'][$key]['ratings'] = $ratings;
 			}
 		}

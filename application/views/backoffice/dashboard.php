@@ -25,10 +25,10 @@
                             <i class="fa fa-cutlery" aria-hidden="true"></i>
                         </div>
                         <div class="details">
-                            <div class="number"><?php echo $restaurantCount ?></div>                           
-                            <div class="desc"><?php echo $this->lang->line('total_restaurant') ?></div>
+                            <div class="number"><?php echo $shopCount ?></div>                           
+                            <div class="desc"><?php echo $this->lang->line('total_shop') ?></div>
                         </div>
-                        <a class="more" href="<?php echo base_url().ADMIN_URL ?>/restaurant/view">
+                        <a class="more" href="<?php echo base_url().ADMIN_URL ?>/shop/view">
                             <?php echo $this->lang->line('view_more') ?> <i class="m-icon-swapright m-icon-white"></i>
                         </a>
                     </div>
@@ -115,9 +115,9 @@
                 <div class="col-md-6">
                     <div class="portlet box red">
                         <div class="portlet-title">
-                            <div class="caption"><?php echo $this->lang->line('restaurant') ?></div>
+                            <div class="caption"><?php echo $this->lang->line('shop') ?></div>
                             <div class="actions">
-                                <a href="<?php echo base_url().ADMIN_URL?>/restaurant/view" class="btn default btn-xs purple-stripe"><?php echo $this->lang->line('view_all') ?></a>                                
+                                <a href="<?php echo base_url().ADMIN_URL?>/shop/view" class="btn default btn-xs purple-stripe"><?php echo $this->lang->line('view_all') ?></a>                                
                             </div>
                         </div>
                         <div class="portlet-body">
@@ -132,9 +132,9 @@
                                     </tr>                                    
                                     </thead>
                                     <tbody>
-                                    <?php if(!empty($restaurant)){
+                                    <?php if(!empty($shop)){
                                         $i = 1;
-                                        foreach  ($restaurant as $key => $value) { ?>
+                                        foreach  ($shop as $key => $value) { ?>
                                              <tr>
                                                  <td><?php echo $i; ?></td>
                                                  <td><?php echo $value->name; ?></td>

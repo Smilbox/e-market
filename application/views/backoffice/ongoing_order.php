@@ -59,7 +59,7 @@
                                         <tr role="row" class="heading">
                                             <th class="table-checkbox"><input type="checkbox" class="group-checkable"></th>
                                             <th><?php echo $this->lang->line('order') ?>#</th>
-                                            <th><?php echo $this->lang->line('restaurant') ?></th>
+                                            <th><?php echo $this->lang->line('shop') ?></th>
                                             <th><?php echo $this->lang->line('user') ?></th>
                                             <th><?php echo $this->lang->line('order_total') ?></th>
                                             <th><?php echo $this->lang->line('order_assign') ?></th>
@@ -72,7 +72,7 @@
                                         <tr role="row" class="filter">
                                             <td></td>           
                                             <td><input type="text" class="form-control form-filter input-sm" name="order"></td>            
-                                            <td><input type="text" class="form-control form-filter input-sm" name="restaurant"></td> 
+                                            <td><input type="text" class="form-control form-filter input-sm" name="shop"></td> 
                                             <td><input type="text" class="form-control form-filter input-sm" name="page_title"></td>
                                             <td><input type="text" class="form-control form-filter input-sm" name="order_total"></td>
                                             <td><input type="text" class="form-control form-filter input-sm" name="driver"></td>
@@ -375,7 +375,7 @@ function statusHistory(order_id){
     });
 }
 // method for update status 
-function disableDetail(entity_id,restaurant_id,order_id)
+function disableDetail(entity_id,shop_id,order_id)
 {
     bootbox.confirm({
         message: "<?php echo $this->lang->line('accept_order'); ?>",
@@ -393,7 +393,7 @@ function disableDetail(entity_id,restaurant_id,order_id)
                   type : "POST",
                   dataType : "json",
                   url : 'ajaxdisable',
-                  data : {'entity_id':entity_id,'restaurant_id':restaurant_id,'order_id':order_id},
+                  data : {'entity_id':entity_id,'shop_id':shop_id,'order_id':order_id},
                   success: function(response) {
                        grid.getDataTable().fnDraw(); 
                   },

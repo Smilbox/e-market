@@ -7,7 +7,7 @@ class Checkout extends CI_Controller {
 		parent::__construct();        
 		$this->load->library('form_validation');
 		$this->load->model(ADMIN_URL.'/common_model');  
-		$this->load->model('/restaurant_model');      
+		$this->load->model('/shop_model');      
 		$this->load->model('/cart_model');         
 		$this->load->model('/home_model');         
 		$this->load->model('/checkout_model');    
@@ -25,14 +25,14 @@ class Checkout extends CI_Controller {
 		$data['current_page'] = 'Checkout';
 		$data['page_title'] = $this->lang->line('title_checkout'). ' | ' . $this->lang->line('site_title');
 		$cart_details = get_cookie('cart_details');
-		$cart_restaurant = get_cookie('cart_restaurant');
+		$cart_shop = get_cookie('cart_shop');
 		$pre_order_date = get_cookie('pre_order_date');
 		$order_mode = get_cookie('order_mode');
 		$data['pre_order_date'] = $pre_order_date;
 		$data['mode_24'] = !empty($order_mode);
-		$data['cart_details'] = $this->getCartItems($cart_details,$cart_restaurant);
-		$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($cart_restaurant);
-		$data['allow_24_delivery'] = $cart_restaurant ? $this->checkout_model->getAllow24Delivery($cart_restaurant)->allow_24_delivery : 0;
+		$data['cart_details'] = $this->getCartItems($cart_details,$cart_shop);
+		$data['currency_symbol'] = $this->common_model->getShopCurrencySymbol($cart_shop);
+		$data['allow_24_delivery'] = $cart_shop ? $this->checkout_model->getAllow24Delivery($cart_shop)->allow_24_delivery : 0;
 		if($this->input->post('submit_login_page') == "Login"){
 			$this->form_validation->set_rules('login_phone_number', 'Phone Number', 'trim|required'); 
 	        $this->form_validation->set_rules('login_password', 'Password', 'trim|required');        
@@ -101,12 +101,12 @@ class Checkout extends CI_Controller {
 		$data['current_page'] = 'Checkout';
 		$cart_details = get_cookie('cart_details');
 		$arr_cart_details = json_decode($cart_details);
-		$cart_restaurant = get_cookie('cart_restaurant');
-		if (!empty($this->input->post('entity_id')) && !empty($this->input->post('restaurant_id'))) {
+		$cart_shop = get_cookie('cart_shop');
+		if (!empty($this->input->post('entity_id')) && !empty($this->input->post('shop_id'))) {
 			if ($this->input->post('action') == "plus") {
 				$menukey = '';
 				$arrayDetails = array();
-				if ($cart_restaurant == $this->input->post('restaurant_id')) {
+				if ($cart_shop == $this->input->post('shop_id')) {
 					if (!empty($arr_cart_details)) {
 						foreach ($arr_cart_details as $ckey => $value) {
 							if ($ckey == $this->input->post('cart_key')) {
@@ -133,13 +133,13 @@ class Checkout extends CI_Controller {
 					 	}
 					}
 					$this->input->set_cookie('cart_details',json_encode($arrayDetails),60*60*24*1); // 1 day
-		            $this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day
+		            $this->input->set_cookie('cart_shop',$this->input->post('shop_id'),60*60*24*1); // 1 day
 				}
 			}
 			else if ($this->input->post('action') == "minus") {
 				$menukey = '';
 				$arrayDetails = array();
-				if ($cart_restaurant == $this->input->post('restaurant_id')) {
+				if ($cart_shop == $this->input->post('shop_id')) {
 					if (!empty($arr_cart_details)) {
 						foreach ($arr_cart_details as $ckey => $value) {
 							if ($ckey == $this->input->post('cart_key')) {
@@ -178,13 +178,13 @@ class Checkout extends CI_Controller {
 					$cart_details = $this->getcookie('cart_details');
 		            if (empty(json_decode($cart_details))) {
 		            	delete_cookie('cart_details');
-						delete_cookie('cart_restaurant');
+						delete_cookie('cart_shop');
 						delete_cookie('pre_order_date');
 						delete_cookie('order_mode');
 					}
 					else
 					{
-		            	$this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day
+		            	$this->input->set_cookie('cart_shop',$this->input->post('shop_id'),60*60*24*1); // 1 day
 					}
 				}
 			}
@@ -202,17 +202,17 @@ class Checkout extends CI_Controller {
 				$cart_details = $this->getcookie('cart_details');
 	            if (empty(json_decode($cart_details))) {
 	            	delete_cookie('cart_details');
-					delete_cookie('cart_restaurant');
+					delete_cookie('cart_shop');
 					delete_cookie('pre_order_date');
 					delete_cookie('order_mode');
 				}
 				else
 				{
-	            	$this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day
+	            	$this->input->set_cookie('cart_shop',$this->input->post('shop_id'),60*60*24*1); // 1 day
 				}
 			} 
 			$cart_details = $this->getcookie('cart_details');
-			$cart_restaurant = $this->getcookie('cart_restaurant');
+			$cart_shop = $this->getcookie('cart_shop');
 		}
 
 		// if cart_details cookie has been deleted
@@ -220,8 +220,8 @@ class Checkout extends CI_Controller {
 		if($cart_details[1] == "deleted")
 			$cart_details = array();
 
-		$data['cart_details'] = $this->getCartItems($cart_details,$cart_restaurant);
-		$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($cart_restaurant);
+		$data['cart_details'] = $this->getCartItems($cart_details,$cart_shop);
+		$data['currency_symbol'] = $this->common_model->getShopCurrencySymbol($cart_shop);
 		$data['order_mode'] = $this->session->userdata('order_mode');
 		$ajax_your_items = $this->load->view('ajax_your_items',$data,true);
 		$order_summary = $this->load->view('ajax_order_summary',$data,true);
@@ -245,12 +245,12 @@ class Checkout extends CI_Controller {
 	    return $cookies[$name];
 	}
 	// get Cart items
-	public function getCartItems($cart_details,$cart_restaurant){
+	public function getCartItems($cart_details,$cart_shop){
 		$cartItems = array();
 		$cartTotalPrice = 0;
 		if (!empty($cart_details)) {
 			foreach (json_decode($cart_details) as $key => $value) { 
-				$details = $this->restaurant_model->getMenuItem($value->menu_id,$cart_restaurant);
+				$details = $this->shop_model->getMenuItem($value->menu_id,$cart_shop);
 				if (!empty($details)) {
 					if ($details[0]['items'][0]['is_customize'] == 1) {
 						$addons_category_id = array_column($value->addons, 'addons_category_id');
@@ -301,11 +301,11 @@ class Checkout extends CI_Controller {
 					$cartTotalPrice = ($subtotal * $value->quantity) + $cartTotalPrice;
 					$cartItems[] = array(
 						'menu_id' => $details[0]['items'][0]['menu_id'],
-						'restaurant_id' => $cart_restaurant,
+						'shop_id' => $cart_shop,
 						'name' => $details[0]['items'][0]['name'],
 						'quantity' => $value->quantity,
 						'is_customize' => $details[0]['items'][0]['is_customize'],
-						'is_veg' => $details[0]['items'][0]['is_veg'],
+						'is_under_20_kg' => $details[0]['items'][0]['is_under_20_kg'],
 						'is_deal' => $details[0]['items'][0]['is_deal'],
 						'price' => $details[0]['items'][0]['price'],
 						'offer_price' => $details[0]['items'][0]['offer_price'],
@@ -336,9 +336,9 @@ class Checkout extends CI_Controller {
 		$check = '';
 		if (!empty($this->input->post('action')) && $this->input->post('action') == "get") { 
 			if (!empty($this->input->post('latitude')) && !empty($this->input->post('longitude'))) {
-				$cart_restaurant = 0;
-				if(!empty($this->input->post('restaurant_id'))) {
-					$cart_restaurant = $this->input->post('restaurant_id');
+				$cart_shop = 0;
+				if(!empty($this->input->post('shop_id'))) {
+					$cart_shop = $this->input->post('shop_id');
 					$array_view = array(
 						'check'=> $check ? $check : '',
 						'ajax_order_summary'=>$order_summary
@@ -346,11 +346,11 @@ class Checkout extends CI_Controller {
 					//echo '<pre>'; print_r($array_view); exit;
 					return json_encode($array_view);
 				} else {
-					$cart_restaurant = get_cookie('cart_restaurant');
+					$cart_shop = get_cookie('cart_shop');
 				}
-				// $check = $this->checkGeoFence($this->input->post('latitude'),$this->input->post('longitude'),$price_charge = true,$cart_restaurant);
+				// $check = $this->checkGeoFence($this->input->post('latitude'),$this->input->post('longitude'),$price_charge = true,$cart_shop);
 				$delivery_type = $this->input->post('mode_24') == "true" ? "24H Delivery" : "Express Delivery";
-				$check = $this->getDeliveryByDistance(null, $this->input->post('latitude')."~".$this->input->post('longitude'), $cart_restaurant, $delivery_type);
+				$check = $this->getDeliveryByDistance(null, $this->input->post('latitude')."~".$this->input->post('longitude'), $cart_shop, $delivery_type);
 				
 				if ($check) {
 					$this->session->set_userdata(array('checkDelivery' => 'available','deliveryCharge' => $check));
@@ -360,7 +360,7 @@ class Checkout extends CI_Controller {
 					$this->session->set_userdata(array('checkDelivery' => 'notAvailable','deliveryCharge' => 0));
 				}
 				if ($this->input->post('mode_24') == "true" && ($check == "" || !$check)) {
-					$check = $this->checkout_model->get24DeliveryFlatRate($cart_restaurant)->flat_rate_24;
+					$check = $this->checkout_model->get24DeliveryFlatRate($cart_shop)->flat_rate_24;
 					$this->session->set_userdata(array('checkDelivery' => 'available','deliveryCharge' => $check));
 				}
 			}
@@ -389,9 +389,9 @@ class Checkout extends CI_Controller {
 		}*/ //echo '<pre>';
 		//print_r($this->session->userdata());
     	$cart_details = get_cookie('cart_details');
-		$cart_restaurant = get_cookie('cart_restaurant');
-		$data['cart_details'] = $this->getCartItems($cart_details,$cart_restaurant);
-		$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($cart_restaurant);
+		$cart_shop = get_cookie('cart_shop');
+		$data['cart_details'] = $this->getCartItems($cart_details,$cart_shop);
+		$data['currency_symbol'] = $this->common_model->getShopCurrencySymbol($cart_shop);
 		$data['order_mode'] = $this->session->userdata('order_mode');
 		$order_summary = $this->load->view('ajax_order_summary',$data,true);
 		$array_view = array(
@@ -408,16 +408,16 @@ class Checkout extends CI_Controller {
 	public function removeDeliveryOptions(){
 		$this->session->set_userdata(array('checkDelivery' => 'pickup','deliveryCharge' => 0));
     	$cart_details = get_cookie('cart_details');
-		$cart_restaurant = get_cookie('cart_restaurant');
-		$data['cart_details'] = $this->getCartItems($cart_details,$cart_restaurant);
-		$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($cart_restaurant);
+		$cart_shop = get_cookie('cart_shop');
+		$data['cart_details'] = $this->getCartItems($cart_details,$cart_shop);
+		$data['currency_symbol'] = $this->common_model->getShopCurrencySymbol($cart_shop);
 		$data['order_mode'] = $this->session->userdata('order_mode');
 		$this->load->view('ajax_order_summary',$data);
 	}
     //check lat long exist in area
-    public function checkGeoFence($latitude,$longitude,$price_charge,$restaurant_id)
+    public function checkGeoFence($latitude,$longitude,$price_charge,$shop_id)
     {
-        $result = $this->checkout_model->checkGeoFence($restaurant_id); 
+        $result = $this->checkout_model->checkGeoFence($shop_id); 
         $latlongs =  array($latitude,$longitude);
         $coordinatesArr = array();
         if (!empty($result)) {
@@ -462,11 +462,11 @@ class Checkout extends CI_Controller {
 	    return $oddNodes;
 	}
 
-	public function getDeliveryByDistance($originLatLong, $destinationLatLong, $restaurant_id, $delivery_type = "Express Delivery")
+	public function getDeliveryByDistance($originLatLong, $destinationLatLong, $shop_id, $delivery_type = "Express Delivery")
     {
         if(!$originLatLong)
         {
-            $address = $this->common_model->getRestoLatLong($restaurant_id);
+            $address = $this->common_model->getShopLatLong($shop_id);
             $originLatLong = $address->latitude."~".$address->longitude;
         }
 		
@@ -481,7 +481,7 @@ class Checkout extends CI_Controller {
 
         if($distance != null)
         {
-            return $this->getFeeAccordingDistance(round($distance, 2), $restaurant_id, $delivery_type);
+            return $this->getFeeAccordingDistance(round($distance, 2), $shop_id, $delivery_type);
         }
         else
         {
@@ -533,9 +533,9 @@ class Checkout extends CI_Controller {
         }
     } */
 
-    public function getFeeAccordingDistance($distance, $restaurant_id, $delivery_type)
+    public function getFeeAccordingDistance($distance, $shop_id, $delivery_type)
     {
-        $allDeliveryCharge = $this->common_model->getRowsMultipleWhere("delivery_charge", array("restaurant_id" => $restaurant_id, "delivery_type" => $delivery_type));
+        $allDeliveryCharge = $this->common_model->getRowsMultipleWhere("delivery_charge", array("shop_id" => $shop_id, "delivery_type" => $delivery_type));
         $deliveryFee = "";
         if(!empty($allDeliveryCharge))
         {
@@ -562,14 +562,14 @@ class Checkout extends CI_Controller {
 	// get the coupons
     public function getCoupons(){
     	$html = '';
-    	$cart_restaurant = get_cookie('cart_restaurant');
+    	$cart_shop = get_cookie('cart_shop');
     	$this->session->set_userdata(array('coupon_id' => '','coupon_applied' => 'no'));
 		$this->session->unset_userdata('coupon_type');
 		$this->session->unset_userdata('coupon_amount');
 		$this->session->unset_userdata('coupon_discount');
 		$this->session->unset_userdata('coupon_name');
     	if (!empty($this->input->post('subtotal')) && !empty($this->input->post('order_mode'))) {
-    		$coupons = $this->checkout_model->getCouponsList($this->input->post('subtotal'),$cart_restaurant,$this->input->post('order_mode'));
+    		$coupons = $this->checkout_model->getCouponsList($this->input->post('subtotal'),$cart_shop,$this->input->post('order_mode'));
     		$order_mode = "'".$this->input->post('order_mode')."'";
     		if (!empty($coupons)) {
 				$html = '<h5>'.$this->lang->line("choose_avail_coupons").'</h5>
@@ -595,9 +595,9 @@ class Checkout extends CI_Controller {
     	} 
     	$this->session->set_userdata(array('order_mode' => $this->input->post('order_mode')));
     	$cart_details = get_cookie('cart_details');
-		$cart_restaurant = get_cookie('cart_restaurant');
-		$data['cart_details'] = $this->getCartItems($cart_details,$cart_restaurant);
-		$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($cart_restaurant);
+		$cart_shop = get_cookie('cart_shop');
+		$data['cart_details'] = $this->getCartItems($cart_details,$cart_shop);
+		$data['currency_symbol'] = $this->common_model->getShopCurrencySymbol($cart_shop);
 		$data['order_mode'] = $this->input->post('order_mode');
 		$order_summary = $this->load->view('ajax_order_summary',$data,true);
 		$array_view = array(
@@ -679,9 +679,9 @@ class Checkout extends CI_Controller {
     		$this->session->unset_userdata('coupon_name');
     	}
     	$cart_details = get_cookie('cart_details');
-		$cart_restaurant = get_cookie('cart_restaurant');
-		$data['cart_details'] = $this->getCartItems($cart_details,$cart_restaurant);
-		$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($cart_restaurant);
+		$cart_shop = get_cookie('cart_shop');
+		$data['cart_details'] = $this->getCartItems($cart_details,$cart_shop);
+		$data['currency_symbol'] = $this->common_model->getShopCurrencySymbol($cart_shop);
 		$data['order_mode'] = $this->input->post('order_mode');
     	$this->load->view('ajax_order_summary',$data);
     }
@@ -689,11 +689,11 @@ class Checkout extends CI_Controller {
     public function addOrder(){
 		$data['page_title'] = $this->lang->line('add_order'). ' | ' . $this->lang->line('site_title');
     	$cart_details = get_cookie('cart_details');
-		$cart_restaurant = get_cookie('cart_restaurant');
+		$cart_shop = get_cookie('cart_shop');
 		$pre_order_date = get_cookie('pre_order_date');
-		$cart_item_details = $this->getCartItems($cart_details,$cart_restaurant);
-    	if ($this->session->userdata('is_user_login') == 1 && !empty($this->session->userdata('UserID')) && !empty($cart_restaurant)) {
-			$restaurant_detail = $this->checkout_model->getRestaurantTax($cart_restaurant);
+		$cart_item_details = $this->getCartItems($cart_details,$cart_shop);
+    	if ($this->session->userdata('is_user_login') == 1 && !empty($this->session->userdata('UserID')) && !empty($cart_shop)) {
+			$shop_detail = $this->checkout_model->getShopTax($cart_shop);
 			
 			// Update user phone number
 			$this->common_model->updateData('users', array(
@@ -703,7 +703,7 @@ class Checkout extends CI_Controller {
 
     		$add_data = array(              
                 'user_id'=> $this->session->userdata('UserID'),
-                'restaurant_id' => $cart_restaurant,
+                'shop_id' => $cart_shop,
                 'address_id' => ($this->input->post('your_address'))?$this->input->post('your_address'):'',
                 'order_status' =>'placed',
 				'order_date' =>date('Y-m-d H:i:s'),
@@ -835,7 +835,7 @@ class Checkout extends CI_Controller {
             'order_id'=>$order_id,
             'user_detail' => serialize($user_detail),
             'item_detail' => serialize($add_item),
-            'restaurant_detail' => serialize($restaurant_detail),
+            'shop_detail' => serialize($shop_detail),
         );
         $this->common_model->addData('order_detail',$order_detail);
 
@@ -856,7 +856,7 @@ class Checkout extends CI_Controller {
             $this->email->initialize($config);  
             $this->email->from($FromEmailID->OptionValue, $FromEmailName->OptionValue);  
             $this->email->to(trim($FromEmailID->OptionValue)); 
-            // $this->email->to(trim($restaurant_detail->email)); 
+            // $this->email->to(trim($shop_detail->email)); 
             $this->email->subject($email_template->subject);  
             $this->email->message($email_template->message);  
             if(!$this->email->send()){
@@ -875,7 +875,7 @@ class Checkout extends CI_Controller {
 			$this->session->unset_userdata('coupon_discount');
 			$this->session->unset_userdata('coupon_name');
 			delete_cookie('cart_details');
-			delete_cookie('cart_restaurant');
+			delete_cookie('cart_shop');
 			delete_cookie('pre_order_date');
 			delete_cookie('order_mode');
         	//echo "success";

@@ -12,7 +12,7 @@ if($this->input->post()){
     $$key = @htmlspecialchars($this->input->post($key));
   } 
 } else {
-  $FieldsArray = array('content_id','entity_id','name','restaurant_id','category_id','price','menu_detail','availability','image','is_veg','check_add_ons');
+  $FieldsArray = array('content_id','entity_id','name','shop_id','category_id','price','menu_detail','availability','image','is_under_20_kg','check_add_ons');
   foreach ($FieldsArray as $key) {
     $$key = @htmlspecialchars($edit_records->$key);
   }
@@ -49,7 +49,7 @@ else
                             <i class="fa fa-angle-right"></i>
                         </li>
                         <li>
-                            <a href="<?php echo base_url().ADMIN_URL?>/restaurant/view_menu"><?php echo $this->lang->line('deal') ?></a>
+                            <a href="<?php echo base_url().ADMIN_URL?>/shop/view_menu"><?php echo $this->lang->line('deal') ?></a>
                             <i class="fa fa-angle-right"></i>
                         </li>
                         <li>
@@ -86,11 +86,11 @@ else
                                     <div class="form-group">
                                         <label class="control-label col-md-3"><?php echo $this->lang->line('res_name') ?><span class="required">*</span></label>
                                         <div class="col-md-8">
-                                            <select name="restaurant_id" class="form-control" id="restaurant_id" onchange="getCurrency(this.value)">
+                                            <select name="shop_id" class="form-control" id="shop_id" onchange="getCurrency(this.value)">
                                                 <option value=""><?php echo $this->lang->line('select') ?></option>
-                                                <?php if(!empty($restaurant)){
-                                                    foreach ($restaurant as $key => $value) { ?>
-                                                       <option value="<?php echo $value->entity_id ?>" <?php echo ($value->entity_id == $restaurant_id)?"selected":"" ?>><?php echo $value->name ?></option>
+                                                <?php if(!empty($shop)){
+                                                    foreach ($shop as $key => $value) { ?>
+                                                       <option value="<?php echo $value->entity_id ?>" <?php echo ($value->entity_id == $shop_id)?"selected":"" ?>><?php echo $value->name ?></option>
                                                 <?php } } ?>
                                             </select>
                                         </div>
@@ -243,8 +243,8 @@ else
                                     <div class="form-group">
                                         <label class="control-label col-md-3"><?php echo $this->lang->line('food_type'); ?><span class="required">*</span></label>
                                         <div class="col-md-8">
-                                            <input type="radio" name="is_veg" id="is_veg" value="1" checked="" <?php echo ($is_veg)?($is_veg== '1')?'checked':'':'checked' ?>>Veg
-                                            <input type="radio" name="is_veg" id="non-veg" value="0" <?php echo ($is_veg == '0')?'checked':'' ?>>Non veg
+                                            <input type="radio" name="is_under_20_kg" id="is_under_20_kg" value="1" checked="" <?php echo ($is_under_20_kg)?($is_under_20_kg== '1')?'checked':'':'checked' ?>>Veg
+                                            <input type="radio" name="is_under_20_kg" id="non-veg" value="0" <?php echo ($is_under_20_kg == '0')?'checked':'' ?>>Non veg
                                         </div>
                                     </div>    
                                     <div class="form-group">

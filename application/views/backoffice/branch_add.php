@@ -13,7 +13,7 @@ if($this->input->post()){
     $$key = @htmlspecialchars($this->input->post($key));
   } 
 } else {
-  $FieldsArray = array('content_id','entity_id','branch_entity_id','name','phone_number','email','capacity','no_of_table','no_of_hall','hall_capacity','address','landmark','latitude','longitude','state','country','city','zipcode','amount_type','amount','enable_hours','timings','image');
+  $FieldsArray = array('content_id','entity_id','branch_entity_id','name','phone_number','email','address','landmark','latitude','longitude','state','country','city','zipcode','amount_type','amount','enable_hours','timings','image');
   foreach ($FieldsArray as $key) {
     $$key = @htmlspecialchars($edit_records->$key);
   }
@@ -94,8 +94,8 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                         <div class="col-md-4">
                                             <select name="branch_entity_id" id="branch_entity_id" class="form-control">
                                                 <option value=""><?php echo $this->lang->line('select'); ?></option>
-                                                <?php if(!empty($restaurant)){
-                                                    foreach ($restaurant as $key => $value) { ?>
+                                                <?php if(!empty($shop)){
+                                                    foreach ($shop as $key => $value) { ?>
                                                        <option value="<?php echo $value->entity_id ?>" <?php echo ($value->entity_id == $branch_entity_id)?"selected":"" ?>><?php echo $value->name ?></option>
                                                 <?php } } ?>
                                             </select>
@@ -136,30 +136,6 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                                     <span class="block"><?php echo $this->lang->line('selected_image'); ?></span>
                                                             <img id='oldpic' class="img-responsive" src="<?php echo base_url().'uploads/'.$image;?>">
                                             <?php }  ?>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('capacity'); ?><span class="required">*</span></label>
-                                        <div class="col-md-4">
-                                            <input type="text" name="capacity" id="capacity" value="<?php echo $capacity ?>" maxlength="20" data-required="1" class="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('no_of_table'); ?><span class="required">*</span></label>
-                                        <div class="col-md-4">
-                                            <input type="text" name="no_of_table" id="no_of_table" value="<?php echo $no_of_table ?>" maxlength="20" data-required="1" class="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('no_of_hall'); ?></label>
-                                        <div class="col-md-4">
-                                            <input type="text" name="no_of_hall" id="no_of_hall"  value="<?php echo $no_of_hall ?>" maxlength="20" data-required="1" class="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('hall_capacity'); ?></label>
-                                        <div class="col-md-4">
-                                            <input type="text" name="hall_capacity" id="hall_capacity" value="<?php echo $hall_capacity ?>" maxlength="20" data-required="1" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">

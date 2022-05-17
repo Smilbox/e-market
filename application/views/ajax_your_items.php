@@ -13,7 +13,7 @@
 						<?php if (!empty($cart_details['cart_items'])) {
 							foreach ($cart_details['cart_items'] as $cart_key => $value) { ?>
 								<tr>
-									<td class="item-img-main"><div><i class="iicon-icon-15 <?php echo ($value['is_veg'] == 1)?'veg':'non-veg'; ?>"></i></div></td>
+									<td class="item-img-main"><div><i class="iicon-icon-15 <?php echo ($value['is_under_20_kg'] == 1)?'veg':'non-veg'; ?>"></i></div></td>
 									<td class="item-name">
 										<?php echo $value['name']; ?>
 										<ul class="ul-disc">
@@ -36,13 +36,13 @@
 										<div class="add-cart-item">
 											<div class="number">
 												<input type="hidden" name="total_cart_items" id="total_cart_items" value="<?php echo count($cart_details['cart_items']); ?>">
-												<span class="minus" id="minusQuantity" onclick="customCheckoutItemCount(<?php echo $value['menu_id']; ?>,<?php echo $value['restaurant_id']; ?>,'minus',<?php echo $cart_key; ?>)"><i class="iicon-icon-22"></i></span>
+												<span class="minus" id="minusQuantity" onclick="customCheckoutItemCount(<?php echo $value['menu_id']; ?>,<?php echo $value['shop_id']; ?>,'minus',<?php echo $cart_key; ?>)"><i class="iicon-icon-22"></i></span>
 												<input type="text" name="item_count_check" id="item_count_check" value="<?php echo $value['quantity']; ?>" class="pointer-none" />
-												<span class="plus" id="plusQuantity" onclick="customCheckoutItemCount(<?php echo $value['menu_id']; ?>,<?php echo $value['restaurant_id']; ?>,'plus',<?php echo $cart_key; ?>)"><i class="iicon-icon-21"></i></span>
+												<span class="plus" id="plusQuantity" onclick="customCheckoutItemCount(<?php echo $value['menu_id']; ?>,<?php echo $value['shop_id']; ?>,'plus',<?php echo $cart_key; ?>)"><i class="iicon-icon-21"></i></span>
 											</div>
 										</div>
 									</td>
-									<td class="close-btn-cart"><button class="close-btn" onclick="customCheckoutItemCount(<?php echo $value['menu_id']; ?>,<?php echo $value['restaurant_id']; ?>,'remove',<?php echo $cart_key; ?>)"><i class="iicon-icon-38"></i></button></td>
+									<td class="close-btn-cart"><button class="close-btn" onclick="customCheckoutItemCount(<?php echo $value['menu_id']; ?>,<?php echo $value['shop_id']; ?>,'remove',<?php echo $cart_key; ?>)"><i class="iicon-icon-38"></i></button></td>
 								</tr>
 							<?php }
 						} 

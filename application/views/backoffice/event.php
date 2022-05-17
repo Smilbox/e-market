@@ -84,12 +84,12 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="control-label"><?php echo $this->lang->line('restaurant') ?><span class="required">*</span></label>
-                                                <select name="restaurant_id" id="restaurant_id" class="form-control required">
+                                                <label class="control-label"><?php echo $this->lang->line('shop') ?><span class="required">*</span></label>
+                                                <select name="shop_id" id="shop_id" class="form-control required">
                                                     <option value=""><?php echo $this->lang->line('select') ?></option>
 
-                                                    <?php if(!empty($restaurant)){
-                                                    foreach ($restaurant as $key => $value) { ?>
+                                                    <?php if(!empty($shop)){
+                                                    foreach ($shop as $key => $value) { ?>
                                                          <option value="<?php echo $value->entity_id ?>"><?php echo $value->name ?></option>
                                                     <?php  } } ?>                           
                                                 </select> 
@@ -164,7 +164,7 @@
 
                                             <th><?php echo $this->lang->line('user')?></th>
 
-                                            <th><?php echo $this->lang->line('restaurant')?></th>
+                                            <th><?php echo $this->lang->line('shop')?></th>
 
                                             <th><?php echo $this->lang->line('no_of_people')?></th>
 
@@ -188,7 +188,7 @@
 
                                            
 
-                                            <td><input type="text" class="form-control form-filter input-sm" name="restaurant"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="shop"></td>
 
                                             <td><input type="text" class="form-control form-filter input-sm" name="no_of_people"></td>
 

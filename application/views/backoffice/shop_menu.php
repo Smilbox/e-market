@@ -119,7 +119,7 @@
                                                 <td><input type="text" class="form-control form-filter input-sm" disabled="" name="<?php echo $lang->language_slug;?>"></td>
                                             <?php } ?> 
                                             <td><input type="text" class="form-control form-filter input-sm" name="price"></td>   
-                                            <td><input type="text" class="form-control form-filter input-sm" name="restaurant"></td> 
+                                            <td><input type="text" class="form-control form-filter input-sm" name="shop"></td> 
                                             <td><div class="margin-bottom-5">
                                                     <button class="btn btn-sm  danger-btn filter-submit margin-bottom"><i class="fa fa-search"></i> <?php echo $this->lang->line('search') ?></button>
                                                 </div>
@@ -233,7 +233,7 @@ function deleteDetail(entity_id,content_id)
                   type : "POST",
                   dataType : "html",
                   url : 'ajaxDelete',
-                  data : {'tblname':'restaurant_menu_item','entity_id':entity_id,'content_id':content_id},
+                  data : {'tblname':'shop_menu_item','entity_id':entity_id,'content_id':content_id},
                   success: function(response) {
                     grid.getDataTable().fnDraw(); 
                   },
@@ -263,7 +263,7 @@ function deleteAll(content_id)
                 type : "POST",
                 dataType : "json",
                 url : 'ajaxDeleteAll',
-                data : {'tblname':'restaurant_menu_item','content_id':content_id},
+                data : {'tblname':'shop_menu_item','content_id':content_id},
                 success: function(response) {
                   grid.getDataTable().fnDraw(); 
                 },
@@ -295,7 +295,7 @@ function disable_record(entity_id,Status)
                 type : "POST",
                 dataType : "json",
                 url : 'ajaxDisable',
-                data : {'entity_id':entity_id,'status':Status,'tblname':'restaurant_menu_item'},
+                data : {'entity_id':entity_id,'status':Status,'tblname':'shop_menu_item'},
                 success: function(response) {
                      grid.getDataTable().fnDraw(); 
                 },
@@ -327,7 +327,7 @@ function disableAll(ContentID,Status)
                 type : "POST",
                 dataType : "json",
                 url : 'ajaxDisableAll',
-                data : {'content_id':ContentID,'status':Status,'tblname':'restaurant_menu_item'},
+                data : {'content_id':ContentID,'status':Status,'tblname':'shop_menu_item'},
                 success: function(response) {
                   grid.getDataTable().fnDraw(); 
                 },

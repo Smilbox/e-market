@@ -107,13 +107,13 @@
                                                                     <div class="ordering-box-top">
                                                                         <div class="ordering-box-img">
                                                                             <div class="ordering-img">
-                                                                                <?php $image = ($value['restaurant_image']) ? (base_url() . 'uploads/' . $value['restaurant_image']) : (default_user_img);?>
+                                                                                <?php $image = ($value['shop_image']) ? (base_url() . 'uploads/' . $value['shop_image']) : (default_user_img);?>
                                                                                 <img src="<?php echo $image; ?>">
                                                                                 <?php echo ($value['ratings'] > 0)?'<strong>'.$value['ratings'].'</strong>':'<strong class="newres">NEW</strong>'; ?>
                                                                             </div>
                                                                         </div>
                                                                         <div class="ordering-box-text">
-                                                                            <h6><?php echo $value['restaurant_name']; ?></h6>
+                                                                            <h6><?php echo $value['shop_name']; ?></h6>
                                                                             <p>#<?php echo $this->lang->line('orderid') ?> - <?php echo $value['order_id']; ?></p>
                                                                             <strong><?php echo $this->lang->line('price') ?> : <span><?php echo $value['currency_symbol'];?> <?php echo $total; ?></span></strong>
                                                                         </div>
@@ -160,13 +160,13 @@
                                                                     <div class="ordering-box-top">
                                                                         <div class="ordering-box-img">
                                                                             <div class="ordering-img">
-                                                                                <?php $image = ($value['restaurant_image']) ? (base_url() . 'uploads/' . $value['restaurant_image']) : (default_user_img);?>
+                                                                                <?php $image = ($value['shop_image']) ? (base_url() . 'uploads/' . $value['shop_image']) : (default_user_img);?>
                                                                                 <img src="<?php echo $image; ?>">
                                                                                 <?php echo ($value['ratings'] > 0)?'<strong>'.$value['ratings'].'</strong>':'<strong class="newres">NEW</strong>'; ?>
                                                                             </div>
                                                                         </div>
                                                                         <div class="ordering-box-text">
-                                                                            <h6><?php echo $value['restaurant_name']; ?></h6>
+                                                                            <h6><?php echo $value['shop_name']; ?></h6>
                                                                             <p>#<?php echo $this->lang->line('orderid') ?> - <?php echo $value['order_id']; ?></p>
                                                                             <strong><?php echo $this->lang->line('price') ?> : <span><?php echo $value['currency_symbol'];?> <?php echo $total; ?></span></strong>
                                                                         </div>
@@ -227,13 +227,13 @@
                                                                 <div class="ordering-box-top">
                                                                     <div class="ordering-box-img">
                                                                         <div class="ordering-img">
-                                                                            <?php $image = ($value['restaurant_image']) ? (base_url() . 'uploads/' . $value['restaurant_image']) : (default_user_img);?>
+                                                                            <?php $image = ($value['shop_image']) ? (base_url() . 'uploads/' . $value['shop_image']) : (default_user_img);?>
                                                                             <img src="<?php echo $image; ?>">
                                                                             <?php echo ($value['ratings'] > 0)?'<strong>'.$value['ratings'].'</strong>':'<strong class="newres">NEW</strong>'; ?> 
                                                                         </div>
                                                                     </div>
                                                                     <div class="ordering-box-text">
-                                                                        <h6><?php echo $value['restaurant_name']; ?></h6>
+                                                                        <h6><?php echo $value['shop_name']; ?></h6>
                                                                         <p>#<?php echo $this->lang->line('orderid') ?> - <?php echo $value['order_id']; ?></p>
                                                                         <strong><?php echo $this->lang->line('price') ?> : <span><?php echo $value['currency_symbol'];?> <?php echo $total; ?></span></strong>
                                                                     </div>
@@ -283,13 +283,13 @@
                                                                 <div class="ordering-box-top">
                                                                     <div class="ordering-box-img">
                                                                         <div class="ordering-img">
-                                                                            <?php $image = ($value['restaurant_image']) ? (base_url() . 'uploads/' . $value['restaurant_image']) : (default_user_img);?>
+                                                                            <?php $image = ($value['shop_image']) ? (base_url() . 'uploads/' . $value['shop_image']) : (default_user_img);?>
                                                                             <img src="<?php echo $image; ?>">
                                                                             <?php echo ($value['ratings'] > 0)?'<strong>'.$value['ratings'].'</strong>':'<strong class="newres">NEW</strong>'; ?>
                                                                         </div>
                                                                     </div>
                                                                     <div class="ordering-box-text">
-                                                                        <h6><?php echo $value['restaurant_name']; ?></h6>
+                                                                        <h6><?php echo $value['shop_name']; ?></h6>
                                                                         <p>#<?php echo $this->lang->line('orderid') ?> - <?php echo $value['order_id']; ?></p>
                                                                         <strong><?php echo $this->lang->line('price') ?> : <span><?php echo $value['currency_symbol'];?> <?php echo $total; ?></span></strong>
                                                                     </div>

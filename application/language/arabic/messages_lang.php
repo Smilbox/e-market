@@ -23,17 +23,9 @@ $lang['title_admin_usersadd'] = 'Add User';
 $lang['title_admin_usersedit'] = 'Edit User';
 $lang['title_admin_commission'] = 'Commission';
 
-$lang['title_admin_restaurant'] = 'Restaurant';
-$lang['title_admin_restaurantadd'] = 'Add Restaurant';
-$lang['title_admin_restaurantedit'] = 'Edit Restaurant';
-
 $lang['title_admin_shop_menu'] = 'Menu';
 $lang['title_admin_shop_menu_add'] = 'Add Menu';
 $lang['title_admin_shop_menu_edit'] = 'Edit Menu';
-
-$lang['title_admin_restaurantPackage'] = 'Package';
-$lang['title_admin_restaurantPackageadd'] = 'Add Package';
-$lang['title_admin_restaurantPackageEdit'] = 'Edit Package';
 
 $lang['title_admin_userAddressAdd'] = 'Add Address';
 $lang['title_admin_userAddressEdit'] = 'Edit Address';
@@ -79,9 +71,9 @@ $lang['title_admin_cancel'] = 'Cancel Order';
 $lang['title_admin_notification'] = 'Notification';
 $lang['title_admin_notificationadd'] = 'Add Notification';
 //site message and lable
-$lang['site_name'] = 'Restaurant';
+$lang['site_name'] = 'Shop';
 $lang['dev_site_name'] = 'TAAAKEN BITES';
-$lang['site_title'] = 'Restaurant';
+$lang['site_title'] = 'Shop';
 $lang['success_add'] = 'Successfully Added';
 $lang['success_edit'] = 'Successfully Edit';
 $lang['success_update'] = 'Successfully Updated';
@@ -172,20 +164,16 @@ $lang['close'] = 'Close';
 $lang['select'] = 'Select...';
 $lang['list'] = 'List';
 $lang['no_file'] = 'No file chosen';
-//restaurant module
-$lang['restaurant'] = 'Restaurant';
-$lang['manage_res'] = 'Manage Restaurant';
+//shop module
+$lang['shop'] = 'Shop';
+$lang['manage_res'] = 'Manage Shop';
 $lang['menu'] = 'Menu';
 $lang['package'] = 'Package';
-$lang['res_name'] = 'Restaurant Name';
+$lang['res_name'] = 'Shop Name';
 $lang['phone_number'] = 'Phone Number';
 $lang['email'] = 'Email';
 $lang['image'] = 'Image';
 $lang['selected_image'] = 'You have previously selected';
-$lang['capacity'] = 'Capacity(People)';
-$lang['no_of_table'] = 'No Of Table';
-$lang['no_of_hall'] = 'No Of Hall';
-$lang['hall_capacity'] = 'Hall Capacity';
 $lang['address'] = 'Address';
 $lang['landmark'] = 'Landmark';
 $lang['latitude'] = 'Latitude';
@@ -202,8 +190,8 @@ $lang['food_type'] = 'Food Type';
 $lang['veg'] = 'Veg';
 $lang['non_veg'] = 'Non veg';
 $lang['both'] = 'Both';
-$lang['enable_hours'] = 'Enable Restaurant Hours';
-$lang['res_time'] = 'Restaurant Timings';
+$lang['enable_hours'] = 'Enable Shop Hours';
+$lang['res_time'] = 'Shop Timings';
 $lang['time_msg'] = 'Assign Monday Timings for all days';
 $lang['mon'] = 'Monday';
 $lang['tue'] = 'Tuesday';
@@ -222,13 +210,13 @@ $lang['img_allow'] = 'Only JPG, JPEG, PNG & GIF files are allowed.';
 $lang['opening_hours'] = 'Select Opening Hours';
 $lang['closing_hours'] = 'Select Closing Hours';
 //menu module
-$lang['manage_res_menu'] = 'Manage Restaurant Menu';
+$lang['manage_res_menu'] = 'Manage Shop Menu';
 $lang['category'] = 'Category';
 $lang['recipe_detail'] = 'Recipe Details';
 $lang['recipe_time'] ='Recipe Time(In Minutes)';
 $lang['popular_item'] = 'Popular Item';
 //package module
-$lang['manage_res_package'] = 'Manage Restaurant Package';
+$lang['manage_res_package'] = 'Manage Shop Package';
 $lang['name'] = 'Name';
 $lang['price'] = 'Price';
 $lang['detail'] = 'Detail';
@@ -299,7 +287,7 @@ $lang['booking_date'] = 'Booking Date';
 $lang['event_status'] = 'Event Status';
 $lang['no_of_people'] = 'No of People';
 $lang['coupon_discount'] = 'Coupon Discount';
-$lang['res_tax_rate'] = 'Restaurant tax Rate';
+$lang['res_tax_rate'] = 'Shop tax Rate';
 $lang['save'] = 'Save';
 $lang['download_invoice'] = 'Click here for Download Invoice';
 $lang['invoice'] = 'Invoice';
@@ -331,7 +319,7 @@ $lang['accept'] = 'Accept';
 $lang['order_type'] = 'Order Type';
 //dahsboard
 $lang['statistics'] = 'statistics';
-$lang['total_restaurant'] = 'Total Restaurant';
+$lang['total_shop'] = 'Total Shop';
 $lang['view_more'] = 'View more';
 $lang['total_user'] = 'Total User';
 $lang['total_order'] = 'Total Order';

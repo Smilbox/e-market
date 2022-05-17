@@ -108,7 +108,7 @@ $this->load->view(ADMIN_URL . '/header'); ?>
             $$key = @htmlspecialchars($this->input->post($key));
         }
     } else {
-        $FieldsArray = array('entity_id', 'user_id', 'restaurant_id', 'coupon_id', 'tax_rate', 'order_status', 'order_date', 'total_rate', 'coupon_amount', 'coupon_type', 'tax_type', 'subtotal');
+        $FieldsArray = array('entity_id', 'user_id', 'shop_id', 'coupon_id', 'tax_rate', 'order_status', 'order_date', 'total_rate', 'coupon_amount', 'coupon_type', 'tax_type', 'subtotal');
         foreach ($FieldsArray as $key) {
             $$key = @htmlspecialchars($edit_records->$key);
         }
@@ -122,8 +122,8 @@ $this->load->view(ADMIN_URL . '/header'); ?>
         $form_action      = base_url() . ADMIN_URL . '/' . $this->controller_name . "/add";
         $menu_item = 1;
     }
-    $restaurant_id = isset($_POST['restaurant_id']) ? $_POST['restaurant_id'] : $restaurant_id;
-    $menu_detail     = $this->order_model->getItem($restaurant_id);
+    $shop_id = isset($_POST['shop_id']) ? $_POST['shop_id'] : $shop_id;
+    $menu_detail     = $this->order_model->getItem($shop_id);
     ?>
 
     <div class="page-content-wrapper">
@@ -190,13 +190,13 @@ $this->load->view(ADMIN_URL . '/header'); ?>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('restaurant') ?><span class="required">*</span></label>
+                                        <label class="control-label col-md-3"><?php echo $this->lang->line('shop') ?><span class="required">*</span></label>
                                         <div class="col-md-4">
-                                            <select name="restaurant_id" class="form-control" id="restaurant_id" onchange="getItemDetail(this.id,this.value);updateRestaurantId(this.value)">
+                                            <select name="shop_id" class="form-control" id="shop_id" onchange="getItemDetail(this.id,this.value);updateShopId(this.value)">
                                                 <option value=""><?php echo $this->lang->line('select') ?></option>
-                                                <?php if (!empty($restaurant)) {
-                                                    foreach ($restaurant as $key => $value) { ?>
-                                                        <option value="<?php echo $value->entity_id ?>" <?php echo ($value->entity_id == $restaurant_id) ? "selected" : "" ?> amount="<?php echo $value->amount ?>" type="<?php echo $value->amount_type ?>"><?php echo $value->name ?></option>
+                                                <?php if (!empty($shop)) {
+                                                    foreach ($shop as $key => $value) { ?>
+                                                        <option value="<?php echo $value->entity_id ?>" <?php echo ($value->entity_id == $shop_id) ? "selected" : "" ?> amount="<?php echo $value->amount ?>" type="<?php echo $value->amount_type ?>"><?php echo $value->name ?></option>
                                                 <?php }
                                                 } ?>
                                             </select>
@@ -210,7 +210,7 @@ $this->load->view(ADMIN_URL . '/header'); ?>
                                                     <div class="col-md-2">
                                                         <select name="item_id[<?php echo $inc ?>]" class="form-control item_id validate-class" id="item_id<?php echo $inc ?>" onchange="getItemPrice(this.id,<?php echo $inc ?>)">
                                                             <option value=""><?php echo $this->lang->line('select') ?></option>
-                                                            <?php if ($_POST['restaurant_id']) {
+                                                            <?php if ($_POST['shop_id']) {
                                                                 if (!empty($menu_detail)) {
                                                                     foreach ($menu_detail as $key => $value) { ?>
                                                                         <option value="<?php echo $value->entity_id ?>" data-id="<?php echo $value->price ?>" <?php echo ($value->entity_id == $_POST['item_id'][$i]) ? "selected" : "" ?>><?php echo $value->name ?></option>
@@ -609,7 +609,7 @@ $this->load->view(ADMIN_URL . '/header'); ?>
             data: {
                 "lat": latitude,
                 "long": longitude,
-                "resto_id": restaurant.id
+                "shop_id": shop.id
             },
             beforeSend: function() {
                 $('#quotes-main-loader').show();
@@ -666,13 +666,13 @@ $this->load->view(ADMIN_URL . '/header'); ?>
     });
 
 
-    const restaurant = {
+    const shop = {
         id: 0
     };
 
-    function updateRestaurantId(id) {
+    function updateShopId(id) {
         console.log(id);
-        restaurant.id = id;
+        shop.id = id;
     }
 
     //clone items
@@ -808,7 +808,7 @@ $this->load->view(ADMIN_URL . '/header'); ?>
 
     //get delivery charge
     function getDeliveryCharge() {
-        var resto_id = $('#restaurant_id option:selected').val();
+        var shop_id = $('#shop_id option:selected').val();
         var address = $('#address_id option:selected').text();
         if (address != '') {
             var geocoder = new google.maps.Geocoder();
@@ -825,7 +825,7 @@ $this->load->view(ADMIN_URL . '/header'); ?>
                         dataType: "html",
                         url: '<?php echo base_url() . ADMIN_URL . '/' . $this->controller_name ?>/getDeliveryCharge',
                         data: {
-                            'resto_id': resto_id,
+                            'shop_id': shop_id,
                             'lat': lat,
                             'long': long
                         },

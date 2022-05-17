@@ -21,7 +21,7 @@ class Order extends CI_Controller {
     // view order
     public function view(){
     	$data['meta_title'] = $this->lang->line('title_admin_order').' | '.$this->lang->line('site_title');
-        $data['restaurant'] = $this->order_model->getRestaurantList();
+        $data['shop'] = $this->order_model->getShopList();
         $data['drivers'] = $this->order_model->getDrivers();
         $this->load->view(ADMIN_URL.'/order',$data);
     }
@@ -31,7 +31,7 @@ class Order extends CI_Controller {
     	if($this->input->post('submit_page') == "Submit")
         {   
             $this->form_validation->set_rules('user_id', 'User', 'trim|required');
-            $this->form_validation->set_rules('restaurant_id', 'Restaurant', 'trim|required');
+            $this->form_validation->set_rules('shop_id', 'Shop', 'trim|required');
             $this->form_validation->set_rules('order_status','Order Status', 'trim|required');
             $this->form_validation->set_rules('order_date','Date Of Order', 'trim|required');
             $this->form_validation->set_rules('total_rate','Total', 'trim|required');
@@ -40,7 +40,7 @@ class Order extends CI_Controller {
             {  
                 $add_data = array(              
                     'user_id'=>$this->input->post('user_id'),
-                    'restaurant_id' =>$this->input->post('restaurant_id'),
+                    'shop_id' =>$this->input->post('shop_id'),
                     'coupon_id' =>$this->input->post('coupon_id'),
                     'order_status' =>$this->input->post('order_status'),
                     'order_date' =>date('Y-m-d H:i:s',strtotime($this->input->post('order_date'))),
@@ -105,13 +105,13 @@ class Order extends CI_Controller {
                     'longitude'=>$this->input->post('add_longitude'),
                 );
 
-                //get restaurant detail
-                $rest_detail = $this->order_model->getRestaurantDetail($this->input->post('restaurant_id'));
+                //get shop detail
+                $rest_detail = $this->order_model->getShopDetail($this->input->post('shop_id'));
                 $order_detail = array(
                     'order_id'=>$order_id,
                     'user_detail' => serialize($user_detail),
                     'item_detail' => serialize($add_item),
-                    'restaurant_detail' => serialize($rest_detail),
+                    'shop_detail' => serialize($rest_detail),
                 ); 
                 $this->order_model->addData('order_detail',$order_detail);
                 $this->session->set_flashdata('page_MSG', $this->lang->line('success_add'));
@@ -166,7 +166,7 @@ class Order extends CI_Controller {
                 redirect(base_url().ADMIN_URL.'/'.$this->controller_name.'/view');                 
             }
         }
-        $data['restaurant'] = $this->order_model->getListData('restaurant');
+        $data['shop'] = $this->order_model->getListData('shop');
         $data['user'] = $this->order_model->getListData('users');
         $data['coupon'] = $this->order_model->getListData('coupon');
     	$this->load->view(ADMIN_URL.'/order_add',$data);
@@ -198,11 +198,11 @@ class Order extends CI_Controller {
             $trackDriver = (($val->first_name != '' || $val->last_name != '') && $val->order_delivery == "Delivery")?'<a target="_blank" href="'.base_url().ADMIN_URL.'/order/track_order/'.str_replace(array('+', '/', '='), array('-', '_', '~'), $this->encryption->encrypt($val->entity_id)).'" title="Click here to view driver live position" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-eye"></i> '.$this->lang->line('track_driver').'</a>':'';            
             $assignDisabledStatus = ($val->status != 1)?'disabled':'';
             $ostatus = ($val->ostatus)?"'".$val->ostatus."'":'';
-            $restaurant = ($val->restaurant_detail)?unserialize($val->restaurant_detail):'';
-            $accept = ($val->status != 1 && $val->restaurant_id && $val->ostatus != 'delivered' && $val->ostatus != 'cancel')?'<button onclick="disableDetail('.$val->entity_id.','.$val->restaurant_id.','.$val->entity_id.')"  title="'.$this->lang->line('accept').'" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-check"></i> '.$this->lang->line('accept').'</button>':'';
-            // $reject = ($val->ostatus != 'delivered' && $val->ostatus != 'cancel' && $val->status != 1)?'<button onclick="rejectOrder('.$val->user_id.','.$val->restaurant_id.','.$val->entity_id.')"  title="'.$this->lang->line('reject').'" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-times"></i> '.$this->lang->line('reject').'</button>':'';
-            $reject = ($val->ostatus != 'delivered' && $val->ostatus != 'cancel' && $val->status != 1)?'<button onclick="rejectOrder('.$val->user_id.','.$val->restaurant_id.','.$val->entity_id.')"  title="'.$this->lang->line('reject').'" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-times"></i> '.$this->lang->line('reject').'</button>':'';
-            $cancel = ($val->ostatus != 'delivered' && $val->ostatus != 'cancel' /*&& $val->status != 1*/)?'<button onclick="rejectOrder('.$val->user_id.','.$val->restaurant_id.','.$val->entity_id.')"  title="'.$this->lang->line('cancel').'" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-times"></i> '.$this->lang->line('cancel').'</button>':'';
+            $shop = ($val->shop_detail)?unserialize($val->shop_detail):'';
+            $accept = ($val->status != 1 && $val->shop_id && $val->ostatus != 'delivered' && $val->ostatus != 'cancel')?'<button onclick="disableDetail('.$val->entity_id.','.$val->shop_id.','.$val->entity_id.')"  title="'.$this->lang->line('accept').'" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-check"></i> '.$this->lang->line('accept').'</button>':'';
+            // $reject = ($val->ostatus != 'delivered' && $val->ostatus != 'cancel' && $val->status != 1)?'<button onclick="rejectOrder('.$val->user_id.','.$val->shop_id.','.$val->entity_id.')"  title="'.$this->lang->line('reject').'" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-times"></i> '.$this->lang->line('reject').'</button>':'';
+            $reject = ($val->ostatus != 'delivered' && $val->ostatus != 'cancel' && $val->status != 1)?'<button onclick="rejectOrder('.$val->user_id.','.$val->shop_id.','.$val->entity_id.')"  title="'.$this->lang->line('reject').'" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-times"></i> '.$this->lang->line('reject').'</button>':'';
+            $cancel = ($val->ostatus != 'delivered' && $val->ostatus != 'cancel' /*&& $val->status != 1*/)?'<button onclick="rejectOrder('.$val->user_id.','.$val->shop_id.','.$val->entity_id.')"  title="'.$this->lang->line('cancel').'" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-times"></i> '.$this->lang->line('cancel').'</button>':'';
             
             $updateStatus = ($val->status == 1)?'<button onclick="updateStatus('.$val->entity_id.','.$ostatus.','.$val->user_id.')" '.$disabled.' title="Click here for update status" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-edit"></i> '.$this->lang->line('change_status').'</button>':''; 
             $viewComment = ($val->extra_comment != '')?'<button onclick="viewComment('.$val->entity_id.')" title="Click here to view comment" class="delete btn btn-sm danger-btn margin-bottom"><i class="fa fa-eye"></i> '.$this->lang->line('view_comment').'</button>':''; 
@@ -234,8 +234,8 @@ class Order extends CI_Controller {
             $records["aaData"][] = array(
                 '<input type="checkbox" name="ids[]" value="'.$val->entity_id.'">',
                 $val->entity_id,
-                ($restaurant)?$restaurant->name:$val->name,
-                ($val->fname || $val->lname)?$val->fname.' '.$val->lname:'Order by Restaurant',
+                ($shop)?$shop->name:$val->name,
+                ($val->fname || $val->lname)?$val->fname.' '.$val->lname:'Order by Shop',
                 ($val->rate)?$currency_symbol->currency_symbol.number_format_unchanged_precision($val->rate,$currency_symbol->currency_code):'',
                 $val->first_name.' '.$val->last_name,
                 $ostatuslng,
@@ -276,9 +276,9 @@ class Order extends CI_Controller {
     // updating status to reject a order
     public function ajaxReject() { 
         $user_id = ($this->input->post('user_id') != '')?$this->input->post('user_id'):'';
-        $restaurant_id = ($this->input->post('restaurant_id') != '')?$this->input->post('restaurant_id'):'';
+        $shop_id = ($this->input->post('shop_id') != '')?$this->input->post('shop_id'):'';
         $order_id = ($this->input->post('order_id') != '')?$this->input->post('order_id'):'';
-        if($user_id && $restaurant_id && $order_id){ 
+        if($user_id && $shop_id && $order_id){ 
             $this->db->set('order_status','cancel')->where('entity_id',$order_id)->update('order_master');
             $addData = array(
                 'order_id'=>$order_id,
@@ -290,7 +290,7 @@ class Order extends CI_Controller {
             $userdata = $this->order_model->getUserDate($user_id);
             $message = $this->lang->line('order_canceled');
             $device_id = $userdata->device_id;
-            $this->sendFCMRegistration($device_id,$message,'cancel',$restaurant_id);
+            $this->sendFCMRegistration($device_id,$message,'cancel',$shop_id);
         }
     }
     // assign driver
@@ -344,8 +344,8 @@ class Order extends CI_Controller {
                 $this->lang->load('messages_lang', $languages->language_directory);
                 $message = $this->lang->line($order_status);
                 $device_id = $device->device_id;
-                $restaurant = $this->order_model->orderDetails($this->input->post('order_entity_id'));
-                $this->sendFCMRegistration($device_id,$message,'preparing',$restaurant[0]->restaurant_id);
+                $shop = $this->order_model->orderDetails($this->input->post('order_entity_id'));
+                $this->sendFCMRegistration($device_id,$message,'preparing',$shop[0]->shop_id);
 
             	//notification to driver
 	            $device = $this->order_model->getDevice($this->input->post('driver_id'));
@@ -391,14 +391,14 @@ class Order extends CI_Controller {
     // updating status and send request to driver
     public function ajaxdisable() {
         $entity_id = ($this->input->post('entity_id') != '')?$this->input->post('entity_id'):'';
-        $restaurant_id = ($this->input->post('restaurant_id') != '')?$this->input->post('restaurant_id'):'';
+        $shop_id = ($this->input->post('shop_id') != '')?$this->input->post('shop_id'):'';
         $order_id = ($this->input->post('order_id') != '')?$this->input->post('order_id'):'';
-        if($entity_id != '' && $restaurant_id != '' && $order_id != ''){
-            $this->order_model->UpdatedStatus('order_master',$entity_id,$restaurant_id,$order_id);
+        if($entity_id != '' && $shop_id != '' && $order_id != ''){
+            $this->order_model->UpdatedStatus('order_master',$entity_id,$shop_id,$order_id);
             // adding order status
             $addData = array(
                 'order_id'=>$order_id,
-                'order_status'=>'accepted_by_restaurant',
+                'order_status'=>'accepted_by_shop',
                 'time'=>date('Y-m-d H:i:s'),
                 'status_created_by'=>'Admin'
             );
@@ -457,21 +457,21 @@ class Order extends CI_Controller {
     }
 
     public function getDeliveryCharge(){
-        $resto_id = ($this->input->post('resto_id') != '')?$this->input->post('resto_id'):'';
+        $shop_id = ($this->input->post('shop_id') != '')?$this->input->post('shop_id'):'';
         $lat = ($this->input->post('lat') != '')?$this->input->post('lat'):'';
         $long = ($this->input->post('long') != '')?$this->input->post('long'):'';
         $fee = '';
-        if($resto_id && $lat && $long) {
-            $fee = $this->getDeliveryByDistance(null, $lat."~".$long, $resto_id);
+        if($shop_id && $lat && $long) {
+            $fee = $this->getDeliveryByDistance(null, $lat."~".$long, $shop_id);
         }
         echo $fee;
     }
 
-    public function getDeliveryByDistance($originLatLong, $destinationLatLong, $restaurant_id)
+    public function getDeliveryByDistance($originLatLong, $destinationLatLong, $shop_id)
     {
         if(!$originLatLong)
         {
-            $address = $this->common_model->getRestoLatLong($restaurant_id);
+            $address = $this->common_model->getShopLatLong($shop_id);
             $originLatLong = $address->latitude."~".$address->longitude;
         }
         $origin = explode("~", $originLatLong);
@@ -484,7 +484,7 @@ class Order extends CI_Controller {
 		}
         if($distance != null)
         {
-            return $this->getFeeAccordingDistance($distance, $restaurant_id);
+            return $this->getFeeAccordingDistance($distance, $shop_id);
         }
         else
         {
@@ -536,9 +536,9 @@ class Order extends CI_Controller {
         }
     } */
 
-    public function getFeeAccordingDistance($distance, $restaurant_id)
+    public function getFeeAccordingDistance($distance, $shop_id)
     {
-        $allDeliveryCharge = $this->common_model->getMultipleRows("delivery_charge", "restaurant_id", $restaurant_id);
+        $allDeliveryCharge = $this->common_model->getMultipleRows("delivery_charge", "shop_id", $shop_id);
         $deliveryFee = "";
         if(!empty($allDeliveryCharge))
         {
@@ -669,17 +669,17 @@ class Order extends CI_Controller {
             $this->lang->load('messages_lang', $languages->language_directory);
             $message = $this->lang->line($order_status);
             $device_id = $userdata->device_id;
-            $restaurant = $this->order_model->orderDetails($entity_id);
-            $this->sendFCMRegistration($device_id,$message,$this->input->post('order_status'),$restaurant[0]->restaurant_id);
+            $shop = $this->order_model->orderDetails($entity_id);
+            $this->sendFCMRegistration($device_id,$message,$this->input->post('order_status'),$shop[0]->shop_id);
             if($userdata->bot_user_id) {
-                $this->sendNotifToBot($userdata->bot_user_id, $user_id, $entity_id, $order_status, $restaurant[0]);
+                $this->sendNotifToBot($userdata->bot_user_id, $user_id, $entity_id, $order_status, $shop[0]);
             }
             echo 'success';
         }
     }
 
     //Send to bot 
-    function sendNotifToBot($bot_user_id, $user_id, $order_id, $order_status, $restaurant) {
+    function sendNotifToBot($bot_user_id, $user_id, $order_id, $order_status, $shop) {
         $headers = array (
             'Content-Type: application/json'
         );
@@ -689,7 +689,7 @@ class Order extends CI_Controller {
             'user_id' => $user_id, 
             'order_status' => $order_status,
             'track_order' => base_url().'order/track_order/'.str_replace(array('+', '/', '='), array('-', '_', '~'), $this->encryption->encrypt($order_id)), 
-            'restaurant' => $this->common_model->getSingleRow('restaurant', 'entity_id', $restaurant->restaurant_id),
+            'shop' => $this->common_model->getSingleRow('shop', 'entity_id', $shop->shop_id),
             'order_detail' => $this->common_model->getSingleRow('order_master','entity_id',$order_id),
         );
         $ch = curl_init();
@@ -704,7 +704,7 @@ class Order extends CI_Controller {
 
     }
     // Send notification
-    function sendFCMRegistration($registrationIds,$message,$order_status,$restaurant_id) {   
+    function sendFCMRegistration($registrationIds,$message,$order_status,$shop_id) {   
         if($registrationIds){        
             #prep the bundle
             $fields = array();            
@@ -712,7 +712,7 @@ class Order extends CI_Controller {
             $fields['to'] = $registrationIds; // only one user to send push notification
             $fields['notification'] = array ('body'  => $message,'sound'=>'default');
             if ($order_status == "delivered") {
-                $fields['data'] = array ('screenType'=>'delivery','restaurant_id'=>$restaurant_id);
+                $fields['data'] = array ('screenType'=>'delivery','shop_id'=>$shop_id);
             }
             else
             {
@@ -752,17 +752,17 @@ class Order extends CI_Controller {
     }
     //generate report
     public function generate_report(){
-        $restaurant_id = $this->input->post('restaurant_id');
+        $shop_id = $this->input->post('shop_id');
         $order_type = $this->input->post('order_delivery');
         $order_date = $this->input->post('order_date');
-        $results = $this->order_model->generate_report($restaurant_id,$order_type,$order_date); 
+        $results = $this->order_model->generate_report($shop_id,$order_type,$order_date); 
         if(!empty($results)){
             // export as an excel sheet
             $this->load->library('excel');
             $this->excel->setActiveSheetIndex(0);
             //name the worksheet
             $this->excel->getActiveSheet()->setTitle('Reports');
-            $headers = array("Restaurant","User Name","Order Total","Order Delivery","Order Date","Order Status","Status");
+            $headers = array("Shop","User Name","Order Total","Order Delivery","Order Date","Order Status","Status");
 
             for($h=0,$c='A'; $h<count($headers); $h++,$c++)
             {

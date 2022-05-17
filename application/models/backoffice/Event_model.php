@@ -16,9 +16,9 @@ class Event_model extends CI_Model {
 
     {
 
-        if($this->input->post('restaurant') != ''){
+        if($this->input->post('shop') != ''){
 
-            $this->db->like('res.name', $this->input->post('restaurant'));
+            $this->db->like('res.name', $this->input->post('shop'));
 
         }
 
@@ -66,7 +66,7 @@ class Event_model extends CI_Model {
 
         $this->db->select('event.*,res.name as rname,u.first_name as fname,u.last_name as lname,res.currency_id');
 
-        $this->db->join('restaurant as res','event.restaurant_id = res.entity_id','left');
+        $this->db->join('shop as res','event.shop_id = res.entity_id','left');
 
         $this->db->join('users as u','event.user_id = u.entity_id','left'); 
 
@@ -84,9 +84,9 @@ class Event_model extends CI_Model {
 
         
 
-        if($this->input->post('restaurant') != ''){
+        if($this->input->post('shop') != ''){
 
-            $this->db->like('res.name', $this->input->post('restaurant'));
+            $this->db->like('res.name', $this->input->post('shop'));
 
         }
 
@@ -138,7 +138,7 @@ class Event_model extends CI_Model {
 
         $this->db->select('event.*,res.name as rname,u.first_name as fname,u.last_name as lname,res.currency_id');
 
-        $this->db->join('restaurant as res','event.restaurant_id = res.entity_id','left'); 
+        $this->db->join('shop as res','event.shop_id = res.entity_id','left'); 
 
         $this->db->join('users as u','event.user_id = u.entity_id','left'); 
 
@@ -172,11 +172,11 @@ class Event_model extends CI_Model {
 
     {
 
-        $this->db->select('event.*,event_detail.package_detail,event_detail.restaurant_detail,event_detail.user_detail,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
+        $this->db->select('event.*,event_detail.package_detail,event_detail.shop_detail,event_detail.user_detail,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
 
         $this->db->join('event_detail','event.entity_id = event_detail.event_id','left');
-        $this->db->join('restaurant','event.restaurant_id = restaurant.entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left'); 
+        $this->db->join('shop','event.shop_id = shop.entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left'); 
 
         return $this->db->get_where('event',array('event.entity_id'=>$entity_id))->first_row();
 
@@ -244,7 +244,7 @@ class Event_model extends CI_Model {
 
         }else{
 
-            $this->db->select('name,entity_id,amount_type,amount,capacity,timings');
+            $this->db->select('name,entity_id,amount_type,amount,timings');
 
             $this->db->where('status',1);
 
@@ -301,32 +301,21 @@ class Event_model extends CI_Model {
         return $this->db->get('event')->result();
 
     }
-
-    //get restaurant detail
-
-    public function getRestuarantDetail($entity_id){
-
-        $this->db->select('capacity');
-
-        $this->db->where('entity_id',$entity_id);
-
-        return $this->db->get('restaurant')->first_row();
-
-    }
-    //get list of restaurant
-    public function getRestaurantList(){
+    
+    //get list of shop
+    public function getShopList(){
         if($this->session->userdata('UserType') == 'Admin'){
             $this->db->where('created_by',$this->session->userdata('UserID'));  
         }   
-        return $this->db->get('restaurant')->result();
+        return $this->db->get('shop')->result();
     }
     //generate report data
-    public function generate_report($restaurant_id,$booking_date){
-        $this->db->select('event.*,restaurant.name,users.first_name,users.last_name,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
-        $this->db->join('restaurant','event.restaurant_id = restaurant.entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
+    public function generate_report($shop_id,$booking_date){
+        $this->db->select('event.*,shop.name,users.first_name,users.last_name,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
+        $this->db->join('shop','event.shop_id = shop.entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
         $this->db->join('users','event.user_id = users.entity_id','left');
-        $this->db->where('restaurant_id',$restaurant_id);
+        $this->db->where('shop_id',$shop_id);
         if($booking_date != ''){
             $this->db->like('event.created_date', date('Y-m-d',strtotime($booking_date))); 
         }

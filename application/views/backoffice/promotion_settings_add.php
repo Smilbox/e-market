@@ -9,7 +9,7 @@ if($this->input->post()){
     $$key = @htmlspecialchars($this->input->post($key));
   } 
 } else {
-  $FieldsArray = array('entity_id','restaurant_id','shown_promotion','priority_order','image', 'show_banner', 'text', 'link');
+  $FieldsArray = array('entity_id','shop_id','shown_promotion','priority_order','image', 'show_banner', 'text', 'link');
   foreach ($FieldsArray as $key) {
     $$key = @htmlspecialchars($edit_records->$key);
   }
@@ -73,11 +73,11 @@ if(isset($edit_records) && $edit_records !="")
                                     <div class="form-group">
                                     <label class="control-label col-md-3"><?php echo $this->lang->line('res_name') ?><span class="required">*</span></label>
                                         <div class="col-md-4">
-                                            <select name="restaurant_id" class="form-control" id="restaurant_id">
+                                            <select name="shop_id" class="form-control" id="shop_id">
                                                 <option value=""><?php echo $this->lang->line('select') ?></option>
-                                                <?php if(!empty($restaurants)){
-                                                    foreach ($restaurants as $key => $value) { ?>
-                                                       <option value="<?php echo $value->entity_id ?>" <?php echo ($value->entity_id == $restaurant_id)?"selected":"" ?>><?php echo $value->name ?></option>
+                                                <?php if(!empty($shops)){
+                                                    foreach ($shops as $key => $value) { ?>
+                                                       <option value="<?php echo $value->entity_id ?>" <?php echo ($value->entity_id == $shop_id)?"selected":"" ?>><?php echo $value->name ?></option>
                                                 <?php } } ?>
                                             </select>
                                         </div>

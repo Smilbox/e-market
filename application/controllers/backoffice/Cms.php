@@ -207,7 +207,7 @@ class Cms extends CI_Controller {
         $content_id = ($this->input->post('content_id') != '')?$this->input->post('content_id'):'';
         $this->cms_model->ajaxDeleteAll('cms',$content_id);
     }
-    // method to change restaurant status
+    // method to change shop status
     public function ajaxDisable() {
         $entity_id = ($this->input->post('entity_id') != '')?$this->input->post('entity_id'):'';
         if($entity_id != ''){

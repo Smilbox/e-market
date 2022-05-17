@@ -5,16 +5,16 @@ class Dashboard_model extends CI_Model {
         parent::__construct();		        
     }
     //get name count
-    public function getRestaurantCount()
+    public function getShopCount()
     {
         if($this->session->userdata('UserType') == 'Admin'){
-            $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+            $this->db->where('shop.created_by',$this->session->userdata('UserID'));
         }
         $this->db->group_by('content_id');
-    	return $this->db->get('restaurant')->num_rows();
+    	return $this->db->get('shop')->num_rows();
     }
-    //get restaurant
-    public function restaurant(){
+    //get shop
+    public function shop(){
         $this->db->select('entity_id, name,phone_number,email');
         $this->db->order_by('entity_id','desc');
         if($this->session->userdata('UserType') == 'Admin'){
@@ -22,7 +22,7 @@ class Dashboard_model extends CI_Model {
         }
         $this->db->limit(5, 0);
         $this->db->group_by('content_id');
-        return $this->db->get('restaurant')->result(); 
+        return $this->db->get('shop')->result(); 
     }	
     //get total user account
     public function gettotalAccount()
@@ -40,21 +40,15 @@ class Dashboard_model extends CI_Model {
     {
         $this->db->select('o.total_rate as rate,o.order_date,o.order_status as ostatus,o.status,o.entity_id as entity_id,u.first_name as fname,u.last_name as lname');
         $this->db->join('users as u','o.user_id = u.entity_id','left');
-        $this->db->join('restaurant','o.restaurant_id = restaurant.entity_id');
-        // if($this->session->userdata('UserType') == 'Admin'){
-        //     $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
-        // }
+        $this->db->join('shop','o.shop_id = shop.entity_id');
     	return $this->db->get('order_master as o')->num_rows();
     }
     //get last orders
     public function getLastOrders(){
-        $this->db->select('o.total_rate as rate,o.order_date,o.order_status as ostatus,o.status,o.entity_id as entity_id,u.first_name as fname,u.last_name as lname,restaurant.currency_id');
+        $this->db->select('o.total_rate as rate,o.order_date,o.order_status as ostatus,o.status,o.entity_id as entity_id,u.first_name as fname,u.last_name as lname,shop.currency_id');
         $this->db->join('users as u','o.user_id = u.entity_id','left');
-        $this->db->join('restaurant','o.restaurant_id = restaurant.entity_id');
+        $this->db->join('shop','o.shop_id = shop.entity_id');
         $this->db->order_by('o.entity_id','desc');
-        // if($this->session->userdata('UserType') == 'Admin'){
-        //     $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
-        // } 
         $this->db->limit(5);
         return $this->db->get('order_master as o')->result(); 
     }	
@@ -62,9 +56,9 @@ class Dashboard_model extends CI_Model {
     public function ajaxNotification(){
         //get last orders
         $this->db->select('order_master.entity_id');
-        $this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
+        $this->db->join('shop','order_master.shop_id = shop.entity_id','left');
         if($this->session->userdata('UserType') == 'Admin'){
-            $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+            $this->db->where('shop.created_by',$this->session->userdata('UserID'));
         }
         $this->db->where('DATE(order_master.created_date)',date('Y-m-d'));
         $this->db->limit(1);
@@ -82,9 +76,9 @@ class Dashboard_model extends CI_Model {
             $this->db->update('order_notification',$data);
         }else if(!empty($count) && empty($last_order)){
             $this->db->select('order_master.entity_id as order_count');
-            $this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
+            $this->db->join('shop','order_master.shop_id = shop.entity_id','left');
             if($this->session->userdata('UserType') == 'Admin'){
-                $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+                $this->db->where('shop.created_by',$this->session->userdata('UserID'));
             }
             $this->db->where('DATE(order_master.created_date)',date('Y-m-d'));
             $arrayData = $this->db->get('order_master')->num_rows();
@@ -102,9 +96,9 @@ class Dashboard_model extends CI_Model {
         if(!empty($count) && !empty($last_order)){
             $order_count = 0;
             $this->db->select('order_master.entity_id as order_count');
-            $this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
+            $this->db->join('shop','order_master.shop_id = shop.entity_id','left');
             if($this->session->userdata('UserType') == 'Admin'){
-                $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+                $this->db->where('shop.created_by',$this->session->userdata('UserID'));
             }
             $this->db->where('order_master.entity_id >', $last_order->last_order_id);
             $this->db->where('order_master.entity_id <=', $count->entity_id);
@@ -135,9 +129,9 @@ class Dashboard_model extends CI_Model {
     public function ajaxEventNotification(){
         //get last orders
         $this->db->select('event.entity_id');
-        $this->db->join('restaurant','event.restaurant_id = restaurant.entity_id','left');
+        $this->db->join('shop','event.shop_id = shop.entity_id','left');
         if($this->session->userdata('UserType') == 'Admin'){
-            $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+            $this->db->where('shop.created_by',$this->session->userdata('UserID'));
         }
         $this->db->where('DATE(event.created_date)',date('Y-m-d'));
         $this->db->limit(1);
@@ -155,9 +149,9 @@ class Dashboard_model extends CI_Model {
             $this->db->update('event_notification',$data);
         }else if(!empty($count) && empty($last_event)){
             $this->db->select('event.entity_id as event_count');
-            $this->db->join('restaurant','event.restaurant_id = restaurant.entity_id','left');
+            $this->db->join('shop','event.shop_id = shop.entity_id','left');
             if($this->session->userdata('UserType') == 'Admin'){
-                $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+                $this->db->where('shop.created_by',$this->session->userdata('UserID'));
             }
             $this->db->where('DATE(event.created_date)',date('Y-m-d'));
             $arrayData = $this->db->get('event')->num_rows();
@@ -175,9 +169,9 @@ class Dashboard_model extends CI_Model {
         if(!empty($count) && !empty($last_event)){
             $event_count = 0;
             $this->db->select('event.entity_id as event_count');
-            $this->db->join('restaurant','event.restaurant_id = restaurant.entity_id','left');
+            $this->db->join('shop','event.shop_id = shop.entity_id','left');
             if($this->session->userdata('UserType') == 'Admin'){
-                $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+                $this->db->where('shop.created_by',$this->session->userdata('UserID'));
             }
             $this->db->where('event.entity_id >', $last_event->last_event_id);
             $this->db->where('event.entity_id <=', $count->entity_id);

@@ -19,13 +19,13 @@ class Users_model extends CI_Model {
         if($this->input->post('Status') != ''){
             $this->db->like('status', $this->input->post('Status'));
         }
-        if($this->input->post('restaurant_name') != ''){
-            $this->db->like('restaurant.name', $this->input->post('restaurant_name'));
+        if($this->input->post('shop_name') != ''){
+            $this->db->like('shop.name', $this->input->post('shop_name'));
         }
         $this->db->where('user_type !=','MasterAdmin');
         if($user_type){
-            $this->db->select('users.*,restaurant.name');
-            $this->db->join('restaurant','users.created_by = restaurant.created_by','left');
+            $this->db->select('users.*,shop.name');
+            $this->db->join('shop','users.created_by = shop.created_by','left');
             $this->db->where('user_type','Driver');
             $this->db->group_by('users.entity_id');
         }else{
@@ -47,15 +47,15 @@ class Users_model extends CI_Model {
         if($this->input->post('Status') != ''){
             $this->db->like('status', $this->input->post('Status'));
         }
-        if($this->input->post('restaurant_name') != ''){
-            $this->db->like('restaurant.name', $this->input->post('restaurant_name'));
+        if($this->input->post('shop_name') != ''){
+            $this->db->like('shop.name', $this->input->post('shop_name'));
         }
         if($displayLength>1)
             $this->db->limit($displayLength,$displayStart); 
         $this->db->where('user_type !=','MasterAdmin');  
         if($user_type){
-            $this->db->select('users.*,restaurant.name');
-            $this->db->join('restaurant','users.created_by = restaurant.created_by','left');
+            $this->db->select('users.*,shop.name');
+            $this->db->join('shop','users.created_by = shop.created_by','left');
             $this->db->group_by('users.entity_id');
             $this->db->where('user_type','Driver');
         }else{
@@ -171,9 +171,9 @@ class Users_model extends CI_Model {
         if($this->input->post('commission_rate') != ''){
            $this->db->like('order_driver_map.driver_commission',$this->input->post('commission_rate'));
         }
-        if($this->input->post('restaurant') != ''){
-            $name = $this->input->post('restaurant');
-            $where = "(order_detail.restaurant_detail REGEXP '.*".'"'."name".'"'.";s:[0-9]+:".'"'."$name".'"'.".*')";
+        if($this->input->post('shop') != ''){
+            $name = $this->input->post('shop');
+            $where = "(order_detail.shop_detail REGEXP '.*".'"'."name".'"'.";s:[0-9]+:".'"'."$name".'"'.".*')";
             $this->db->where($where);
         }
         if($this->input->post('commission') != ''){
@@ -182,7 +182,7 @@ class Users_model extends CI_Model {
         if($this->input->post('date') != ''){
             $this->db->like('order_driver_map.date', date('Y-m-d',strtotime($this->input->post('date'))));
         }
-        $this->db->select('order_master.order_status,users.first_name,users.last_name,order_driver_map.commission,order_driver_map.driver_commission,order_detail.restaurant_detail,order_driver_map.commission_status,order_driver_map.driver_map_id');
+        $this->db->select('order_master.order_status,users.first_name,users.last_name,order_driver_map.commission,order_driver_map.driver_commission,order_detail.shop_detail,order_driver_map.commission_status,order_driver_map.driver_map_id');
         $this->db->join('users','order_driver_map.driver_id = users.entity_id','left');
         $this->db->join('order_detail','order_driver_map.order_id = order_detail.order_id','left');
         $this->db->join('order_master','order_driver_map.order_id = order_master.entity_id','left');
@@ -202,9 +202,9 @@ class Users_model extends CI_Model {
         if($this->input->post('commission_rate') != ''){
            $this->db->like('order_driver_map.driver_commission',$this->input->post('commission_rate'));
         }
-        if($this->input->post('restaurant') != ''){
-            $name = $this->input->post('restaurant');
-            $where = "(order_detail.restaurant_detail REGEXP '.*".'"'."name".'"'.";s:[0-9]+:".'"'."$name".'"'.".*')";
+        if($this->input->post('shop') != ''){
+            $name = $this->input->post('shop');
+            $where = "(order_detail.shop_detail REGEXP '.*".'"'."name".'"'.";s:[0-9]+:".'"'."$name".'"'.".*')";
             $this->db->where($where);
         }
         if($this->input->post('commission') != ''){
@@ -215,7 +215,7 @@ class Users_model extends CI_Model {
         }
         if($displayLength>1)
             $this->db->limit($displayLength,$displayStart);
-        $this->db->select('order_master.order_status,users.first_name,users.last_name,order_driver_map.commission,order_driver_map.driver_commission,order_driver_map.date,order_detail.restaurant_detail,order_driver_map.commission_status,order_driver_map.driver_map_id');
+        $this->db->select('order_master.order_status,users.first_name,users.last_name,order_driver_map.commission,order_driver_map.driver_commission,order_driver_map.date,order_detail.shop_detail,order_driver_map.commission_status,order_driver_map.driver_map_id');
         $this->db->join('users','order_driver_map.driver_id = users.entity_id','left');
         $this->db->join('order_detail','order_driver_map.order_id = order_detail.order_id','left');
         $this->db->join('order_master','order_driver_map.order_id = order_master.entity_id','left');

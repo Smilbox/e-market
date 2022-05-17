@@ -17,7 +17,7 @@ $maximum_range = 200; ?>
 					<input type="hidden" name="latitude" id="latitude" value="">
 					<input type="hidden" name="longitude" id="longitude" value="">	
 				</div>
-				<div class="form-group search-restaurant">
+				<div class="form-group search-shop">
 				<input type="text" name="resdishes" id="resdishes" value="" placeholder="<?php echo ($this->lang->line('current_lang') == 'en' ? $store_type_row->name_en : $store_type_row->name_fr); ?>">
 					<input type="button" name="Search" value="<?php echo $this->lang->line('search'); ?>" class="btn" onclick="fillInAddress('order_food')">
 				</div>
@@ -57,7 +57,7 @@ $maximum_range = 200; ?>
 							</div>
 						</div>
 						<?php } ?>
-					<?php if($store_type_row->name_en == 'Restaurants') { ?>
+					<?php if($store_type_row->name_en == 'Shops') { ?>
 						<div class="filter-box">
 							<h6><?php echo $this->lang->line('by_food_type') ?></h6>
 							<div class="filter-checkbox">
@@ -91,14 +91,14 @@ $maximum_range = 200; ?>
 				</div>
 			</div>
 			<div class="col-md-7 col-lg-9">
-				<div class="row restaurant-box-row" id="order_from_restaurants">
-					<?php if (!empty($restaurants)) {
-						foreach ($restaurants as $key => $value) { ?>
+				<div class="row shop-box-row" id="order_from_shops">
+					<?php if (!empty($shops)) {
+						foreach ($shops as $key => $value) { ?>
 							<div class="col-lg-6">
-								<div class="restaurant-box">
+								<div class="shop-box">
 									<div class="popular-rest-box">
 										<div class="popular-rest-img">
-										<a href="<?php echo base_url().'restaurant/restaurant-detail/'.$value['shop_slug'];?>">
+										<a href="<?php echo base_url().'shop/shop-detail/'.$value['shop_slug'];?>">
 											<img  style="object-fit:<?php echo $value['object_fit'] ?>" src="<?php echo ($value['featured_image'])?$value['featured_image']:default_img;?>" alt="<?php echo $value['name']; ?>">
 											<div class="middle">
 												<?php if(!empty($value['image'])) { ?>
@@ -115,7 +115,7 @@ $maximum_range = 200; ?>
 											<div class="popular-rest-text">
 												<p class="address-icon"><?php echo $value['address']; ?> </p>
 												<div class="order-btn">
-													<a href="<?php echo base_url().'restaurant/restaurant-detail/'.$value['shop_slug'];?>" class="btn"><?php echo ($value['timings']['closing'] == "Closed" ? $this->lang->line('pre-order') : $this->lang->line('order') )  ?></a>
+													<a href="<?php echo base_url().'shop/shop-detail/'.$value['shop_slug'];?>" class="btn"><?php echo ($value['timings']['closing'] == "Closed" ? $this->lang->line('pre-order') : $this->lang->line('order') )  ?></a>
 												</div>
 											</div>
 										</div>
@@ -163,13 +163,13 @@ function getData(page=0, noRecordDisplay=''){
 	var page = page ? page : 0;
 	var store_type = $('#store_type').val();
 	$.ajax({
-		url: "<?php echo base_url().'restaurant/ajax_restaurants'; ?>/"+page,
+		url: "<?php echo base_url().'shop/ajax_shops'; ?>/"+page,
 		data : {'latitude':latitude,'longitude':longitude,'resdishes':resdishes,'page':page,'minimum_range':minimum_range,'maximum_range':maximum_range,'food_veg':food_veg,'food_non_veg':food_non_veg, 'store_type': store_type},
 		type: "POST",
 		success: function(result){
-			$('#order_from_restaurants').html(result);
+			$('#order_from_shops').html(result);
 			/*$('html, body').animate({
-		        scrollTop: $("#order_from_restaurants").offset().top
+		        scrollTop: $("#order_from_shops").offset().top
 		    }, 800);*/
 		}
 	});

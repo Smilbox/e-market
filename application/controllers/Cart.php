@@ -7,7 +7,7 @@ class Cart extends CI_Controller {
 		parent::__construct();        
 		$this->load->library('form_validation');
 		$this->load->model(ADMIN_URL.'/common_model');  
-		$this->load->model('/restaurant_model');      
+		$this->load->model('/shop_model');      
 		$this->load->model('/cart_model');    
 		$this->load->model(ADMIN_URL.'/store_type_model');    
 		$this->load->helper('cookie');
@@ -18,9 +18,9 @@ class Cart extends CI_Controller {
 		$data['current_page'] = 'Cart';
 		$data['page_title'] = $this->lang->line('title_cart'). ' | ' . $this->lang->line('site_title');
 		$cart_details = get_cookie('cart_details');
-		$cart_restaurant = get_cookie('cart_restaurant');
-		$data['cart_details'] = $this->getCartItems($cart_details,$cart_restaurant);
-		$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($cart_restaurant);
+		$cart_shop = get_cookie('cart_shop');
+		$data['cart_details'] = $this->getCartItems($cart_details,$cart_shop);
+		$data['currency_symbol'] = $this->common_model->getShopCurrencySymbol($cart_shop);
 		$this->load->view('cart',$data);
 	}
 	// checkout page
@@ -29,11 +29,11 @@ class Cart extends CI_Controller {
 		$data['current_page'] = 'Checkout';
 		$data['page_title'] = $this->lang->line('title_cart'). ' | ' . $this->lang->line('site_title');
 		$cart_details = get_cookie('cart_details');
-		$cart_restaurant = get_cookie('cart_restaurant');
+		$cart_shop = get_cookie('cart_shop');
 		$pre_order_date = get_cookie('pre_order_date');
 		$order_mode = get_cookie('order_mode');
-		$data['cart_details'] = $this->getCartItems($cart_details,$cart_restaurant);
-		$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($cart_restaurant);
+		$data['cart_details'] = $this->getCartItems($cart_details,$cart_shop);
+		$data['currency_symbol'] = $this->common_model->getShopCurrencySymbol($cart_shop);
 		$this->load->view('checkout',$data);
 	}
 
@@ -50,20 +50,20 @@ class Cart extends CI_Controller {
 		$data['page_title'] = $this->lang->line('title_cart'). ' | ' . $this->lang->line('site_title');
 		if (!empty($this->input->post('menu_id')) && !empty($this->input->post('add_ons_array'))) {
 			$itemArray = array();
-			$data['another_restaurant'] = '';
-			$menuDetails = $this->restaurant_model->getMenuItem($this->input->post('menu_id'),$this->input->post('restaurant_id'));
+			$data['another_shop'] = '';
+			$menuDetails = $this->shop_model->getMenuItem($this->input->post('menu_id'),$this->input->post('shop_id'));
 			foreach ($menuDetails as $key => $value) {
 				$itemArray['name'] = $value['items'][0]['name'];
 				$itemArray['image'] = $value['items'][0]['image'];
 				$itemArray['menu_id'] = $value['items'][0]['menu_id'];
 				$itemArray['price'] = $value['items'][0]['price'];
 				$itemArray['offer_price'] = $value['items'][0]['offer_price'];
-				$itemArray['is_veg'] = $value['items'][0]['is_veg'];
+				$itemArray['is_under_20_kg'] = $value['items'][0]['is_under_20_kg'];
 				$itemArray['is_customize'] = $value['items'][0]['is_customize'];
 				$itemArray['is_deal'] = $value['items'][0]['is_deal'];
 				$itemArray['availability'] = $value['items'][0]['availability'];
 			}
-			$itemArray['restaurant_id'] = $this->input->post('restaurant_id');
+			$itemArray['shop_id'] = $this->input->post('shop_id');
 			$itemArray['itemTotal'] = $this->input->post('totalPrice');
 			$itemArray['addons_category_list'] = $this->input->post('add_ons_array');
 			$addons = array();
@@ -90,7 +90,7 @@ class Cart extends CI_Controller {
 					}
 				}
 				$cart_details = get_cookie('cart_details');
-				$cart_restaurant = get_cookie('cart_restaurant');
+				$cart_shop = get_cookie('cart_shop');
 				$arrayDetails = array();
 				if (!empty(json_decode($cart_details))) {
 				 	foreach (json_decode($cart_details) as $key => $value) {
@@ -106,29 +106,29 @@ class Cart extends CI_Controller {
 		            );
 				}
 	            $arrayDetails[] = $cookie;
-				if (empty($cart_details) && empty($cart_restaurant)) {
+				if (empty($cart_details) && empty($cart_shop)) {
  		            $this->input->set_cookie('cart_details',json_encode($arrayDetails),60*60*24*1); // 1 day
-		            $this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day
+		            $this->input->set_cookie('cart_shop',$this->input->post('shop_id'),60*60*24*1); // 1 day
 		            $data['cart_details'] = $this->getcookie('cart_details');
-					$data['cart_restaurant'] = $this->getcookie('cart_restaurant');
+					$data['cart_shop'] = $this->getcookie('cart_shop');
 				}
-				else if ($cart_restaurant == $this->input->post('restaurant_id')) {
+				else if ($cart_shop == $this->input->post('shop_id')) {
 					$this->input->set_cookie('cart_details',json_encode($arrayDetails),60*60*24*1); // 1 day
-		            $this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day
+		            $this->input->set_cookie('cart_shop',$this->input->post('shop_id'),60*60*24*1); // 1 day
 		            $data['cart_details'] = $this->getcookie('cart_details');
-					$data['cart_restaurant'] = $this->getcookie('cart_restaurant');
+					$data['cart_shop'] = $this->getcookie('cart_shop');
 				}
 				else
 				{
-					$data['another_restaurant'] = 'AnotherRestaurant';
+					$data['another_shop'] = 'AnotherShop';
 					$data['cart_details'] = get_cookie('cart_details');
-					$data['cart_restaurant'] = get_cookie('cart_restaurant');
+					$data['cart_shop'] = get_cookie('cart_shop');
 				}
 			}
 		}  
 		if (!empty($this->input->post('menu_item_id'))) {
 			$cart_details = get_cookie('cart_details');
-			$cart_restaurant = get_cookie('cart_restaurant');
+			$cart_shop = get_cookie('cart_shop');
 			$arrayDetails = array();
 			
 			if (!empty(json_decode($cart_details))) {
@@ -155,37 +155,37 @@ class Cart extends CI_Controller {
 	            );
 			}
             $arrayDetails[] = $cookie;
-			if (empty($cart_details) && empty($cart_restaurant)) {
+			if (empty($cart_details) && empty($cart_shop)) {
 	            $this->input->set_cookie('cart_details',json_encode($arrayDetails),60*60*24*1); // 1 day
-	            $this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day
+	            $this->input->set_cookie('cart_shop',$this->input->post('shop_id'),60*60*24*1); // 1 day
 	            $data['cart_details'] = $this->getcookie('cart_details');
-				$data['cart_restaurant'] = $this->getcookie('cart_restaurant');
+				$data['cart_shop'] = $this->getcookie('cart_shop');
 			}
-			else if ($cart_restaurant == $this->input->post('restaurant_id')) {
+			else if ($cart_shop == $this->input->post('shop_id')) {
 				$this->input->set_cookie('cart_details',json_encode($arrayDetails),60*60*24*1); // 1 day
-	            $this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day
+	            $this->input->set_cookie('cart_shop',$this->input->post('shop_id'),60*60*24*1); // 1 day
 	            $data['cart_details'] = $this->getcookie('cart_details');
-				$data['cart_restaurant'] = $this->getcookie('cart_restaurant');
+				$data['cart_shop'] = $this->getcookie('cart_shop');
 			}
 			else
 			{	
-				$data['another_restaurant'] = 'AnotherRestaurant';
+				$data['another_shop'] = 'AnotherShop';
 				$data['cart_details'] = get_cookie('cart_details');
-				$data['cart_restaurant'] = get_cookie('cart_restaurant');
+				$data['cart_shop'] = get_cookie('cart_shop');
 			}
 		}
 		
-		$data['cart_details'] = $this->getCartItems($data['cart_details'],$data['cart_restaurant']);
-		$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($data['cart_restaurant']);
+		$data['cart_details'] = $this->getCartItems($data['cart_details'],$data['cart_shop']);
+		$data['currency_symbol'] = $this->common_model->getShopCurrencySymbol($data['cart_shop']);
 		$this->load->view('ajax_your_cart',$data);
 	}
 	// get Cart items
-	public function getCartItems($cart_details,$cart_restaurant){
+	public function getCartItems($cart_details,$cart_shop){
 		$cartItems = array();
 		$cartTotalPrice = 0;
 		if (!empty($cart_details)) {
 			foreach (json_decode($cart_details) as $key => $value) { 
-				$details = $this->restaurant_model->getMenuItem($value->menu_id,$cart_restaurant);
+				$details = $this->shop_model->getMenuItem($value->menu_id,$cart_shop);
 				if (!empty($details)) {
 					if ($details[0]['items'][0]['is_customize'] == 1) {
 						$addons_category_id = array_column($value->addons, 'addons_category_id');
@@ -236,11 +236,11 @@ class Cart extends CI_Controller {
 					$cartTotalPrice = ($subtotal * $value->quantity) + $cartTotalPrice;
 					$cartItems[] = array(
 						'menu_id' => $details[0]['items'][0]['menu_id'],
-						'restaurant_id' => $cart_restaurant,
+						'shop_id' => $cart_shop,
 						'name' => $details[0]['items'][0]['name'],
 						'quantity' => $value->quantity,
 						'is_customize' => $details[0]['items'][0]['is_customize'],
-						'is_veg' => $details[0]['items'][0]['is_veg'],
+						'is_under_20_kg' => $details[0]['items'][0]['is_under_20_kg'],
 						'is_deal' => $details[0]['items'][0]['is_deal'],
 						'price' => $details[0]['items'][0]['price'],
 						'offer_price' => $details[0]['items'][0]['offer_price'],
@@ -274,10 +274,10 @@ class Cart extends CI_Controller {
 	public function checkMenuItem()
 	{
 		$menuItemExist = 0;
-		if (!empty($this->input->post('entity_id')) && !empty($this->input->post('restaurant_id'))) { 
+		if (!empty($this->input->post('entity_id')) && !empty($this->input->post('shop_id'))) { 
 			$cart_details = get_cookie('cart_details');
-			$cart_restaurant = get_cookie('cart_restaurant');
-			if ($cart_restaurant == $this->input->post('restaurant_id')) {
+			$cart_shop = get_cookie('cart_shop');
+			if ($cart_shop == $this->input->post('shop_id')) {
 				if (!empty(json_decode($cart_details))) {
 					foreach (json_decode($cart_details) as $key => $value) {
 						if ($value->menu_id == $this->input->post('entity_id')) {
@@ -294,11 +294,11 @@ class Cart extends CI_Controller {
 	{
 		$cart_details = get_cookie('cart_details');
 		$arr_cart_details = json_decode($cart_details);
-		$cart_restaurant = get_cookie('cart_restaurant');
-		if (!empty($this->input->post('entity_id')) && !empty($this->input->post('restaurant_id'))) {
+		$cart_shop = get_cookie('cart_shop');
+		if (!empty($this->input->post('entity_id')) && !empty($this->input->post('shop_id'))) {
 			if ($this->input->post('action') == "plus" && $this->input->post('cart_key') == "") { 
 				$arrayDetails = array();
-				if ($cart_restaurant == $this->input->post('restaurant_id')) {
+				if ($cart_shop == $this->input->post('shop_id')) {
 					if (!empty($arr_cart_details)) {
 						foreach ($arr_cart_details as $key => $value) {
 							if ($value->menu_id == $this->input->post('entity_id')) {
@@ -325,13 +325,13 @@ class Cart extends CI_Controller {
 					 	}
 					}
 					$this->input->set_cookie('cart_details',json_encode($arrayDetails),60*60*24*1); // 1 day
-		            $this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day 
+		            $this->input->set_cookie('cart_shop',$this->input->post('shop_id'),60*60*24*1); // 1 day 
 				}
 			}
 			else if ($this->input->post('action') == "plus") {
 				$menukey = '';
 				$arrayDetails = array();
-				if ($cart_restaurant == $this->input->post('restaurant_id')) {
+				if ($cart_shop == $this->input->post('shop_id')) {
 					if (!empty($arr_cart_details)) {
 						foreach ($arr_cart_details as $ckey => $value) {
 							if ($ckey == $this->input->post('cart_key')) {
@@ -358,13 +358,13 @@ class Cart extends CI_Controller {
 					 	}
 					}
 					$this->input->set_cookie('cart_details',json_encode($arrayDetails),60*60*24*1); // 1 day
-		            $this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day
+		            $this->input->set_cookie('cart_shop',$this->input->post('shop_id'),60*60*24*1); // 1 day
 				}
 			}
 			else if ($this->input->post('action') == "minus") {
 				$menukey = '';
 				$arrayDetails = array();
-				if ($cart_restaurant == $this->input->post('restaurant_id')) {
+				if ($cart_shop == $this->input->post('shop_id')) {
 					if (!empty($arr_cart_details)) {
 						foreach ($arr_cart_details as $ckey => $value) {
 							if ($ckey == $this->input->post('cart_key')) {
@@ -403,13 +403,13 @@ class Cart extends CI_Controller {
 					$cart_details = $this->getcookie('cart_details');
 					if (empty(json_decode($cart_details))) {
 		            	delete_cookie('cart_details');
-						delete_cookie('cart_restaurant');
+						delete_cookie('cart_shop');
 						delete_cookie('pre_order_date');
 						delete_cookie('order_mode');
 					}
 					else
 					{
-		            	$this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day
+		            	$this->input->set_cookie('cart_shop',$this->input->post('shop_id'),60*60*24*1); // 1 day
 					}
 				}
 			}
@@ -427,24 +427,24 @@ class Cart extends CI_Controller {
 				$cart_details = $this->getcookie('cart_details');
 				if (empty(json_decode($cart_details))) {
 	            	delete_cookie('cart_details');
-					delete_cookie('cart_restaurant');
+					delete_cookie('cart_shop');
 					delete_cookie('pre_order_date');
 					delete_cookie('order_mode');
 				}
 				else
 				{
-	            	$this->input->set_cookie('cart_restaurant',$this->input->post('restaurant_id'),60*60*24*1); // 1 day
+	            	$this->input->set_cookie('cart_shop',$this->input->post('shop_id'),60*60*24*1); // 1 day
 				}
 			} 
 			$data['cart_details'] = $this->getcookie('cart_details');
-			$data['cart_restaurant'] = $this->getcookie('cart_restaurant');
-			$data['currency_symbol'] = $this->common_model->getRestaurantCurrencySymbol($data['cart_restaurant']);
+			$data['cart_shop'] = $this->getcookie('cart_shop');
+			$data['currency_symbol'] = $this->common_model->getShopCurrencySymbol($data['cart_shop']);
 
 			// if cart_details cookie has been deleted
 			if($data['cart_details'][1] == "deleted")
 				$data['cart_details'] = array();
 				
-			$data['cart_details'] = $this->getCartItems($data['cart_details'],$data['cart_restaurant']);
+			$data['cart_details'] = $this->getCartItems($data['cart_details'],$data['cart_shop']);
 			// get if a item is still added in the cart or not
 			$added = 0;
 			if (!empty($data['cart_details']['cart_items'])) {
@@ -459,7 +459,7 @@ class Cart extends CI_Controller {
 			}
 			else
 			{
-				$store = $this->common_model->getSingleRow('restaurant', 'entity_id', $cart_restaurant);
+				$store = $this->common_model->getSingleRow('shop', 'entity_id', $cart_shop);
 				if($store) {
 					$store_type = $this->store_type_model->getById($store->store_type_id);
 					$cart = $this->load->view('ajax_your_cart',$data,true);
@@ -472,31 +472,31 @@ class Cart extends CI_Controller {
 			echo json_encode($array_view);
 		}
 	}
-	// check cart's restaurant id
-	public function checkCartRestaurant(){
-		$restaurant = 0;
-		if (!empty($this->input->post('restaurant_id'))) {
-			$cart_restaurant = get_cookie('cart_restaurant');
-			if (!empty($cart_restaurant)) {
-				if ($this->input->post('restaurant_id') == $cart_restaurant) {
-					$restaurant = 1; // same restaurant
+	// check cart's shop id
+	public function checkCartShop(){
+		$shop = 0;
+		if (!empty($this->input->post('shop_id'))) {
+			$cart_shop = get_cookie('cart_shop');
+			if (!empty($cart_shop)) {
+				if ($this->input->post('shop_id') == $cart_shop) {
+					$shop = 1; // same shop
 				}
 				else
 				{
-					$restaurant = 0;  // another restaurant
+					$shop = 0;  // another shop
 				}
 			}
 			else
 			{
-				$restaurant = 1;
+				$shop = 1;
 			}
 		}
-		echo $restaurant;
+		echo $shop;
 	}
 	// empty the cart items
 	public function emptyCart(){
 		delete_cookie('cart_details');
-		delete_cookie('cart_restaurant');
+		delete_cookie('cart_shop');
 		// delete_cookie('pre_order_date');
 		// delete_cookie('order_mode');
 	}

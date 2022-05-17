@@ -73,16 +73,16 @@
 									<p><?php echo ($latestOrder->placed) ? date("d M Y G:i A", strtotime($latestOrder->placed)) : ''; ?></p>
 								</div>
 							</div>
-							<?php $active = isset($latestOrder->accepted_by_restaurant) ? "active" : "";?>
+							<?php $active = isset($latestOrder->accepted_by_shop) ? "active" : "";?>
 							<div class="status-step <?php echo $active; ?>">
 								<div class="status-step-img">
 									<div class="step-img">
-										<img src="<?php echo base_url(); ?>assets/front/images/accepted-by-restaurant.png">
+										<img src="<?php echo base_url(); ?>assets/front/images/accepted-by-shop.png">
 									</div>
 								</div>
 								<div class="status-step-name">
 									<label><?php echo $this->lang->line('order_accepted') ?></label>
-									<p><?php echo isset($latestOrder->accepted_by_restaurant) ? date("d M Y G:i A", strtotime($latestOrder->accepted_by_restaurant)) : ''; ?></p>
+									<p><?php echo isset($latestOrder->accepted_by_shop) ? date("d M Y G:i A", strtotime($latestOrder->accepted_by_shop)) : ''; ?></p>
 								</div>
 							</div>
 							<?php $active = ($latestOrder->preparing) ? "active" : "";?>
@@ -195,9 +195,9 @@
         <?php endif ?>
 
         <?php if (!empty($latestOrder->resLat) && !empty($latestOrder->resLong)): ?>
-	        // restaurant location
+	        // shop location
 	        var position = {lat: <?php echo $latestOrder->resLat; ?>,lng: <?php echo $latestOrder->resLong; ?>};
-	        var icon = '<?php echo base_url(); ?>'+'assets/front/images/restaurant.png';
+	        var icon = '<?php echo base_url(); ?>'+'assets/front/images/shop.png';
 	        marker = new google.maps.Marker({
 	            position: position,
 	            map: map,

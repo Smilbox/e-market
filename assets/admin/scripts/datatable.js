@@ -102,9 +102,10 @@ var Datatable = function () {
                             }
                             fnCallback(res, textStatus, jqXHR);
                         },
-                        "error": function() {
+                        "error": function(res, textStatus, jqXHR) {
+                            console.log(res);
                             if (tableOptions.onError) {
-                                tableOptions.onError.call(undefined, the);
+                                tableOptions.onError.call(res, the);
                             }
                             Metronic.alert({type: 'danger', icon: 'warning', message: tableOptions.dataTable.oLanguage.sAjaxRequestGeneralError, container: tableWrapper, place: 'prepend'});
                             $('.dataTables_processing', tableWrapper).remove();

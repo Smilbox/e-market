@@ -85,7 +85,7 @@
                                                 </select>
                                             </td>
                                             <td><div class="margin-bottom-5">
-                                                    <button class="btn btn-sm  danger-btn filter-submit margin-bottom"><i class="fa fa-search"></i> <?php echo $this->lang->line('search') ?></button>
+                                                    <button class="btn btn-sm danger-btn filter-submit margin-bottom"><i class="fa fa-search"></i> <?php echo $this->lang->line('search') ?></button>
                                                 </div>
                                                 <button class="btn btn-sm danger-btn filter-cancel"><i class="fa fa-times"></i> <?php echo $this->lang->line('reset') ?></button>
                                             </td>
@@ -122,6 +122,7 @@ jQuery(document).ready(function() {
         src: $("#datatable_ajax"),
         onSuccess: function(grid) {
             // execute some code after table records loaded
+            console.log("loaded");
         },
         onError: function(grid) {
             // execute some code on network or other general error  
@@ -190,7 +191,7 @@ function deleteDetail(entity_id,content_id)
                   type : "POST",
                   dataType : "html",
                   url : 'ajaxDelete',
-                  data : {'tblname':'restaurant','entity_id':entity_id,'content_id':content_id},
+                  data : {'tblname':'shop','entity_id':entity_id,'content_id':content_id},
                   success: function(response) {
                     grid.getDataTable().fnDraw(); 
                   },
@@ -220,7 +221,7 @@ function deleteAll(content_id)
                 type : "POST",
                 dataType : "json",
                 url : 'ajaxDeleteAll',
-                data : {'tblname':'restaurant','content_id':content_id},
+                data : {'tblname':'shop','content_id':content_id},
                 success: function(response) {
                   grid.getDataTable().fnDraw(); 
                 },
@@ -252,7 +253,7 @@ function disablePage(ID,Status)
                   type : "POST",
                   dataType : "json",
                   url : 'ajaxDisable',
-                  data : {'entity_id':ID,'status':Status,'tblname':'restaurant'},
+                  data : {'entity_id':ID,'status':Status,'tblname':'shop'},
                   success: function(response) {
                        grid.getDataTable().fnDraw(); 
                   },
@@ -284,7 +285,7 @@ function disableAll(ContentID,Status)
                   type : "POST",
                   dataType : "json",
                   url : 'ajaxDisableAll',
-                  data : {'content_id':ContentID,'status':Status,'tblname':'restaurant'},
+                  data : {'content_id':ContentID,'status':Status,'tblname':'shop'},
                   success: function(response) {
                     grid.getDataTable().fnDraw(); 
                   },

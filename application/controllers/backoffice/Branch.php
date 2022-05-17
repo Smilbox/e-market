@@ -24,11 +24,9 @@ class Branch extends CI_Controller {
     	if($this->input->post('submit_page') == "Submit")
         {
             $this->form_validation->set_rules('name', 'Branch Name', 'trim|required');
-            $this->form_validation->set_rules('branch_entity_id', 'Restaurant', 'trim|required');
+            $this->form_validation->set_rules('branch_entity_id', 'Shop', 'trim|required');
             $this->form_validation->set_rules('phone_number', 'Phone Number', 'trim|required');
             $this->form_validation->set_rules('email','Email', 'trim|required|valid_email');
-            $this->form_validation->set_rules('capacity','Capacity', 'trim|required');
-            $this->form_validation->set_rules('no_of_table','No of table', 'trim|required');
             $this->form_validation->set_rules('address','Address', 'trim|required');
             $this->form_validation->set_rules('landmark','Landmark', 'trim|required');
             $this->form_validation->set_rules('latitude','Latitude', 'trim|required');
@@ -59,10 +57,6 @@ class Branch extends CI_Controller {
                     'branch_entity_id'=>$this->input->post('branch_entity_id'),
                     'phone_number' =>$this->input->post('phone_number'),
                     'email' =>$this->input->post('email'),
-                    'capacity' =>$this->input->post('capacity'),
-                    'no_of_table' =>$this->input->post('no_of_table'),
-                    'no_of_hall' =>$this->input->post('no_of_hall'),
-                    'hall_capacity' =>$this->input->post('hall_capacity'),
                     'amount_type'=>$this->input->post("amount_type"),
                     'amount'=>($this->input->post("amount"))?$this->input->post("amount"):'',
                     'enable_hours'=>$this->input->post("enable_hours"),
@@ -97,19 +91,19 @@ class Branch extends CI_Controller {
                 if (!empty($_FILES['Image']['name']))
                 {
                     $this->load->library('upload');
-                    $config['upload_path'] = './uploads/restaurant';
+                    $config['upload_path'] = './uploads/shop';
                     $config['allowed_types'] = 'gif|jpg|png|jpeg';  
                     $config['max_size'] = '5120'; //in KB    
                     $config['encrypt_name'] = TRUE;               
                     // create directory if not exists
-                    if (!@is_dir('uploads/restaurant')) {
-                      @mkdir('./uploads/restaurant', 0777, TRUE);
+                    if (!@is_dir('uploads/shop')) {
+                      @mkdir('./uploads/shop', 0777, TRUE);
                     }
                     $this->upload->initialize($config);                  
                     if ($this->upload->do_upload('Image'))
                     {
                       $img = $this->upload->data();
-                      $add_data['image'] = "restaurant/".$img['file_name'];    
+                      $add_data['image'] = "shop/".$img['file_name'];    
                     }
                     else
                     {
@@ -119,10 +113,10 @@ class Branch extends CI_Controller {
                 }
                 $entity_id = '';
                 if(empty($data['Error'])){
-                    $entity_id = $this->branch_model->addData('restaurant',$add_data);
+                    $entity_id = $this->branch_model->addData('shop',$add_data);
                     //for address
                     $add_data = array(
-                        'resto_entity_id'=>$entity_id,
+                        'shop_entity_id'=>$entity_id,
                         'address' =>$this->input->post('address'),
                         'landmark' =>$this->input->post('landmark'),
                         'latitude' =>$this->input->post('latitude'),
@@ -134,7 +128,7 @@ class Branch extends CI_Controller {
                         'content_id'=>$ContentID,
                         'language_slug'=>$this->uri->segment('4'),
                     );
-                    $this->branch_model->addData('restaurant_address',$add_data);
+                    $this->branch_model->addData('shop_address',$add_data);
                     $this->session->set_flashdata('page_MSG', $this->lang->line('success_add'));
                     redirect(base_url().ADMIN_URL.'/'.$this->controller_name.'/view');       
                 }
@@ -142,7 +136,7 @@ class Branch extends CI_Controller {
             }
         }
         $language_slug = ($this->uri->segment(4))?$this->uri->segment(4):$this->session->userdata('language_slug');
-        $data['restaurant'] = $this->branch_model->getListData('restaurant',$language_slug); 
+        $data['shop'] = $this->branch_model->getListData('shop',$language_slug); 
     	$this->load->view(ADMIN_URL.'/branch_add',$data);
     }
     // edit branch
@@ -152,10 +146,8 @@ class Branch extends CI_Controller {
         if($this->input->post('submit_page') == "Submit")
         {
             $this->form_validation->set_rules('name', 'Branch Name', 'trim|required');
-            $this->form_validation->set_rules('branch_entity_id', 'Restaurant', 'trim|required');
+            $this->form_validation->set_rules('branch_entity_id', 'Shop', 'trim|required');
             $this->form_validation->set_rules('email','Email', 'trim|required|valid_email');
-            $this->form_validation->set_rules('capacity','Capacity', 'trim|required|numeric');
-            $this->form_validation->set_rules('no_of_table','No of table', 'trim|required|numeric');
             $this->form_validation->set_rules('address','Address', 'trim|required');
             $this->form_validation->set_rules('landmark','Landmark', 'trim|required');
             $this->form_validation->set_rules('latitude','Latitude', 'trim|required');
@@ -175,10 +167,6 @@ class Branch extends CI_Controller {
                     'name'=>$this->input->post('name'),
                     'phone_number' =>$this->input->post('phone_number'),
                     'email' =>$this->input->post('email'),
-                    'capacity' =>$this->input->post('capacity'),
-                    'no_of_table' =>$this->input->post('no_of_table'),
-                    'no_of_hall' =>$this->input->post('no_of_hall'),
-                    'hall_capacity' =>$this->input->post('hall_capacity'),
                     'amount_type'=>$this->input->post("amount_type"),
                     'amount'=>($this->input->post("amount"))?$this->input->post("amount"):'',
                     'enable_hours'=>$this->input->post("enable_hours"),
@@ -211,19 +199,19 @@ class Branch extends CI_Controller {
                 if (!empty($_FILES['Image']['name']))
                 {
                     $this->load->library('upload');
-                    $config['upload_path'] = './uploads/restaurant';
+                    $config['upload_path'] = './uploads/shop';
                     $config['allowed_types'] = 'gif|jpg|png|jpeg';  
                     $config['max_size'] = '5120'; //in KB    
                     $config['encrypt_name'] = TRUE;               
                     // create directory if not exists
-                    if (!@is_dir('uploads/restaurant')) {
-                      @mkdir('./uploads/restaurant', 0777, TRUE);
+                    if (!@is_dir('uploads/shop')) {
+                      @mkdir('./uploads/shop', 0777, TRUE);
                     }
                     $this->upload->initialize($config);                  
                     if ($this->upload->do_upload('Image'))
                     {
                       $img = $this->upload->data();
-                      $edit_data['image'] = "restaurant/".$img['file_name'];   
+                      $edit_data['image'] = "shop/".$img['file_name'];   
                       if($this->input->post('uploaded_image')){
                         @unlink(FCPATH.'uploads/'.$this->input->post('uploaded_image'));
                       }  
@@ -235,10 +223,10 @@ class Branch extends CI_Controller {
                     }
                 }
                 if(empty($data['Error'])){
-                    $this->branch_model->updateData($edit_data,'restaurant','entity_id',$this->input->post('entity_id'));
+                    $this->branch_model->updateData($edit_data,'shop','entity_id',$this->input->post('entity_id'));
                      //for address
                     $edit_data = array(
-                        'resto_entity_id'=>$this->input->post('entity_id'),
+                        'shop_entity_id'=>$this->input->post('entity_id'),
                         'address' =>$this->input->post('address'),
                         'landmark' =>$this->input->post('landmark'),
                         'latitude' =>$this->input->post('latitude'),
@@ -248,7 +236,7 @@ class Branch extends CI_Controller {
                         'city'=>$this->input->post("city"),
                         'zipcode'=>$this->input->post("zipcode"),
                     );
-                    $this->branch_model->updateData($edit_data,'restaurant_address','resto_entity_id',$this->input->post('entity_id'));
+                    $this->branch_model->updateData($edit_data,'shop_address','shop_entity_id',$this->input->post('entity_id'));
                     $this->session->set_flashdata('page_MSG', $this->lang->line('success_add'));
                     redirect(base_url().ADMIN_URL.'/'.$this->controller_name.'/view');            
                 }
@@ -256,26 +244,26 @@ class Branch extends CI_Controller {
             }
         }    
         $language_slug = ($this->uri->segment(4))?$this->uri->segment(4):$this->session->userdata('language_slug');
-        $data['restaurant'] = $this->branch_model->getListData('restaurant',$language_slug); 
+        $data['shop'] = $this->branch_model->getListData('shop',$language_slug); 
         $entity_id = ($this->uri->segment('5'))?$this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $this->uri->segment(5))):$this->input->post('entity_id');
-        $data['edit_records'] = $this->branch_model->getEditDetail('restaurant',$entity_id);
+        $data['edit_records'] = $this->branch_model->getEditDetail('shop',$entity_id);
         $this->load->view(ADMIN_URL.'/branch_add',$data);
     }
     // method to change status
     public function ajaxdisable() {
         $entity_id = ($this->input->post('entity_id') != '')?$this->input->post('entity_id'):'';
         if($entity_id != ''){
-            $this->branch_model->UpdatedStatus('restaurant',$entity_id,$this->input->post('status'));
+            $this->branch_model->UpdatedStatus('shop',$entity_id,$this->input->post('status'));
         }
     }
     // method for delete
     public function ajaxDelete(){
         $entity_id = ($this->input->post('entity_id') != '')?$this->input->post('entity_id'):'';
-        $this->branch_model->ajaxDelete('restaurant',$this->input->post('content_id'),$entity_id);
+        $this->branch_model->ajaxDelete('shop',$this->input->post('content_id'),$entity_id);
     }
     public function ajaxDeleteAll(){
         $content_id = ($this->input->post('content_id') != '')?$this->input->post('content_id'):'';
-        $this->branch_model->ajaxDeleteAll('restaurant',$content_id);
+        $this->branch_model->ajaxDeleteAll('shop',$content_id);
     }
     // call for ajax data
     public function ajaxview() {
@@ -285,7 +273,7 @@ class Branch extends CI_Controller {
         $sortCol = ($this->input->post('iSortCol_0'))?intval($this->input->post('iSortCol_0')):'';
         $sortOrder = ($this->input->post('sSortDir_0'))?$this->input->post('sSortDir_0'):'ASC';
         
-        $sortfields = array(3=>'restaurant.created_date',4=>'resta.name');
+        $sortfields = array(3=>'shop.created_date',4=>'resta.name');
         $sortFieldName = '';
         if(array_key_exists($sortCol, $sortfields))
         {

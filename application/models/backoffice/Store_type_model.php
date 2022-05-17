@@ -55,7 +55,7 @@ class Store_type_model extends CI_Model {
             $this->db->like('store_type.name_en', $this->input->post('name_en'));
         } 
         /*if($this->session->userdata('UserType') == 'Admin'){     
-            $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+            $this->db->where('shop.created_by',$this->session->userdata('UserID'));
         }*/             
         $this->db->select('store_type.name_fr,store_type.name_en,store_type.entity_id, store_type.icon, store_type.banner');
         $result['total'] = $this->db->count_all_results('store_type');

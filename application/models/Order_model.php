@@ -20,15 +20,15 @@ class Order_model extends CI_Model {
     }
     // get latest order of logged in user
     public function getLatestOrder($user_id,$order_id=NULL){
-        $this->db->select('order_master.entity_id as master_order_id,order_master.*,order_detail.*,order_driver_map.driver_id,users.first_name,users.last_name,users.mobile_number,users.phone_code,users.image,driver_traking_map.latitude,driver_traking_map.longitude,restaurant_address.latitude as resLat,restaurant_address.longitude as resLong,restaurant_address.address,restaurant.timings,restaurant.image as rest_image,restaurant.name,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
+        $this->db->select('order_master.entity_id as master_order_id,order_master.*,order_detail.*,order_driver_map.driver_id,users.first_name,users.last_name,users.mobile_number,users.phone_code,users.image,driver_traking_map.latitude,driver_traking_map.longitude,shop_address.latitude as resLat,shop_address.longitude as resLong,shop_address.address,shop.timings,shop.image as rest_image,shop.name,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
         $this->db->join('order_detail','order_master.entity_id = order_detail.order_id','left');
         $this->db->join('order_driver_map','order_master.entity_id = order_driver_map.order_id AND order_driver_map.is_accept = 1','left');
         $this->db->join('users','order_driver_map.driver_id = users.entity_id AND order_driver_map.is_accept = 1','left');
         $this->db->join('driver_traking_map','users.entity_id = driver_traking_map.driver_id AND driver_traking_map.traking_id = (SELECT driver_traking_map.traking_id FROM driver_traking_map WHERE driver_traking_map.driver_id = users.entity_id ORDER BY created_date DESC LIMIT 1)','left');
 
-        $this->db->join('restaurant_address','order_master.restaurant_id = restaurant_address.resto_entity_id','left');
-        $this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
+        $this->db->join('shop_address','order_master.shop_id = shop_address.shop_entity_id','left');
+        $this->db->join('shop','order_master.shop_id = shop.entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
         $this->db->where('(order_master.order_status != "delivered" AND order_master.order_status != "cancel")');
         if (!empty($user_id)) {
             $this->db->where('order_master.user_id',$user_id);
@@ -49,8 +49,8 @@ class Order_model extends CI_Model {
             $Ostatus = $this->db->get('order_status')->result_array();
             if (!empty($Ostatus)) {
                 foreach ($Ostatus as $key => $ovalue) {
-                    if ($ovalue['order_status'] == 'accepted_by_restaurant') {
-                        $result->accepted_by_restaurant = $ovalue['time'];
+                    if ($ovalue['order_status'] == 'accepted_by_shop') {
+                        $result->accepted_by_shop = $ovalue['time'];
                     }
                     if ($ovalue['order_status'] == 'preparing') {
                         $result->preparing = $ovalue['time'];

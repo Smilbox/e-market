@@ -6,7 +6,7 @@
 		<div class="inner-pages-banner">
 			<h1><?php echo $this->lang->line('recipe_text1') ?></h1>
 			<form id="recipe_search_form" class="inner-pages-form">
-				<div class="form-group search-restaurant">
+				<div class="form-group search-shop">
 					<input type="text" name="recipe" id="recipe" placeholder="<?php echo $this->lang->line('search_recipe') ?>" value="">
 					<input type="button" name="Search" value="<?php echo $this->lang->line('search'); ?>" class="btn" onclick="searchRecipes()">
 				</div>
@@ -34,7 +34,7 @@
 									<img src="<?php echo ($value['image'])?$value['image']:default_img; ?>" alt="<?php echo $value['name']; ?>">
 								</div>
 								<div class="popular-rest-content type-food-option">
-									<div class="detail-list <?php echo ($value['is_veg'] == 1)?'veg':'non-veg'; ?>"><h3><?php echo $value['name']; ?></h3></div>
+									<div class="detail-list <?php echo ($value['is_under_20_kg'] == 1)?'veg':'non-veg'; ?>"><h3><?php echo $value['name']; ?></h3></div>
 								</div>
 							</a>
 						</div>

@@ -56,28 +56,28 @@
 	</section>
 <?php } ?>
 
-<div id="popular-restaurants">
-	<section class="popular-restaurants">
+<div id="popular-shops">
+	<section class="popular-shops">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="heading-title">
-						<h2><?php echo $this->lang->line('nearby_restaurants') ?></h2>
-						<?php if (!empty($restaurants)) {
-						    if(count($restaurants) > 9){ ?>
-						        <a href="<?php echo base_url() . 'restaurant'; ?>"><div class="view-all btn"> <?php echo $this->lang->line('view_all'); ?></div> </a>
+						<h2><?php echo $this->lang->line('nearby_shops') ?></h2>
+						<?php if (!empty($shops)) {
+						    if(count($shops) > 9){ ?>
+						        <a href="<?php echo base_url() . 'shop'; ?>"><div class="view-all btn"> <?php echo $this->lang->line('view_all'); ?></div> </a>
 						    <?php }
 						}?>
 					</div>
 				</div>
 			</div>
 			<div class="row rest-box-row">
-				<?php if (!empty($restaurants)) {
-				foreach ($restaurants as $key => $value) { 
+				<?php if (!empty($shops)) {
+				foreach ($shops as $key => $value) { 
 					if ($key <= 8) { ?>
 						<div class="col-sm-12 col-md-6 col-lg-3">
 							<div class="popular-rest-box">
-								<a href="<?php echo base_url().'restaurant/restaurant-detail/'.$value['shop_slug'];?>">
+								<a href="<?php echo base_url().'shop/shop-detail/'.$value['shop_slug'];?>">
 									<div class="popular-rest-img">
 										<img src="<?php echo ($value['image'])?$value['image']:default_img;?>" alt="<?php echo $value['name']; ?>">
 										<?php echo ($value['ratings'] > 0)?'<strong>'.$value['ratings'].'</strong>':'<strong class="newres">NEW</strong>'; ?>
@@ -109,17 +109,17 @@
 	</section>
 </div>
 
-<section class="restaurant-app">
+<section class="shop-app">
 	<div class="container">	
-		<div class="restaurant-app-content">
+		<div class="shop-app-content">
 			<div class="row">
 				<div class="col-md-6 col-sm-12">
-					<div class="restaurant-app-img wow pulse">
-						<img src="<?php echo base_url();?>assets/front/images/restaurant-app.png" alt="Restaurant app">
+					<div class="shop-app-img wow pulse">
+						<img src="<?php echo base_url();?>assets/front/images/shop-app.png" alt="Shop app">
 					</div>
 				</div>
 				<div class="col-md-6 col-sm-12">
-					<div class="restaurant-app-text">
+					<div class="shop-app-text">
 						<div class="heading-title-02">
 							<h4><?php echo $this->lang->line('welcome_to') ?> <br><span><?php echo $this->lang->line('site_title'); ?> <?php echo $this->lang->line('res_app') ?></span></h4>
 						</div>	

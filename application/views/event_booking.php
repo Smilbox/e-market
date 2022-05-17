@@ -6,8 +6,8 @@
 		<div class="inner-pages-banner">
 			<h1><?php echo $this->lang->line('book_venue') ?></h1>
 			<form id="event_search_form" class="inner-pages-form">
-				<div class="form-group search-restaurant">
-					<input type="text" name="searchEvent" id="searchEvent" placeholder="Search your Restaurant" value="">
+				<div class="form-group search-shop">
+					<input type="text" name="searchEvent" id="searchEvent" placeholder="Search your Shop" value="">
 					<input type="button" name="Search" value="<?php echo $this->lang->line('search'); ?>" class="btn" onclick="searchEvents()">
 				</div>
 			</form>
@@ -20,16 +20,16 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="heading-title">
-					<h2><?php echo $this->lang->line('book_restaurant') ?></h2>
+					<h2><?php echo $this->lang->line('book_shop') ?></h2>
 				</div>
 			</div>
 		</div>
 		<div class="row rest-box-row" id="sort_events">
-			<?php if (!empty($restaurants)) {
-				foreach ($restaurants as $key => $value) { ?>
+			<?php if (!empty($shops)) {
+				foreach ($shops as $key => $value) { ?>
 					<div class="col-sm-12 col-md-6 col-lg-4">
 						<div class="popular-rest-box">
-							<a href="<?php echo base_url().'restaurant/event-booking-detail/'.$value['shop_slug'];?>">
+							<a href="<?php echo base_url().'shop/event-booking-detail/'.$value['shop_slug'];?>">
 								<div class="popular-rest-img">
 									<img src="<?php echo ($value['image'])?$value['image']:default_img;?>" alt="<?php echo $value['name']; ?>">
 									<?php echo ($value['ratings'] > 0)?'<strong>'.$value['ratings'].'</strong>':'<strong class="newres">NEW</strong>'; ?> 
@@ -61,7 +61,7 @@ function getData(page=0, noRecordDisplay=''){
 	var searchEvent = $('#searchEvent').val();
 	var page = page ? page : 0;
 	$.ajax({
-		url: "<?php echo base_url().'restaurant/ajax_events'; ?>/"+page,
+		url: "<?php echo base_url().'shop/ajax_events'; ?>/"+page,
 		data: {'searchEvent':searchEvent,'page':page},
 		type: "POST",
 		success: function(result){

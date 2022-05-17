@@ -68,7 +68,7 @@
                                             <?php foreach ($Languages as $lang) {?>
                                                 <th><?php echo $lang->language_slug;?></th>
                                             <?php } ?>
-                                            <th>Restaurant Name</th>
+                                            <th>Shop Name</th>
                                             <th>Action</th>
                                         </tr>
                                         <tr role="row" class="filter">
@@ -77,7 +77,7 @@
                                             <?php foreach ($Languages as $lang) {?>
                                                 <td><input type="text" class="form-control form-filter input-sm" disabled="" name="<?php echo $lang->language_slug;?>"></td>
                                             <?php } ?>     
-                                            <td><input type="text" class="form-control form-filter input-sm" name="restaurant"></td>
+                                            <td><input type="text" class="form-control form-filter input-sm" name="shop"></td>
                                             
                                             <td><div class="margin-bottom-5">
                                                     <button class="btn btn-sm  danger-btn filter-submit margin-bottom"><i class="fa fa-search"></i> <?php echo $this->lang->line('search');?></button>

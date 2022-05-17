@@ -11,19 +11,19 @@ class Delivery_charge_model extends CI_Model {
             $this->db->like('area_name', $this->input->post('page_title'));
         } 
         if($this->input->post('delivery_type') != ''){
-            $this->db->where_in('restaurant.delivery_type', $this->input->post('delivery_type'));
+            $this->db->where_in('shop.delivery_type', $this->input->post('delivery_type'));
         } 
         if($this->input->post('res_name') != ''){
-            $this->db->like('restaurant.name', $this->input->post('res_name'));
+            $this->db->like('shop.name', $this->input->post('res_name'));
         } 
         if($this->input->post('price') != ''){
             $this->db->like('price_charge', $this->input->post('price'));
         }      
         if($this->session->userdata('UserType') == 'Admin'){     
-            $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+            $this->db->where('shop.created_by',$this->session->userdata('UserID'));
         }             
-        $this->db->select('restaurant.name, restaurant.entity_id, delivery_charge.restaurant_id,delivery_charge.area_name,delivery_charge.price_charge,delivery_charge.charge_id,delivery_charge.delivery_type,restaurant.currency_id');
-        $this->db->join('restaurant','delivery_charge.restaurant_id = restaurant.entity_id','left'); 
+        $this->db->select('shop.name, shop.entity_id, delivery_charge.shop_id,delivery_charge.area_name,delivery_charge.price_charge,delivery_charge.charge_id,delivery_charge.delivery_type,shop.currency_id');
+        $this->db->join('shop','delivery_charge.shop_id = shop.entity_id','left'); 
         $result['total'] = $this->db->count_all_results('delivery_charge');
         if($sortFieldName != '')
             $this->db->order_by($sortFieldName, $sortOrder);
@@ -31,16 +31,16 @@ class Delivery_charge_model extends CI_Model {
         if($displayLength>1)
             $this->db->limit($displayLength,$displayStart);
         if($this->input->post('res_name') != ''){
-            $this->db->like('restaurant.name', $this->input->post('res_name'));
+            $this->db->like('shop.name', $this->input->post('res_name'));
         } 
         if($this->input->post('price') != ''){
             $this->db->like('price_charge', $this->input->post('price'));
         }   
         if($this->session->userdata('UserType') == 'Admin'){     
-            $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+            $this->db->where('shop.created_by',$this->session->userdata('UserID'));
         }             
-        $this->db->select('restaurant.name, restaurant.entity_id, delivery_charge.restaurant_id,delivery_charge.area_name,delivery_charge.price_charge,delivery_charge.charge_id,delivery_charge.delivery_type,restaurant.currency_id');
-        $this->db->join('restaurant','delivery_charge.restaurant_id = restaurant.entity_id','left'); 
+        $this->db->select('shop.name, shop.entity_id, delivery_charge.shop_id,delivery_charge.area_name,delivery_charge.price_charge,delivery_charge.charge_id,delivery_charge.delivery_type,shop.currency_id');
+        $this->db->join('shop','delivery_charge.shop_id = shop.entity_id','left'); 
         $result['data'] = $this->db->get('delivery_charge')->result();              
         return $result;
     }  
@@ -88,10 +88,10 @@ class Delivery_charge_model extends CI_Model {
         }
         return $this->db->get($tblname)->result();
     }
-    public function getResLatLong($restaurant_id){
+    public function getResLatLong($shop_id){
         $this->db->select('latitude,longitude');
-        $this->db->where('resto_entity_id',$restaurant_id);
-        return $this->db->get('restaurant_address')->first_row();
+        $this->db->where('shop_entity_id',$shop_id);
+        return $this->db->get('shop_address')->first_row();
 
     }
 }

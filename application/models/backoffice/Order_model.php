@@ -19,9 +19,9 @@ class Order_model extends CI_Model {
 		if($this->input->post('Status') != ''){
 			$this->db->like('o.status', $this->input->post('Status'));
 		}
-		if($this->input->post('restaurant') != ''){
-            $name = $this->input->post('restaurant');
-            $where = "(restaurant.name LIKE '%".$this->input->post('restaurant')."%' OR (order_detail.restaurant_detail REGEXP '.*".'"'."name".'"'.";s:[0-9]+:".'"'."$name".'"'.".*'))";
+		if($this->input->post('shop') != ''){
+            $name = $this->input->post('shop');
+            $where = "(shop.name LIKE '%".$this->input->post('shop')."%' OR (order_detail.shop_detail REGEXP '.*".'"'."name".'"'.";s:[0-9]+:".'"'."$name".'"'.".*'))";
             $this->db->or_where($where);
         }
 		if($this->input->post('order_total') != ''){
@@ -36,15 +36,15 @@ class Order_model extends CI_Model {
 		if($this->input->post('order_delivery') != ''){
 			$this->db->where('o.order_delivery',$this->input->post('order_delivery'));
 		}
-		$this->db->select('o.order_delivery,o.pre_order_delivery_date,o.total_rate as rate,o.order_status as ostatus,o.status,o.entity_id as entity_id,o.created_date,o.restaurant_id,u.first_name as fname,u.last_name as lname,u.entity_id as user_id,order_status.order_status as orderStatus,driver.first_name,driver.last_name,driver.entity_id as driver_id,order_detail.restaurant_detail,restaurant.name,restaurant.currency_id,o.address_id');
+		$this->db->select('o.order_delivery,o.pre_order_delivery_date,o.total_rate as rate,o.order_status as ostatus,o.status,o.entity_id as entity_id,o.created_date,o.shop_id,u.first_name as fname,u.last_name as lname,u.entity_id as user_id,order_status.order_status as orderStatus,driver.first_name,driver.last_name,driver.entity_id as driver_id,order_detail.shop_detail,shop.name,shop.currency_id,o.address_id');
 		$this->db->join('users as u','o.user_id = u.entity_id','left');
-		$this->db->join('restaurant','o.restaurant_id = restaurant.entity_id','left');
+		$this->db->join('shop','o.shop_id = shop.entity_id','left');
 		$this->db->join('order_status','o.entity_id = order_status.order_id','left');
 		$this->db->join('order_driver_map','o.entity_id = order_driver_map.order_id AND order_driver_map.is_accept = 1','left');
 		$this->db->join('order_detail','o.entity_id = order_detail.order_id','left'); 
 		$this->db->join('users as driver','order_driver_map.driver_id = driver.entity_id','left');
 		// if($this->session->userdata('UserType') == 'Admin'){
-		// 	$this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+		// 	$this->db->where('shop.created_by',$this->session->userdata('UserID'));
 		// }
 		if($order_status){
 			$this->db->where('o.order_status',$order_status);
@@ -63,9 +63,9 @@ class Order_model extends CI_Model {
 		if($this->input->post('Status') != ''){
 			$this->db->like('o.status', $this->input->post('Status'));
 		}
-		if($this->input->post('restaurant') != ''){
-            $name = $this->input->post('restaurant');
-            $where = "(restaurant.name LIKE '%".$this->input->post('restaurant')."%' OR (order_detail.restaurant_detail REGEXP '.*".'"'."name".'"'.";s:[0-9]+:".'"'."$name".'"'.".*'))";
+		if($this->input->post('shop') != ''){
+            $name = $this->input->post('shop');
+            $where = "(shop.name LIKE '%".$this->input->post('shop')."%' OR (order_detail.shop_detail REGEXP '.*".'"'."name".'"'.";s:[0-9]+:".'"'."$name".'"'.".*'))";
             $this->db->where($where);
         }
 		if($this->input->post('order_total') != ''){
@@ -85,18 +85,18 @@ class Order_model extends CI_Model {
 		}
 		if($displayLength>1)
 			$this->db->limit($displayLength,$displayStart);  
-		$this->db->select('o.order_delivery,o.pre_order_delivery_date,o.total_rate as rate,o.order_status as ostatus,o.status,o.restaurant_id,o.created_date,o.entity_id as entity_id,o.user_id,u.first_name as fname,u.last_name as lname,u.entity_id as user_id,order_status.order_status as orderStatus,driver.first_name,driver.last_name,driver.entity_id as driver_id,order_detail.restaurant_detail,restaurant.name,restaurant.currency_id,o.address_id');
+		$this->db->select('o.order_delivery,o.pre_order_delivery_date,o.total_rate as rate,o.order_status as ostatus,o.status,o.shop_id,o.created_date,o.entity_id as entity_id,o.user_id,u.first_name as fname,u.last_name as lname,u.entity_id as user_id,order_status.order_status as orderStatus,driver.first_name,driver.last_name,driver.entity_id as driver_id,order_detail.shop_detail,shop.name,shop.currency_id,o.address_id');
 		$this->db->join('users as u','o.user_id = u.entity_id','left');   
 		$this->db->join('order_detail','o.entity_id = order_detail.order_id','left'); 
 		$this->db->join('order_status','o.entity_id = order_status.order_id','left');
-		$this->db->join('restaurant','o.restaurant_id = restaurant.entity_id','left');
+		$this->db->join('shop','o.shop_id = shop.entity_id','left');
 		$this->db->join('order_driver_map','o.entity_id = order_driver_map.order_id AND order_driver_map.is_accept = 1','left');
 		$this->db->join('users as driver','order_driver_map.driver_id = driver.entity_id','left');
 		if($order_status){
 			$this->db->where('o.order_status',$order_status);
 		}  
 		// if($this->session->userdata('UserType') == 'Admin'){
-		// 	$this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+		// 	$this->db->where('shop.created_by',$this->session->userdata('UserID'));
 		// }
 		$this->db->group_by('o.entity_id');
 		$result['data'] = $this->db->get('order_master as o')->result();    
@@ -127,8 +127,8 @@ class Order_model extends CI_Model {
 	// assign driver 
 	public function getOrderDetails($order_id){ 
 		$this->db->select("(6371 * acos ( cos ( radians(user_address.latitude) ) * cos( radians(address.latitude ) ) * cos( radians( address.longitude ) - radians(user_address.longitude) ) + sin ( radians(user_address.latitude) ) * sin( radians( address.latitude )))) as distance");
-        $this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
-        $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
+        $this->db->join('shop','order_master.shop_id = shop.entity_id','left');
+        $this->db->join('shop_address as address','shop.entity_id = address.shop_entity_id','left');
         $this->db->join('user_address','order_master.address_id = user_address.entity_id','left');
         $this->db->where('order_master.entity_id',$order_id);
         return $distance = $this->db->get('order_master')->result();
@@ -139,8 +139,8 @@ class Order_model extends CI_Model {
 	{
 		$this->db->select('order.*');
 		$this->db->select('res.name, address.address,address.landmark,address.city,address.zipcode,u.first_name as first_name,u.last_name as last_name,u.phone_number as phone_number, u.mobile_number as mobile_number ,uaddress.address as uaddress,uaddress.landmark as ulandmark,uaddress.city as ucity,uaddress.zipcode as uzipcode');
-		$this->db->join('restaurant as res','order.restaurant_id = res.entity_id','left');
-		$this->db->join('restaurant_address as address','res.entity_id = address.resto_entity_id','left');
+		$this->db->join('shop as res','order.shop_id = res.entity_id','left');
+		$this->db->join('shop_address as address','res.entity_id = address.shop_entity_id','left');
 		$this->db->join('users as u','order.user_id = u.entity_id','left');
 		$this->db->join('user_address as uaddress','u.entity_id = uaddress.user_entity_id','left');
 		return  $this->db->get_where('order_master as order',array('order.entity_id'=>$entity_id))->first_row();
@@ -149,9 +149,9 @@ class Order_model extends CI_Model {
 	// method to get details by id
 	public function __getEditDetail($entity_id)
 	{
-		$this->db->select('order.entity_id, order.user_id, order.restaurant_id, order.address_id, order.coupon_id, order.total_rate, order.subtotal, order.tax_rate, order.tax_type, order.coupon_discount, order.coupon_name, order.coupon_amount, order.coupon_type, order.order_delivery, order.pre_order_delivery_date, order.payment_option, order.status, order.accept_order_time, order.order_date, order.status, order.order_no, order.delivery_charge, order.extra_comment, order.created_by, order.create_date, order.updated_by,order.updated_date,res.name, address.address,address.landmark,address.city,address.zipcode,u.first_name as first_name,u.last_name as last_name,u.phone_number as phone_number, u.mobile_number as mobile_number ,uaddress.address as uaddress,uaddress.landmark as ulandmark,uaddress.city as ucity,uaddress.zipcode as uzipcode');
-		$this->db->join('restaurant as res','order.restaurant_id = res.entity_id','left');
-		$this->db->join('restaurant_address as address','res.entity_id = address.resto_entity_id','left');
+		$this->db->select('order.entity_id, order.user_id, order.shop_id, order.address_id, order.coupon_id, order.total_rate, order.subtotal, order.tax_rate, order.tax_type, order.coupon_discount, order.coupon_name, order.coupon_amount, order.coupon_type, order.order_delivery, order.pre_order_delivery_date, order.payment_option, order.status, order.accept_order_time, order.order_date, order.status, order.order_no, order.delivery_charge, order.extra_comment, order.created_by, order.create_date, order.updated_by,order.updated_date,res.name, address.address,address.landmark,address.city,address.zipcode,u.first_name as first_name,u.last_name as last_name,u.phone_number as phone_number, u.mobile_number as mobile_number ,uaddress.address as uaddress,uaddress.landmark as ulandmark,uaddress.city as ucity,uaddress.zipcode as uzipcode');
+		$this->db->join('shop as res','order.shop_id = res.entity_id','left');
+		$this->db->join('shop_address as address','res.entity_id = address.shop_entity_id','left');
 		$this->db->join('users as u','order.user_id = u.entity_id','left');
 		$this->db->join('user_address as uaddress','u.entity_id = uaddress.user_entity_id','left');
 		return  $this->db->get_where('order_master as order',array('order.entity_id'=>$entity_id))->first_row();
@@ -159,8 +159,8 @@ class Order_model extends CI_Model {
 	public function _getEditDetail($entity_id)
 	{
 		$this->db->select('order.*,res.name, address.address,address.landmark,address.city,address.zipcode,u.first_name as first_name,u.last_name as last_name,u.phone_number as phone_number, u.mobile_number as mobile_number ,uaddress.address as uaddress,uaddress.landmark as ulandmark,uaddress.city as ucity,uaddress.zipcode as uzipcode');
-		$this->db->join('restaurant as res','order.restaurant_id = res.entity_id','left');
-		$this->db->join('restaurant_address as address','res.entity_id = address.resto_entity_id','left');
+		$this->db->join('shop as res','order.shop_id = res.entity_id','left');
+		$this->db->join('shop_address as address','res.entity_id = address.shop_entity_id','left');
 		$this->db->join('users as u','order.user_id = u.entity_id','left');
 		$this->db->join('user_address as uaddress','u.entity_id = uaddress.user_entity_id','left');
 		return  $this->db->get_where('order_master as order',array('order.entity_id'=>$entity_id))->first_row();
@@ -173,7 +173,7 @@ class Order_model extends CI_Model {
 			return $this->db->affected_rows();
 	}
 	 // updating status and send request to driver
-	public function UpdatedStatus($tblname,$entity_id,$restaurant_id,$order_id){
+	public function UpdatedStatus($tblname,$entity_id,$shop_id,$order_id){
 		$this->db->set('status',1)->where('entity_id',$order_id)->update('order_master');
 		$this->db->set('accept_order_time',date("Y-m-d H:i:s"))->where('entity_id',$order_id)->update('order_master');
 		//send notification to user
@@ -238,10 +238,10 @@ class Order_model extends CI_Model {
 	                $longitude = $value->longitude;
 	                $latitude = $value->latitude;
 	                $this->db->select("(6371 * acos ( cos ( radians($latitude) ) * cos( radians(address.latitude ) ) * cos( radians( address.longitude ) - radians($longitude) ) + sin ( radians($latitude) ) * sin( radians( address.latitude )))) as distance");
-	                $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
-	                $this->db->where('restaurant.entity_id',$restaurant_id);
+	                $this->db->join('shop_address as address','shop.entity_id = address.shop_entity_id','left');
+	                $this->db->where('shop.entity_id',$shop_id);
 	                $this->db->having('distance <',NEAR_KM);
-	                $result = $this->db->get('restaurant')->result();
+	                $result = $this->db->get('shop')->result();
 	                if(!empty($result)){
 	                    if($value->device_id){
 	                    	//get langauge
@@ -303,7 +303,7 @@ class Order_model extends CI_Model {
 			// 	$this->db->where('created_by',$this->session->userdata('UserID'));  
 			// }        
 			return $this->db->get($tblname)->result();
-		}else if($tblname == 'restaurant'){
+		}else if($tblname == 'shop'){
 			$this->db->select('name,entity_id,amount_type,amount');
 			$this->db->where('status',1);
 			// if($this->session->userdata('UserType') == 'Admin'){
@@ -319,9 +319,9 @@ class Order_model extends CI_Model {
 	//get items
 	public function getItem($entity_id){
 		$this->db->select('entity_id,name,price');
-		$this->db->where('restaurant_id',$entity_id);
+		$this->db->where('shop_id',$entity_id);
 		$this->db->where('status',1);
-		return $this->db->get('restaurant_menu_item')->result();
+		return $this->db->get('shop_menu_item')->result();
 	}
 	//get address
 	public function getAddress($entity_id){
@@ -348,7 +348,7 @@ class Order_model extends CI_Model {
 	//get item name
 	public function getItemName($item_id){
 		$this->db->where('entity_id',$item_id);
-		return $this->db->get('restaurant_menu_item')->first_row();
+		return $this->db->get('shop_menu_item')->first_row();
 	}
 	//get order status history
 	public function statusHistory($order_id){
@@ -356,27 +356,27 @@ class Order_model extends CI_Model {
 		return $this->db->get('order_status')->result();
 	}
 	//get rest detail
-	public function getRestaurantDetail($entity_id){
-        $this->db->select('restaurant.name,restaurant.image,restaurant.phone_number,restaurant.email,restaurant.amount_type,restaurant.amount,restaurant_address.address,restaurant_address.landmark,restaurant_address.zipcode,restaurant_address.city,currencies.currency_symbol');
-        $this->db->join('restaurant_address','restaurant.entity_id = restaurant_address.resto_entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left'); 
-        $this->db->where('restaurant.entity_id',$entity_id);
-        return $this->db->get('restaurant')->first_row();
+	public function getShopDetail($entity_id){
+        $this->db->select('shop.name,shop.image,shop.phone_number,shop.email,shop.amount_type,shop.amount,shop_address.address,shop_address.landmark,shop_address.zipcode,shop_address.city,currencies.currency_symbol');
+        $this->db->join('shop_address','shop.entity_id = shop_address.shop_entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left'); 
+        $this->db->where('shop.entity_id',$entity_id);
+        return $this->db->get('shop')->first_row();
 	}
-	//get list of restaurant
-	public function getRestaurantList(){
+	//get list of shop
+	public function getShopList(){
 		// if($this->session->userdata('UserType') == 'Admin'){
 		// 	$this->db->where('created_by',$this->session->userdata('UserID'));  
 		// }   
-		return $this->db->get('restaurant')->result();
+		return $this->db->get('shop')->result();
 	}
 	//generate report data
-	public function generate_report($restaurant_id,$order_type,$order_date){
-		$this->db->select('order_master.*,restaurant.name,users.first_name,users.last_name,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
-		$this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
+	public function generate_report($shop_id,$order_type,$order_date){
+		$this->db->select('order_master.*,shop.name,users.first_name,users.last_name,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
+		$this->db->join('shop','order_master.shop_id = shop.entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
 		$this->db->join('users','order_master.user_id = users.entity_id','left');
-		$this->db->where('restaurant_id',$restaurant_id);
+		$this->db->where('shop_id',$shop_id);
 		if($order_type){
 			$this->db->where('order_delivery',$order_type);
 		}
@@ -407,15 +407,15 @@ class Order_model extends CI_Model {
 
     // get latest order of logged in user
     public function getLatestOrder($order_id){
-        $this->db->select('order_master.entity_id as master_order_id,order_master.*,order_detail.*,order_driver_map.driver_id,users.first_name,users.last_name,users.mobile_number,users.phone_code,users.image,driver_traking_map.latitude,driver_traking_map.longitude,restaurant_address.latitude as resLat,restaurant_address.longitude as resLong,restaurant_address.address,restaurant.timings,restaurant.image as rest_image,restaurant.name,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
+        $this->db->select('order_master.entity_id as master_order_id,order_master.*,order_detail.*,order_driver_map.driver_id,users.first_name,users.last_name,users.mobile_number,users.phone_code,users.image,driver_traking_map.latitude,driver_traking_map.longitude,shop_address.latitude as resLat,shop_address.longitude as resLong,shop_address.address,shop.timings,shop.image as rest_image,shop.name,currencies.currency_symbol,currencies.currency_code,currencies.currency_id');
         $this->db->join('order_detail','order_master.entity_id = order_detail.order_id','left');
         $this->db->join('order_driver_map','order_master.entity_id = order_driver_map.order_id AND order_driver_map.is_accept = 1','left');
         $this->db->join('users','order_driver_map.driver_id = users.entity_id AND order_driver_map.is_accept = 1','left');
         $this->db->join('driver_traking_map','users.entity_id = driver_traking_map.driver_id AND driver_traking_map.traking_id = (SELECT driver_traking_map.traking_id FROM driver_traking_map WHERE driver_traking_map.driver_id = users.entity_id ORDER BY created_date DESC LIMIT 1)','left');
 
-        $this->db->join('restaurant_address','order_master.restaurant_id = restaurant_address.resto_entity_id','left');
-        $this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
+        $this->db->join('shop_address','order_master.shop_id = shop_address.shop_entity_id','left');
+        $this->db->join('shop','order_master.shop_id = shop.entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
         $this->db->where('(order_master.order_status != "delivered" AND order_master.order_status != "cancel")');
         $this->db->where('order_master.entity_id',$order_id);
         
@@ -430,8 +430,8 @@ class Order_model extends CI_Model {
             $Ostatus = $this->db->get('order_status')->result_array();
             if (!empty($Ostatus)) {
                 foreach ($Ostatus as $key => $ovalue) {
-                    if ($ovalue['order_status'] == 'accepted_by_restaurant') {
-                        $result->accepted_by_restaurant = $ovalue['time'];
+                    if ($ovalue['order_status'] == 'accepted_by_shop') {
+                        $result->accepted_by_shop = $ovalue['time'];
                     }
                     if ($ovalue['order_status'] == 'preparing') {
                         $result->preparing = $ovalue['time'];

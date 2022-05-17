@@ -187,7 +187,7 @@ function menuFilter(content_id){
   }
   jQuery.ajax({
     type : "POST",
-    url : BASEURL+'restaurant/ajax_restaurant_details',
+    url : BASEURL+'shop/ajax_shop_details',
     data : {"content_id":content_id,"food":food,"price":price,"searchDish":searchDish},
     beforeSend: function(){
         $('#quotes-main-loader').show();
@@ -202,20 +202,20 @@ function menuFilter(content_id){
     });
 }
 // decrease the menu quantity
-function minusQuantity(restaurant_id,menu_id,cart_key){
-  customItemCount(menu_id,restaurant_id,'minus',cart_key);
+function minusQuantity(shop_id,menu_id,cart_key){
+  customItemCount(menu_id,shop_id,'minus',cart_key);
 }
 // increase the menu quantity
-function plusQuantity(restaurant_id,menu_id,cart_key){
-  customItemCount(menu_id,restaurant_id,'plus',cart_key);
+function plusQuantity(shop_id,menu_id,cart_key){
+  customItemCount(menu_id,shop_id,'plus',cart_key);
 }
 // custom item count
-function customItemCount(entity_id,restaurant_id,action,cart_key){
+function customItemCount(entity_id,shop_id,action,cart_key){
   jQuery.ajax({
     type : "POST",
     dataType : "json",
     url : BASEURL+'cart/customItemCount',
-    data : {"entity_id":entity_id,"restaurant_id":restaurant_id,"action":action,"cart_key":cart_key,'is_main_cart':'no'},
+    data : {"entity_id":entity_id,"shop_id":shop_id,"action":action,"cart_key":cart_key,'is_main_cart':'no'},
     beforeSend: function(){
         $('#quotes-main-loader').show();
     },
@@ -234,33 +234,33 @@ function customItemCount(entity_id,restaurant_id,action,cart_key){
     }
     });
 }
-// check cart restaurant before adding menu item
-function checkCartRestaurant(entity_id,restaurant_id,is_addon,item_id) {
+// check cart shop before adding menu item
+function checkCartShop(entity_id,shop_id,is_addon,item_id) {
   jQuery.ajax({
     type : "POST",
-    url : BASEURL+'cart/checkCartRestaurant',
-    data : {"restaurant_id":restaurant_id},
+    url : BASEURL+'cart/checkCartShop',
+    data : {"shop_id":shop_id},
     beforeSend: function(){
         $('#quotes-main-loader').show();
     },
     success: function(response) {
       $('#quotes-main-loader').hide();
       if (response == 0) {
-        // another restaurant
+        // another shop
         $('#rest_entity_id').val(entity_id);
-        $('#rest_restaurant_id').val(restaurant_id);
+        $('#rest_shop_id').val(shop_id);
         $('#rest_is_addon').val(is_addon);
         $('#item_id').val(item_id);
         $('#anotherRestModal').modal('show');
       }
       if (response == 1) {
-        // same restaurant
+        // same shop
         if (is_addon == '') { // When no addon
-          AddToCart(entity_id,restaurant_id,item_id);
+          AddToCart(entity_id,shop_id,item_id);
         }
         else // When there is addon
         {
-          checkMenuItem(entity_id,restaurant_id,item_id);
+          checkMenuItem(entity_id,shop_id,item_id);
         }
       }
     },
@@ -270,25 +270,25 @@ function checkCartRestaurant(entity_id,restaurant_id,is_addon,item_id) {
     });
 }
 // confirm to add menu item
-function ConfirmCartRestaurant(){
+function ConfirmCartShop(){
   var entity_id = $('#rest_entity_id').val();
-  var restaurant_id = $('#rest_restaurant_id').val();
+  var shop_id = $('#rest_shop_id').val();
   var is_addon = $('#rest_is_addon').val();
   var item_id = $('#item_id').val();
-  var restaurant = $('input[name="addNewRestaurant"]:checked').val();
+  var shop = $('input[name="addNewShop"]:checked').val();
   $('#anotherRestModal').modal('hide');
-  if (restaurant == "discardOld") {
+  if (shop == "discardOld") {
     jQuery.ajax({
       type : "POST",
       url : BASEURL+'cart/emptyCart',
-      data : {"entity_id":entity_id,'restaurant_id':restaurant_id},
+      data : {"entity_id":entity_id,'shop_id':shop_id},
       success: function(response) { 
         if (is_addon == '') {
-          AddToCart(entity_id,restaurant_id,item_id);
+          AddToCart(entity_id,shop_id,item_id);
         }
         else
         {
-          checkMenuItem(entity_id,restaurant_id,item_id);
+          checkMenuItem(entity_id,shop_id,item_id);
         }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -320,7 +320,7 @@ function PreOrder() {
   });
 }
 // add to cart
-function AddToCart(entity_id,restaurant_id,item_id){  
+function AddToCart(entity_id,shop_id,item_id){  
   var action;
   if ($("#addpackage-"+entity_id).hasClass('inpackage')) {
     action = "remove";
@@ -333,7 +333,7 @@ function AddToCart(entity_id,restaurant_id,item_id){
   jQuery.ajax({
     type : "POST",
     url : BASEURL+'cart/addToCart',
-    data : {"menu_item_id":entity_id,'restaurant_id':restaurant_id},
+    data : {"menu_item_id":entity_id,'shop_id':shop_id},
     beforeSend: function(){
         $('#quotes-main-loader').show();
     },
@@ -351,12 +351,12 @@ function AddToCart(entity_id,restaurant_id,item_id){
   return false;
 }
 // check menu item availability
-function checkMenuItem(entity_id,restaurant_id,item_id){
+function checkMenuItem(entity_id,shop_id,item_id){
   // check the item in cart if it's already added
   jQuery.ajax({
     type : "POST",
     url : BASEURL+'cart/checkMenuItem' ,
-    data : {"entity_id":entity_id,"restaurant_id":restaurant_id},
+    data : {"entity_id":entity_id,"shop_id":shop_id},
     beforeSend: function(){
         $('#quotes-main-loader').show();
     },
@@ -364,13 +364,13 @@ function checkMenuItem(entity_id,restaurant_id,item_id){
       $('#quotes-main-loader').hide();
       if (response == 1) {
         $('#con_entity_id').val(entity_id);
-        $('#con_restaurant_id').val(restaurant_id);
+        $('#con_shop_id').val(shop_id);
         $('#con_item_id').val(item_id);
         $('#myconfirmModal').modal('show');
       }
       else
       {
-        customMenu(entity_id,restaurant_id,item_id);
+        customMenu(entity_id,shop_id,item_id);
       }
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -382,25 +382,25 @@ function checkMenuItem(entity_id,restaurant_id,item_id){
 // confirm to add to cart
 function ConfirmCartAdd(){
   var entity_id = $('#con_entity_id').val();
-  var restaurant_id = $('#con_restaurant_id').val();
+  var shop_id = $('#con_shop_id').val();
   var item_id = $('#con_item_id').val();
   var cart = $('input[name="addedToCart"]:checked').val();
   $('#myconfirmModal').modal('hide');
   if (cart == "increaseitem") {
-    customItemCount(entity_id,restaurant_id,'plus','');
+    customItemCount(entity_id,shop_id,'plus','');
   }
   else
   {
-    customMenu(entity_id,restaurant_id,item_id);
+    customMenu(entity_id,shop_id,item_id);
   }
   return false;
 }
 // custom menu page
-function customMenu(entity_id,restaurant_id,item_id){
+function customMenu(entity_id,shop_id,item_id){
   jQuery.ajax({
     type : "POST",
-    url : BASEURL+'restaurant/getCustomAddOns',
-    data : {"entity_id":entity_id,"restaurant_id":restaurant_id},
+    url : BASEURL+'shop/getCustomAddOns',
+    data : {"entity_id":entity_id,"shop_id":shop_id},
     beforeSend: function(){
         $('#quotes-main-loader').show();
     },
@@ -415,7 +415,7 @@ function customMenu(entity_id,restaurant_id,item_id){
     });
 }
 // search the users dishes
-function searchMenuDishes(restaurant_id) {
+function searchMenuDishes(shop_id) {
   var searchDish = $('#search_dish').val();
   var food = '';
   var price = '';
@@ -434,8 +434,8 @@ function searchMenuDishes(restaurant_id) {
   jQuery.ajax({
     type : "POST",
     dataType :"html",
-    url : BASEURL+'restaurant/getResturantsDish',
-    data : {'restaurant_id':restaurant_id,'searchDish':searchDish,"food":food,"price":price},
+    url : BASEURL+'shop/getResturantsDish',
+    data : {'shop_id':shop_id,'searchDish':searchDish,"food":food,"price":price},
     beforeSend: function(){
         $('#quotes-main-loader').show();
     },
@@ -479,7 +479,7 @@ function getAddress(latitude,longitude,page){
         $('#quotes-main-loader').show();
     },
     success: function(response) { 
-      if (page == 'restaurant_details') {
+      if (page == 'shop_details') {
         $('#delivery_address').val(response);
       }
       else
@@ -494,7 +494,7 @@ function getAddress(latitude,longitude,page){
     }
     });
 }
-// search restaurant menu
+// search shop menu
 function menuSearch(category_id){
   if ($('#checkbox-option-'+category_id+'').is(':checked')) {
     $('.check-menu').prop("checked", false);
@@ -516,7 +516,7 @@ function initAutocomplete(id, coordinates, cart_total) {
         {'country': ['mg']});
       autocomplete.setFields(['geometry']);
       
-      let address = document.getElementById("add_address_area").value;
+      let address = document.getElementById(id).value;
       autocomplete.addListener('place_changed', function() {
         var place = autocomplete.getPlace();
         // var address = document.getElementById("add_address_area").value;
@@ -527,6 +527,7 @@ function initAutocomplete(id, coordinates, cart_total) {
         //   $('#error-quarter').css('display', 'none'); 
         //  }
         if(place.geometry !== undefined) {
+          console.log(place.geometry);
           coordinates.lat = place.geometry.location.lat();
           coordinates.lng = place.geometry.location.lng();
           _getLatLongCb(coordinates.lat, coordinates.lng, address, cart_total);
@@ -540,7 +541,7 @@ function initAutocomplete(id, coordinates, cart_total) {
       });
 }
 
-//get restaurant location function 
+//get shop location function 
 function geolocate(page, cart) {
   return;
   if (navigator.geolocation) {
@@ -571,7 +572,7 @@ function geolocate(page, cart) {
 // get location for every page from id
 function getLocation(page) {
   if (navigator.geolocation) {
-    if (page == 'restaurant_details') {
+    if (page == 'shop_details') {
       navigator.geolocation.getCurrentPosition(showPosition,locationFail);
     }
     else if (page == 'home_page') {
@@ -603,13 +604,13 @@ function getSearchedLocation(searched_lat,searched_long,searched_address,page){
     getFavouriteResturants('');
   }
 }
-// restaurant details functions
+// shop details functions
 function showPosition(position) {
-  getAddress(position.coords.latitude,position.coords.longitude,'restaurant_details');
+  getAddress(position.coords.latitude,position.coords.longitude,'shop_details');
 }
 function locationFail() {
-  // getAddress(23.0751887,72.52568870000005,'restaurant_details');
-  getAddress(-18.8876653,47.4423024,'restaurant_details');
+  // getAddress(23.0751887,72.52568870000005,'shop_details');
+  getAddress(-18.8876653,47.4423024,'shop_details');
 }
 // home page functions
 function showPositionHome(position) { 
@@ -620,7 +621,7 @@ function showPositionHome(position) {
 }
 function locationFailHome() {
   // getAddress(23.0751887,72.52568870000005,'');
-  getAddress(-18.8876653,47.4423024,'restaurant_details');
+  getAddress(-18.8876653,47.4423024,'shop_details');
   // getPopularResturants(23.0751887,72.52568870000005,'');
   for(var id in STORE_TYPES) {
     // getPopularResturants(-18.8876653,47.4423024,'', STORE_TYPES[id]);
@@ -733,9 +734,9 @@ function quickSearch(value){
         $('#quotes-main-loader').show();
     },
     success: function(response) {
-      $('#popular-restaurants').html(response);
+      $('#popular-shops').html(response);
       $('html, body').animate({
-            scrollTop: $("#popular-restaurants").offset().top
+            scrollTop: $("#popular-shops").offset().top
         }, 2000);
       $('#quotes-main-loader').hide();
     },
@@ -744,7 +745,7 @@ function quickSearch(value){
     }
     });
 }
-// get the popular restaurants
+// get the popular shops
 function getPopularResturants(latitude,longitude,scroll, typeId=1){
   jQuery.ajax({
     type : "POST",
@@ -753,13 +754,13 @@ function getPopularResturants(latitude,longitude,scroll, typeId=1){
     data : {'latitude':latitude,'longitude':longitude,'store_type_id':typeId},
     beforeSend: function(){
         // $('#quotes-main-loader').show();
-      $(`#popular-restaurants-${typeId} .rest-box-row.main-rest-box-row`).html(`<div class="nearby-loader"><img src="${BASEURL}assets/admin/img/ajax-loader.gif"/></div>`);
+      $(`#popular-shops-${typeId} .rest-box-row.main-rest-box-row`).html(`<div class="nearby-loader"><img src="${BASEURL}assets/admin/img/ajax-loader.gif"/></div>`);
     },
     success: function(response) {
-      $(`#popular-restaurants-${typeId}`).html(response);
+      $(`#popular-shops-${typeId}`).html(response);
       /*if (scroll == "scroll") {
         $('html, body').animate({
-              scrollTop: $(`#popular-restaurants-${typeId}`).offset().top - 730
+              scrollTop: $(`#popular-shops-${typeId}`).offset().top - 730
           }, 2000);
       }*/
       $('#quotes-main-loader').hide();
@@ -772,7 +773,7 @@ function getPopularResturants(latitude,longitude,scroll, typeId=1){
 
 var FILTER = [];
 
-// get the favourite restaurants
+// get the favourite shops
 function getFavouriteResturantsFilter(elem){  
   var food_veg = ($('#food_veg').is(":checked"))?1:0;
   var food_non_veg = ($('#food_non_veg').is(":checked"))?1:0;
@@ -800,16 +801,16 @@ function getFavouriteResturantsFilter(elem){
   jQuery.ajax({
     type : "POST",
     dataType :"html",
-    url: BASEURL+'restaurant/ajax_restaurants/'+page,
+    url: BASEURL+'shop/ajax_shops/'+page,
     data : {'latitude':latitude,'longitude':longitude,'resdishes':resdishes,'page':page,'minimum_range':minimum_range,'maximum_range':maximum_range,'food_veg':food_veg,'food_non_veg':food_non_veg,'store_type' : store_type, 'store_filter' : store_filter},
     beforeSend: function(){
         $('#quotes-main-loader').show();
     },
     success: function(response) { 
-      $('#order_from_restaurants').html(response);
+      $('#order_from_shops').html(response);
       if (scroll == "scroll") {
         $('html, body').animate({
-              scrollTop: $("#order_from_restaurants").offset().top - 250
+              scrollTop: $("#order_from_shops").offset().top - 250
           }, 2000);
       }
       $('#quotes-main-loader').hide();
@@ -820,7 +821,7 @@ function getFavouriteResturantsFilter(elem){
     });
 }
 
-// get the favourite restaurants
+// get the favourite shops
 function getFavouriteResturants(scroll){  
   var food_veg = ($('#food_veg').is(":checked"))?1:0;
   var food_non_veg = ($('#food_non_veg').is(":checked"))?1:0;
@@ -835,16 +836,16 @@ function getFavouriteResturants(scroll){
   jQuery.ajax({
     type : "POST",
     dataType :"html",
-    url: BASEURL+'restaurant/ajax_restaurants/'+page,
+    url: BASEURL+'shop/ajax_shops/'+page,
     data : {'latitude':latitude,'longitude':longitude,'resdishes':resdishes,'page':page,'minimum_range':minimum_range,'maximum_range':maximum_range,'food_veg':food_veg,'food_non_veg':food_non_veg, 'store_type' : store_type,  'store_filter' : store_filter},
     beforeSend: function(){
         $('#quotes-main-loader').show();
     },
     success: function(response) { 
-      $('#order_from_restaurants').html(response);
+      $('#order_from_shops').html(response);
       if (scroll == "scroll") {
         $('html, body').animate({
-              scrollTop: $("#order_from_restaurants").offset().top - 250
+              scrollTop: $("#order_from_shops").offset().top - 250
           }, 2000);
       }
       $('#quotes-main-loader').hide();
@@ -1225,7 +1226,7 @@ function showAllReviews(){
 $("#check_event_availability").on("submit", function(event) {
   jQuery.ajax({
     type : "POST",
-    url : BASEURL+'restaurant/checkEventAvailability',
+    url : BASEURL+'shop/checkEventAvailability',
     data : $('#check_event_availability').serialize(),
     beforeSend: function(){
         $('#quotes-main-loader').show();
@@ -1257,7 +1258,7 @@ function AddPackage(entity_id){
   }
   jQuery.ajax({
     type : "POST",
-    url : BASEURL+'restaurant/add_package',
+    url : BASEURL+'shop/add_package',
     data : {"entity_id":entity_id,"action":action},
     beforeSend: function(){
         $('#quotes-main-loader').show();
@@ -1289,7 +1290,7 @@ function AddPackage(entity_id){
 function confirmBooking(){
   jQuery.ajax({
     type : "POST",
-    url : BASEURL+'restaurant/bookEvent',
+    url : BASEURL+'shop/bookEvent',
     data : $('#check_event_availability').serialize(),
     beforeSend: function(){
         $('#quotes-main-loader').show();
@@ -1317,7 +1318,7 @@ function searchEvents(){
     jQuery.ajax({
       type : "POST",
       dataType :"html",
-      url : BASEURL+"restaurant/ajax_events",
+      url : BASEURL+"shop/ajax_events",
       data : {'searchEvent':searchEvent,'page':''},
       beforeSend: function(){
           $('#quotes-main-loader').show();
@@ -1606,12 +1607,12 @@ $( "#checkout_form" ).on("submit", function( event ) {
   }
 });
 // check custom checkout item
-function customCheckoutItemCount(entity_id,restaurant_id,action,cart_key){ 
+function customCheckoutItemCount(entity_id,shop_id,action,cart_key){ 
   jQuery.ajax({
     type : "POST",
     dataType : 'json',
     url : BASEURL+'checkout/ajax_checkout',
-    data : {"entity_id":entity_id,"restaurant_id":restaurant_id,"action":action,"cart_key":cart_key,'is_main_cart':'checkout'},
+    data : {"entity_id":entity_id,"shop_id":shop_id,"action":action,"cart_key":cart_key,'is_main_cart':'checkout'},
     beforeSend: function(){
         $('#quotes-main-loader').show();
     },
@@ -1667,7 +1668,7 @@ function getItemPrice(id,price,is_multiple){
 }
 // get the addons to cart
 function AddAddonsToCart(menu_id,item_id){ 
-  var restaurant_id = $("#restaurant_id").val();
+  var shop_id = $("#shop_id").val();
     var user_id = $("#user_id").val();
     var totalPrice = $('#subTotal').val();
     var valueArray = new Array();
@@ -1804,7 +1805,7 @@ function AddAddonsToCart(menu_id,item_id){
       jQuery.ajax({
         type : "POST",
         url : BASEURL+'cart/addToCart',
-        data : {'menu_id':menu_id,'user_id':user_id,'restaurant_id':restaurant_id,'totalPrice':totalPrice,'add_ons_array':finalValueArray},
+        data : {'menu_id':menu_id,'user_id':user_id,'shop_id':shop_id,'totalPrice':totalPrice,'add_ons_array':finalValueArray},
         beforeSend: function(){
             $('#quotes-main-loader').show();
         },
@@ -1823,7 +1824,7 @@ function AddAddonsToCart(menu_id,item_id){
     }
 }
 
-function addReview(restaurant_id){
+function addReview(shop_id){
   $('#reviewModal').modal('show');
 }
 
@@ -1834,7 +1835,7 @@ $("#review_form").on("submit", function(event) {
     jQuery.ajax({
       type : "POST", 
       dataType: "html",
-      url : BASEURL+'restaurant/addReview',  
+      url : BASEURL+'shop/addReview',  
       data : $('#review_form').serialize(),
       beforeSend: function(){
           $('#quotes-main-loader').show();

@@ -8,25 +8,25 @@ class Branch_model extends CI_Model {
     public function getGridList($sortFieldName = '', $sortOrder = 'ASC', $displayStart = 0, $displayLength = 10)
     {
         if($this->input->post('page_title') != ''){
-            $this->db->like('restaurant.name', $this->input->post('page_title'));
+            $this->db->like('shop.name', $this->input->post('page_title'));
         }
-        if($this->input->post('restaurant') != ''){
-            $this->db->like('resta.name', $this->input->post('restaurant'));
+        if($this->input->post('shop') != ''){
+            $this->db->like('shop.name', $this->input->post('shop'));
         }
-        $this->db->select('restaurant.name,resta.name as rname');
-        $this->db->join('restaurant as resta','restaurant.branch_entity_id = resta.entity_id','left');
-        $this->db->where('restaurant.branch_entity_id !=','');
+        $this->db->select('shop.name,shop.name as sname');
+        $this->db->join('shop','shop.branch_entity_id = shop.entity_id','left');
+        $this->db->where('shop.branch_entity_id !=','');
         if($this->session->userdata('UserType') == 'Admin'){
-            $this->db->where_in('resta.entity_id',$this->session->userdata('restaurant'));
+            $this->db->where_in('shop.entity_id',$this->session->userdata('shop'));
         }
-        $this->db->group_by('restaurant.content_id');
-        $result['total'] = $this->db->count_all_results('restaurant');
-        if($this->input->post('page_title')=="" && $this->input->post('restaurant') == ''){
-            $this->db->select('content_general.content_general_id,restaurant.name,resta.name as rname');
-            $this->db->join('restaurant','content_general.content_general_id = restaurant.content_id','left');
-            $this->db->join('restaurant as resta','restaurant.branch_entity_id = resta.entity_id','left');
+        $this->db->group_by('shop.content_id');
+        $result['total'] = $this->db->count_all_results('shop');
+        if($this->input->post('page_title')=="" && $this->input->post('shop') == ''){
+            $this->db->select('content_general.content_general_id,shop.name,shop.name as sname');
+            $this->db->join('shop','content_general.content_general_id = shop.content_id','left');
+            $this->db->join('shop','shop.branch_entity_id = resta.entity_id','left');
             if($this->session->userdata('UserType') == 'Admin'){
-                $this->db->where_in('resta.entity_id',$this->session->userdata('restaurant'));
+                $this->db->where_in('resta.entity_id',$this->session->userdata('shop'));
             }
             $this->db->where('content_type','branch');
             if($displayLength>1)
@@ -37,51 +37,52 @@ class Branch_model extends CI_Model {
                 $content_general_id[] = $value->content_general_id;
             }
             if($content_general_id){
-                $this->db->where_in('restaurant.content_id',$content_general_id);    
+                $this->db->where_in('shop.content_id',$content_general_id);    
             }          
         }else{
             if($this->input->post('page_title') != ''){
-            $this->db->like('restaurant.name', $this->input->post('page_title'));
+            $this->db->like('shop.name', $this->input->post('page_title'));
             }
-            if($this->input->post('restaurant') != ''){
-                $this->db->like('resta.name', $this->input->post('restaurant'));
+            if($this->input->post('shop') != ''){
+                $this->db->like('resta.name', $this->input->post('shop'));
             }
-            $this->db->select('restaurant.*,resta.name as rname');
-            $this->db->join('restaurant as resta','restaurant.branch_entity_id = resta.entity_id','left');
-            $this->db->where('restaurant.branch_entity_id !=','');
+            $this->db->select('shop.*,resta.name as sname');
+            $this->db->join('shop as resta','shop.branch_entity_id = resta.entity_id','left');
+            $this->db->where('shop.branch_entity_id !=','');
             if($this->session->userdata('UserType') == 'Admin'){
-                $this->db->where_in('resta.entity_id',$this->session->userdata('restaurant'));
+                $this->db->where_in('resta.entity_id',$this->session->userdata('shop'));
             }
-            $this->db->group_by('restaurant.content_id');
+            $this->db->group_by('shop.content_id');
             if($displayLength>1)
                 $this->db->limit($displayLength,$displayStart);
-            $cmsData = $this->db->get('restaurant')->result();
-            $ContentID = array();               
+            $cmsData = $this->db->get('shop')->result();
+            $ContentID = array();      
+            $OrderByID = "";         
             foreach ($cmsData as $key => $value) {
                 $OrderByID = $OrderByID.','.$value->entity_id;
                 $ContentID[] = $value->content_id;
             }   
             if($OrderByID && $ContentID){            
-                $this->db->order_by('FIELD ( restaurant.entity_id,'.trim($OrderByID,',').') DESC');                
-                $this->db->where_in('restaurant.content_id',$ContentID);
+                $this->db->order_by('FIELD ( shop.entity_id,'.trim($OrderByID,',').') DESC');                
+                $this->db->where_in('shop.content_id',$ContentID);
             }else{              
                 if($this->input->post('page_title') != ''){
-                    $this->db->like('restaurant.name', trim($this->input->post('page_title')));
+                    $this->db->like('shop.name', trim($this->input->post('page_title')));
                 }
-                if($this->input->post('restaurant') != ''){
-                    $this->db->like('resta.name', $this->input->post('restaurant'));
+                if($this->input->post('shop') != ''){
+                    $this->db->like('resta.name', $this->input->post('shop'));
                 } 
             }           
         }
-        $this->db->select('restaurant.*,resta.name as rname');
-        $this->db->join('restaurant as resta','restaurant.branch_entity_id = resta.entity_id','left');
-        $this->db->where('restaurant.branch_entity_id !=','');
+        $this->db->select('shop.*,resta.name as sname');
+        $this->db->join('shop as resta','shop.branch_entity_id = resta.entity_id','left');
+        $this->db->where('shop.branch_entity_id !=','');
         if($this->session->userdata('UserType') == 'Admin'){
-            $this->db->where_in('resta.entity_id',$this->session->userdata('restaurant'));
+            $this->db->where_in('resta.entity_id',$this->session->userdata('shop'));
         }
         if($sortFieldName != '')
             $this->db->order_by($sortFieldName, $sortOrder);
-        $cmdData = $this->db->get('restaurant')->result_array();
+        $cmdData = $this->db->get('shop')->result_array();
          
         $cmsLang = array();        
         if(!empty($cmdData)){
@@ -92,7 +93,7 @@ class Branch_model extends CI_Model {
                         'entity_id'=>$value['entity_id'],
                         'content_id' => $value['content_id'],
                         'name' => $value['name'], 
-                        'rname'=> $value['rname']                
+                        'sname'=> $value['sname']                
                     );
                 }
                 $cmsLang[$value['content_id']]['translations'][$value['language_slug']] = array(
@@ -114,7 +115,7 @@ class Branch_model extends CI_Model {
     public function getEditDetail($tblname,$entity_id)
     {
         $this->db->select('res.*,res_add.*');
-        $this->db->join('restaurant_address as res_add','res.entity_id = res_add.resto_entity_id','left');
+        $this->db->join('shop_address as res_add','res.entity_id = res_add.shop_entity_id','left');
         $this->db->where('res.entity_id',$entity_id);
         return $this->db->get(''.$tblname.' as res')->first_row();
     }

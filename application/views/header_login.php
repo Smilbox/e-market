@@ -158,8 +158,8 @@
 											</li>
 										<?php }?>
 										<?php $cart_details = get_cookie('cart_details');
-										$cart_restaurant = get_cookie('cart_restaurant');
-										$cart = $this->common_model->getCartItems($cart_details,$cart_restaurant);
+										$cart_shop = get_cookie('cart_shop');
+										$cart = $this->common_model->getCartItems($cart_details,$cart_shop);
 										$count = count($cart['cart_items']); ?>
 										<li class="cart"><a href="<?php echo base_url() . 'cart'; ?>"><i class="iicon-icon-02"></i><span id="cart_count"><?php echo $count; ?></span></a></li>
 									</ul>

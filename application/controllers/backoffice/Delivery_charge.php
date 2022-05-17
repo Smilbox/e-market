@@ -16,7 +16,7 @@ class Delivery_charge extends CI_Controller {
     public function view() {
         $data['meta_title'] = $this->lang->line('delivery_charge').' | '.$this->lang->line('site_title');
         $data['Languages'] = $this->common_model->getLanguages();     
-        $data['restaurant'] = $this->delivery_charge_model->getListData('restaurant',$language_slug);  
+        $data['shop'] = $this->delivery_charge_model->getListData('shop',$language_slug);  
         $this->load->view(ADMIN_URL.'/delivery_charge',$data);
     }
     //add data
@@ -27,14 +27,14 @@ class Delivery_charge extends CI_Controller {
             $this->form_validation->set_rules('area_name', 'Area Name', 'trim|required');
             // $this->form_validation->set_rules('lat_long', 'Latitude/Longitude', 'trim|required');
             $this->form_validation->set_rules('price_charge', 'Price Charge', 'trim|required');
-            // $this->form_validation->set_rules('restaurant_id', 'Restaurant', 'trim|required');
-            $ids = $this->input->post('restaurant_id');
+            // $this->form_validation->set_rules('shop_id', 'Shop', 'trim|required');
+            $ids = $this->input->post('shop_id');
             if ($this->form_validation->run())
             {
                 foreach($ids as $key => $id)
                 {
                     $add_data = array(                   
-                        'restaurant_id'=>$id,
+                        'shop_id'=>$id,
                         'delivery_type'=>$this->input->post('delivery_type'),
                         'area_name'=>$this->input->post('area_name'),
                         'lat_long'=>$this->input->post('lat_long'),
@@ -48,7 +48,7 @@ class Delivery_charge extends CI_Controller {
             }
         }
         $language_slug = ($this->uri->segment(4))?$this->uri->segment(4):$this->session->userdata('language_slug');
-        $data['restaurant'] = $this->delivery_charge_model->getListData('restaurant',$language_slug);
+        $data['shop'] = $this->delivery_charge_model->getListData('shop',$language_slug);
         $this->load->view(ADMIN_URL.'/delivery_charge_add',$data);
     }
     //edit data
@@ -60,15 +60,15 @@ class Delivery_charge extends CI_Controller {
             $this->form_validation->set_rules('area_name', 'Area Name', 'trim|required');
             // $this->form_validation->set_rules('lat_long', 'Latitude/Longitude', 'trim|required');
             $this->form_validation->set_rules('price_charge', 'Price Charge', 'trim|required');
-            // $this->form_validation->set_rules('restaurant_id', 'Restaurant', 'trim|required');
-            $ids = $this->input->post('restaurant_id');
+            // $this->form_validation->set_rules('shop_id', 'Shop', 'trim|required');
+            $ids = $this->input->post('shop_id');
             $ddd = $this->input->post('delivery_type');
             if ($this->form_validation->run())
             {
                 foreach($ids as $key => $id)
                 {
                     $updateData = array(     
-                        'restaurant_id'=>$id,
+                        'shop_id'=>$id,
                         'delivery_type'=>$this->input->post('delivery_type'),              
                         'area_name'=>$this->input->post('area_name'),
                         'lat_long'=>$this->input->post('lat_long'),
@@ -86,7 +86,7 @@ class Delivery_charge extends CI_Controller {
         }    
         $language_slug = $this->session->userdata('language_slug');
         $charge_id = ($this->uri->segment('4'))?$this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $this->uri->segment(4))):$this->input->post('entity_id');
-        $data['restaurant'] = $this->delivery_charge_model->getListData('restaurant',$language_slug);
+        $data['shop'] = $this->delivery_charge_model->getListData('shop',$language_slug);
         $data['edit_records'] = $this->delivery_charge_model->getEditDetail($charge_id);
         $data['for_edit'] = true;
         $this->load->view(ADMIN_URL.'/delivery_charge_add',$data);
@@ -134,10 +134,10 @@ class Delivery_charge extends CI_Controller {
         $entity_id = ($this->input->post('entity_id') != '')?$this->input->post('entity_id'):'';
         $this->delivery_charge_model->ajaxDeleteAll('delivery_charge',$entity_id);
     }
-    // get restaurant lat long
+    // get shop lat long
     public function getResLatLong(){
-        $restaurant_id = ($this->input->post('restaurant_id') != '')?$this->input->post('restaurant_id'):'';
-        $reslatlong = $this->delivery_charge_model->getResLatLong($restaurant_id);
+        $shop_id = ($this->input->post('shop_id') != '')?$this->input->post('shop_id'):'';
+        $reslatlong = $this->delivery_charge_model->getResLatLong($shop_id);
         echo json_encode($reslatlong);
     }
 }

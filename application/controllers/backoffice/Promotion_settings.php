@@ -64,13 +64,13 @@ class Promotion_settings extends CI_Controller {
     $data['meta_title'] = $this->lang->line('promotion_settings').' | '.$this->lang->line('site_title');
     if($this->input->post('submit_page') == "Submit")
     {
-      $this->form_validation->set_rules('restaurant_id', 'Restaurant', 'trim|required');
+      $this->form_validation->set_rules('shop_id', 'Shop', 'trim|required');
       $this->form_validation->set_rules('shown_promotion', 'Display promotion', 'trim|required');
       $this->form_validation->set_rules('priority_order', 'Priority order', 'trim|required');
         if ($this->form_validation->run())
         {
             $add_data = array(                   
-                'restaurant_id'=>$this->input->post('restaurant_id'),
+                'shop_id'=>$this->input->post('shop_id'),
                 'shown_promotion'=>$this->input->post('shown_promotion'),
                 'priority_order'=> intval($this->input->post('priority_order')),
                 'updated_date'=>date('Y-m-d H:i:s'),
@@ -106,7 +106,7 @@ class Promotion_settings extends CI_Controller {
             }         
         }
     }
-    $data['restaurants'] = $this->promotion_settings_model->getListData('restaurant',null);
+    $data['shops'] = $this->promotion_settings_model->getListData('shop',null);
     $this->load->view(ADMIN_URL.'/promotion_settings_add',$data);
 }
 
@@ -115,13 +115,13 @@ class Promotion_settings extends CI_Controller {
         $data['meta_title'] = $this->lang->line('promotion_settings').' | '.$this->lang->line('site_title');
         if($this->input->post('submit_page') == "Submit")
         {
-            $this->form_validation->set_rules('restaurant_id', 'Restaurant', 'trim|required');
+            $this->form_validation->set_rules('shop_id', 'Shop', 'trim|required');
             $this->form_validation->set_rules('shown_promotion', 'Display promotion', 'trim|required');
             $this->form_validation->set_rules('priority_order', 'Priority order', 'trim|required');
             if ($this->form_validation->run())
             {
                 $updateData = array(                   
-                    'restaurant_id'=>$this->input->post('restaurant_id'),
+                    'shop_id'=>$this->input->post('shop_id'),
                     'shown_promotion'=>$this->input->post('shown_promotion'),
                     'priority_order'=> intval($this->input->post('priority_order')),
                     'updated_date'=>date('Y-m-d H:i:s'),
@@ -162,7 +162,7 @@ class Promotion_settings extends CI_Controller {
         }        
         $entity_id = ($this->uri->segment('4'))?$this->encryption->decrypt(str_replace(array('-', '_', '~'), array('+', '/', '='), $this->uri->segment(4))):$this->input->post('entity_id');
         $data['edit_records'] = $this->promotion_settings_model->getEditDetail($entity_id);
-        $data['restaurants'] = $this->promotion_settings_model->getListData('restaurant',null);
+        $data['shops'] = $this->promotion_settings_model->getListData('shop',null);
         $this->load->view(ADMIN_URL.'/promotion_settings_add',$data);
     }
    

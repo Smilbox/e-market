@@ -14,17 +14,17 @@
                 <div class="col-md-12">
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                     <h3 class="page-title">
-                        <?php echo $this->lang->line('package') ?>
+                        <?php echo $this->lang->line('deal') ?>
                     </h3>
                     <ul class="page-breadcrumb breadcrumb">
                         <li>
                             <i class="fa fa-home"></i>
                             <a href="<?php echo base_url().ADMIN_URL?>/dashboard">
-                            <?php echo $this->lang->line('home') ?> </a>
+                            Home </a>
                             <i class="fa fa-angle-right"></i>
                         </li>
                         <li>
-                            <?php echo $this->lang->line('package') ?>
+                            <?php echo $this->lang->line('deal') ?>
                         </li>
                     </ul>
                     <!-- END PAGE TITLE & BREADCRUMB-->
@@ -36,17 +36,19 @@
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet box red">
                         <div class="portlet-title">
-                            <div class="caption"><?php echo $this->lang->line('package') ?></div>
+                            <div class="caption"><?php echo $this->lang->line('deal') ?></div>
+                            <?php //if($this->session->userdata('UserType') == 'MasterAdmin'){ ?>
                             <div class="actions c-dropdown">                                     
                                 <button type="button" class="btn btn-sm danger-btn dropdown-toggle" data-toggle="dropdown"
                                     aria-expanded="false"><?php echo $this->lang->line('add') ?><span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
                                     <?php foreach ($Languages as $lang) {?>
-                                    <li><a href="<?php echo base_url().ADMIN_URL.'/'.$this->controller_name.'/add_package/'.$lang->language_slug?>"><?php echo $lang->language_name?></a></li>
+                                    <li><a href="<?php echo base_url().ADMIN_URL.'/'.$this->controller_name.'/add_deal/'.$lang->language_slug?>"><?php echo $lang->language_name?></a></li>
                                     <?php } ?>
                                 </ul>
                             </div>
+                            <?php //} ?>
                         </div>
                         <div class="portlet-body">
                             <div class="table-container">
@@ -70,22 +72,24 @@
                                             <?php } ?>
                                             <th><?php echo $this->lang->line('price') ?></th>
                                             <th><?php echo $this->lang->line('res_name') ?></th>
-                                            <th>Action</th>
+                                            <th><?php echo $this->lang->line('action') ?></th>
                                         </tr>
                                         <tr role="row" class="filter">
                                             <td></td>                                       
                                             <td><input type="text" class="form-control form-filter input-sm" name="page_title"></td>
+                                            
                                             <?php foreach ($Languages as $lang) {?>
                                                 <td><input type="text" class="form-control form-filter input-sm" disabled="" name="<?php echo $lang->language_slug;?>"></td>
-                                            <?php } ?>
-                                            <td><input type="text" class="form-control form-filter input-sm" name="price"></td>
-                                            <td><input type="text" class="form-control form-filter input-sm" name="restaurant"></td>
+                                            <?php } ?> 
+                                            <td><input type="text" class="form-control form-filter input-sm" name="price"></td>   
+                                            <td><input type="text" class="form-control form-filter input-sm" name="shop"></td> 
                                             <td><div class="margin-bottom-5">
                                                     <button class="btn btn-sm  danger-btn filter-submit margin-bottom"><i class="fa fa-search"></i> <?php echo $this->lang->line('search') ?></button>
                                                 </div>
                                                 <button class="btn btn-sm danger-btn filter-cancel"><i class="fa fa-times"></i> <?php echo $this->lang->line('reset') ?></button>
                                             </td>
                                         </tr>
+                                      
                                         </thead>                                        
                                         <tbody>
                                         </tbody>
@@ -154,7 +158,7 @@ jQuery(document).ready(function() {
                 }
             },
             "bServerSide": true, // server side processing
-            "sAjaxSource": "ajaxviewPackage", // ajax source
+            "sAjaxSource": "ajaxviewdeal", // ajax source
             "aaSorting": [[ 3, "desc" ]] // set first column as a default sort by asc
         }
     });            
@@ -188,7 +192,7 @@ function deleteDetail(entity_id,content_id)
                   type : "POST",
                   dataType : "html",
                   url : 'ajaxDelete',
-                  data : {'tblname':'restaurant_package','entity_id':entity_id,'content_id':content_id},
+                  data : {'tblname':'shop_menu_item','entity_id':entity_id,'content_id':content_id},
                   success: function(response) {
                     grid.getDataTable().fnDraw(); 
                   },
@@ -200,7 +204,7 @@ function deleteDetail(entity_id,content_id)
         }
     });
 }
-function deleteAll(ContentID)
+function deleteAll(content_id)
 {    
     bootbox.confirm({
         message: "<?php echo $this->lang->line('delete_module'); ?>",
@@ -218,7 +222,7 @@ function deleteAll(ContentID)
                 type : "POST",
                 dataType : "json",
                 url : 'ajaxDeleteAll',
-                data : {'tblname':'restaurant_package','content_id':ContentID},
+                data : {'tblname':'shop_menu_item','content_id':content_id},
                 success: function(response) {
                   grid.getDataTable().fnDraw(); 
                 },

@@ -122,8 +122,8 @@ function generateEmailBody($body,$arrayVal){
   if(isset($arrayVal['LoginLink']))
     $body = str_replace("#loginlink#",$arrayVal['LoginLink'],$body);
 
-  if(isset($arrayVal['restaurant_name']))
-    $body = str_replace("#restaurant#",$arrayVal['restaurant_name'],$body);
+  if(isset($arrayVal['shop_name']))
+    $body = str_replace("#shop#",$arrayVal['shop_name'],$body);
 
   if(isset($arrayVal['Status']))
     $body = str_replace("#status#",$arrayVal['Status'],$body);

@@ -42,7 +42,7 @@
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                     <div class="portlet box red">
                         <div class="portlet-title">
-                            <div class="caption"><?php echo $this->lang->line('imported_menu_list'); ?> <?php echo $this->session->userdata('import_data')['restaurant']->name; ?> </div>
+                            <div class="caption"><?php echo $this->lang->line('imported_menu_list'); ?> <?php echo $this->session->userdata('import_data')['shop']->name; ?> </div>
                         </div>
                         <div class="portlet-body">
                             <div class="table-container import-users" style="overflow-x:auto;">

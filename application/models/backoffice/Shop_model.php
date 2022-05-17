@@ -1,5 +1,5 @@
 <?php
-class Restaurant_model extends CI_Model {
+class Shop_model extends CI_Model {
     function __construct()
     {
         parent::__construct();              
@@ -11,26 +11,26 @@ class Restaurant_model extends CI_Model {
             $this->db->like('name', $this->input->post('page_title'));
         }
         if($this->input->post('status') != ''){
-            $this->db->like('restaurant.status', $this->input->post('status'));
+            $this->db->like('shop.status', $this->input->post('status'));
         }
         $this->db->group_by('content_id');
-        $this->db->where('restaurant.branch_entity_id','');
+        $this->db->where('shop.branch_entity_id','');
         if($this->session->userdata('UserType') == 'Admin'){     
-            $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+            $this->db->where('shop.created_by',$this->session->userdata('UserID'));
         }           
-        $result['total'] = $this->db->count_all_results('restaurant');
+        $result['total'] = $this->db->count_all_results('shop');
         
         if($this->input->post('page_title')==""){ 
             if($this->input->post('status') != ''){
-                $this->db->like('restaurant.status', $this->input->post('status'));
+                $this->db->like('shop.status', $this->input->post('status'));
             }
-            $this->db->select('content_general_id,restaurant.*');   
-            $this->db->join('restaurant','restaurant.content_id = content_general.content_general_id','left');
-            $this->db->group_by('restaurant.content_id');
+            $this->db->select('content_general_id,shop.*');   
+            $this->db->join('shop','shop.content_id = content_general.content_general_id','left');
+            $this->db->group_by('shop.content_id');
             if($this->session->userdata('UserType') == 'Admin'){     
-                $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+                $this->db->where('shop.created_by',$this->session->userdata('UserID'));
             } 
-            $this->db->where('content_type','restaurant');
+            $this->db->where('content_type','shop');
             if($displayLength>1)
                 $this->db->limit($displayLength,$displayStart);
             $dataCmsOnly = $this->db->get('content_general')->result();    
@@ -46,21 +46,22 @@ class Restaurant_model extends CI_Model {
                 $this->db->like('name', $this->input->post('page_title'));
             }    
             if($this->input->post('status') != ''){
-                $this->db->like('restaurant.status', $this->input->post('status'));
+                $this->db->like('shop.status', $this->input->post('status'));
             }
-            $this->db->select('content_general_id,restaurant.*');   
-            $this->db->join('content_general','restaurant.content_id = content_general.content_general_id','left');
+            $this->db->select('content_general_id,shop.*');   
+            $this->db->join('content_general','shop.content_id = content_general.content_general_id','left');
             if($this->session->userdata('UserType') == 'Admin'){     
-                $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+                $this->db->where('shop.created_by',$this->session->userdata('UserID'));
             } 
-            $this->db->where('content_type','restaurant');
-            $this->db->group_by('restaurant.content_id');
+            $this->db->where('content_type','shop');
+            $this->db->group_by('shop.content_id');
             if($displayLength>1)
                 $this->db->limit($displayLength,$displayStart);
-            $cmsData = $this->db->get('restaurant')->result();                      
-            $ContentID = array();               
+            $cmsData = $this->db->get('shop')->result();                      
+            $ContentID = array();
+            $OrderByID = "";               
             foreach ($cmsData as $key => $value) {
-                $OrderByID = $OrderByID.','.$value->entity_id;
+                $OrderByID .= ','.$value->entity_id;
                 $ContentID[] = $value->content_id;
             }   
             if($OrderByID && $ContentID){            
@@ -71,17 +72,17 @@ class Restaurant_model extends CI_Model {
                     $this->db->like('name', trim($this->input->post('page_title')));
                 } 
                 if($this->input->post('status') != ''){
-                    $this->db->like('restaurant.status', $this->input->post('status'));
+                    $this->db->like('shop.status', $this->input->post('status'));
                 }
             }
         } 
-        $this->db->where('restaurant.branch_entity_id',''); 
+        $this->db->where('shop.branch_entity_id',''); 
         if($this->session->userdata('UserType') == 'Admin'){     
-            $this->db->where('restaurant.created_by',$this->session->userdata('UserID'));
+            $this->db->where('shop.created_by',$this->session->userdata('UserID'));
         }   
         if($sortFieldName != '')
             $this->db->order_by($sortFieldName, $sortOrder);
-        $cmdData = $this->db->get('restaurant')->result_array();           
+        $cmdData = $this->db->get('shop')->result_array();           
         $cmsLang = array();        
         if(!empty($cmdData)){
             foreach ($cmdData as $key => $value) {                
@@ -113,10 +114,10 @@ class Restaurant_model extends CI_Model {
     // method to get details by id
     public function getEditDetail($tblname,$entity_id)
     {
-        $this->db->select('res.*,res_add.address,res_add.landmark,res_add.zipcode,res_add.country,res_add.state,res_add.city,res_add.latitude,res_add.longitude');
-        $this->db->join('restaurant_address as res_add','res.entity_id = res_add.resto_entity_id','left');
-        $this->db->where('res.entity_id',$entity_id);
-        return $this->db->get(''.$tblname.' as res')->first_row();
+        $this->db->select('shop.*,shop_addr.address,shop_addr.landmark,shop_addr.zipcode,shop_addr.country,shop_addr.state,shop_addr.city,shop_addr.latitude,shop_addr.longitude');
+        $this->db->join('shop_address as shop_addr','shop.entity_id = shop_addr.shop_entity_id','left');
+        $this->db->where('shop.entity_id',$entity_id);
+        return $this->db->get(''.$tblname.' as shop')->first_row();
     }
     // delete 
     public function ajaxDelete($tblname,$content_id,$entity_id)
@@ -185,34 +186,33 @@ class Restaurant_model extends CI_Model {
     }
     //menu grid
     public function getMenuGridList($sortFieldName = '', $sortOrder = 'ASC', $displayStart = 0, $displayLength = 10){
-       // print_r($this->session->userdata('restaurant'));exit;
         if($this->input->post('page_title') != ''){
             $this->db->like('menu.name', $this->input->post('page_title'));
         }
-        if($this->input->post('restaurant') != ''){
-            $this->db->like('res.name', $this->input->post('restaurant'));
+        if($this->input->post('shop') != ''){
+            $this->db->like('shop.name', $this->input->post('shop'));
         }
         if($this->input->post('price') != ''){
             $this->db->like('menu.price', $this->input->post('price'));
         } 
-        $this->db->select('menu.name as mname,res.name as rname,menu.entity_id,menu.status,res.currency_id');
-        $this->db->join('restaurant as res','menu.restaurant_id = res.entity_id','left');
-        if($this->session->userdata('UserType') == 'Admin' && !empty($this->session->userdata('restaurant'))){     
-            $this->db->where_in('menu.restaurant_id',$this->session->userdata('restaurant'));
+        $this->db->select('menu.name as mname,shop.name as rname,menu.entity_id,menu.status,shop.currency_id');
+        $this->db->join('shop','menu.shop_id = shop.entity_id','left');
+        if($this->session->userdata('UserType') == 'Admin' && !empty($this->session->userdata('shop'))){     
+            $this->db->where_in('menu.shop_id',$this->session->userdata('shop'));
         } elseif($this->session->userdata('UserType') != 'MasterAdmin'){
-            $this->db->where('res.created_by',$this->session->userdata('UserID'));
+            $this->db->where('shop.created_by',$this->session->userdata('UserID'));
         }
         $this->db->group_by('menu.content_id');
-        $result['total'] = $this->db->count_all_results('restaurant_menu_item as menu');
+        $result['total'] = $this->db->count_all_results('shop_menu_item as menu');
         
-        if($this->input->post('page_title')=="" && $this->input->post('restaurant') == '' && $this->input->post('price') == ''){
-            $this->db->select('content_general_id,menu.*,res.name as rname,res.currency_id');   
-            $this->db->join('restaurant_menu_item as menu','menu.content_id = content_general.content_general_id','left');
-            $this->db->join('restaurant as res','menu.restaurant_id = res.entity_id','left');
-            if($this->session->userdata('UserType') == 'Admin' && !empty($this->session->userdata('restaurant'))){     
-                $this->db->where_in('menu.restaurant_id',$this->session->userdata('restaurant'));
+        if($this->input->post('page_title')=="" && $this->input->post('shop') == '' && $this->input->post('price') == ''){
+            $this->db->select('content_general_id,menu.*,shop.name as rname,shop.currency_id');   
+            $this->db->join('shop_menu_item as menu','menu.content_id = content_general.content_general_id','left');
+            $this->db->join('shop','menu.shop_id = shop.entity_id','left');
+            if($this->session->userdata('UserType') == 'Admin' && !empty($this->session->userdata('shop'))){     
+                $this->db->where_in('menu.shop_id',$this->session->userdata('shop'));
             } elseif($this->session->userdata('UserType') != 'MasterAdmin'){
-                $this->db->where('res.created_by',$this->session->userdata('UserID'));
+                $this->db->where('shop.created_by',$this->session->userdata('UserID'));
             }
             $this->db->where('content_type','menu');
             $this->db->group_by('menu.content_id');
@@ -231,26 +231,27 @@ class Restaurant_model extends CI_Model {
             if($this->input->post('page_title') != ''){
                 $this->db->like('menu.name', $this->input->post('page_title'));
             }   
-            if($this->input->post('restaurant') != ''){
-                $this->db->like('res.name', $this->input->post('restaurant'));
+            if($this->input->post('shop') != ''){
+                $this->db->like('shop.name', $this->input->post('shop'));
             } 
             if($this->input->post('price') != ''){
                 $this->db->like('menu.price', $this->input->post('price'));
             } 
-            $this->db->select('content_general_id,menu.*,res.name as rname,res.currency_id');   
-            $this->db->join('restaurant_menu_item as menu','menu.content_id = content_general.content_general_id','left');
-            $this->db->join('restaurant as res','menu.restaurant_id = res.entity_id','left');
-            if($this->session->userdata('UserType') == 'Admin' && !empty($this->session->userdata('restaurant'))){     
-                $this->db->where_in('menu.restaurant_id',$this->session->userdata('restaurant'));
+            $this->db->select('content_general_id,menu.*,shop.name as rname,shop.currency_id');   
+            $this->db->join('shop_menu_item as menu','menu.content_id = content_general.content_general_id','left');
+            $this->db->join('shop','menu.shop_id = shop.entity_id','left');
+            if($this->session->userdata('UserType') == 'Admin' && !empty($this->session->userdata('shop'))){     
+                $this->db->where_in('menu.shop_id',$this->session->userdata('shop'));
             } elseif($this->session->userdata('UserType') != 'MasterAdmin'){
-                $this->db->where('res.created_by',$this->session->userdata('UserID'));
+                $this->db->where('shop.created_by',$this->session->userdata('UserID'));
             }
             $this->db->where('content_type','menu');
             $this->db->group_by('menu.content_id');
             if($displayLength>1)
                 $this->db->limit($displayLength,$displayStart);
-            $dataCmsOnly = $this->db->get('content_general')->result(); 
-            $ContentID = array();               
+            $cmsData = $this->db->get('content_general')->result(); 
+            $ContentID = array();
+            $OrderByID = "";            
             foreach ($cmsData as $key => $value) {
                 $OrderByID = $OrderByID.','.$value->entity_id;
                 $ContentID[] = $value->content_id;
@@ -262,25 +263,25 @@ class Restaurant_model extends CI_Model {
                 if($this->input->post('page_title') != ''){
                     $this->db->like('menu.name', trim($this->input->post('page_title')));
                 } 
-                if($this->input->post('restaurant') != ''){
-                    $this->db->like('res.name', $this->input->post('restaurant'));
+                if($this->input->post('shop') != ''){
+                    $this->db->like('shop.name', $this->input->post('shop'));
                 } 
                 if($this->input->post('price') != ''){
                     $this->db->like('menu.price', $this->input->post('price'));
                 } 
             }
         }  
-        $this->db->select('content_general_id,menu.*,res.name as rname,res.currency_id');   
+        $this->db->select('content_general_id,menu.*,shop.name as rname,shop.currency_id');   
         $this->db->join('content_general','menu.content_id = content_general.content_general_id','left');
-        $this->db->join('restaurant as res','menu.restaurant_id = res.entity_id','left');
-        if($this->session->userdata('UserType') == 'Admin' && !empty($this->session->userdata('restaurant'))){     
-            $this->db->where_in('menu.restaurant_id',$this->session->userdata('restaurant'));
+        $this->db->join('shop','menu.shop_id = shop.entity_id','left');
+        if($this->session->userdata('UserType') == 'Admin' && !empty($this->session->userdata('shop'))){     
+            $this->db->where_in('menu.shop_id',$this->session->userdata('shop'));
         } elseif($this->session->userdata('UserType') != 'MasterAdmin'){
-            $this->db->where('res.created_by',$this->session->userdata('UserID'));
+            $this->db->where('shop.created_by',$this->session->userdata('UserID'));
         }
         if($sortFieldName != '')
             $this->db->order_by($sortFieldName, $sortOrder);
-        $cmdData = $this->db->get('restaurant_menu_item as menu')->result_array();           
+        $cmdData = $this->db->get('shop_menu_item as menu')->result_array();           
         $cmsLang = array();        
         if(!empty($cmdData)){
             foreach ($cmdData as $key => $value) {                
@@ -314,26 +315,26 @@ class Restaurant_model extends CI_Model {
         if($this->input->post('page_title') != ''){
             $this->db->like('package.name', $this->input->post('page_title'));
         }
-        if($this->input->post('restaurant') != ''){
-            $this->db->like('res.name', $this->input->post('restaurant'));
+        if($this->input->post('shop') != ''){
+            $this->db->like('shop.name', $this->input->post('shop'));
         }
         if($this->input->post('price') != ''){
             $this->db->like('package.price', $this->input->post('price'));
         } 
-        $this->db->select('package.name as mname,res.name as rname,package.entity_id,package.status,res.currency_id');
-        $this->db->join('restaurant as res','package.restaurant_id = res.entity_id','left');
+        $this->db->select('package.name as mname,shop.name as rname,package.entity_id,package.status,shop.currency_id');
+        $this->db->join('shop','package.shop_id = shop.entity_id','left');
         if($this->session->userdata('UserType') == 'Admin'){     
-            $this->db->where_in('package.restaurant_id',$this->session->userdata('restaurant'));
+            $this->db->where_in('package.shop_id',$this->session->userdata('shop'));
         } 
         $this->db->group_by('package.content_id');
-        $result['total'] = $this->db->count_all_results('restaurant_package as package');
+        $result['total'] = $this->db->count_all_results('shop_package as package');
         
-        if($this->input->post('page_title')=="" && $this->input->post('restaurant') == '' && $this->input->post('price') == ''){
-            $this->db->select('content_general_id,package.*,res.name as rname,res.currency_id');   
-            $this->db->join('restaurant_package as package','package.content_id = content_general.content_general_id','left');
-            $this->db->join('restaurant as res','package.restaurant_id = res.entity_id','left');
+        if($this->input->post('page_title')=="" && $this->input->post('shop') == '' && $this->input->post('price') == ''){
+            $this->db->select('content_general_id,package.*,shop.name as rname,shop.currency_id');   
+            $this->db->join('shop_package as package','package.content_id = content_general.content_general_id','left');
+            $this->db->join('shop','package.shop_id = shop.entity_id','left');
             if($this->session->userdata('UserType') == 'Admin'){     
-                $this->db->where_in('res.created_by',$this->session->userdata('restaurant'));
+                $this->db->where_in('shop.created_by',$this->session->userdata('shop'));
             } 
             $this->db->where('content_type','package');
             $this->db->group_by('package.content_id');
@@ -351,23 +352,24 @@ class Restaurant_model extends CI_Model {
             if($this->input->post('page_title') != ''){
                 $this->db->like('package.name', $this->input->post('page_title'));
             }   
-            if($this->input->post('restaurant') != ''){
-                $this->db->like('res.name', $this->input->post('restaurant'));
+            if($this->input->post('shop') != ''){
+                $this->db->like('shop.name', $this->input->post('shop'));
             }
             if($this->input->post('price') != ''){
                 $this->db->like('package.price', $this->input->post('price'));
             }  
-            $this->db->select('content_general_id,package.*,res.name as rname,res.currency_id');   
-            $this->db->join('restaurant_package as package','content_general.content_general_id = package.content_id','left');
-            $this->db->join('restaurant as res','package.restaurant_id = res.entity_id','left');
+            $this->db->select('content_general_id,package.*,shop.name as rname,shop.currency_id');   
+            $this->db->join('shop_package as package','content_general.content_general_id = package.content_id','left');
+            $this->db->join('shop','package.shop_id = shop.entity_id','left');
             if($this->session->userdata('UserType') == 'Admin'){     
-                $this->db->where_in('package.restaurant_id',$this->session->userdata('restaurant'));
+                $this->db->where_in('package.shop_id',$this->session->userdata('shop'));
             } 
             $this->db->group_by('package.content_id');
             if($displayLength>1)
                 $this->db->limit($displayLength,$displayStart);
             $cmsData = $this->db->get('content_general')->result();                      
-            $ContentID = array();               
+            $ContentID = array();  
+            $OrderByID = "";             
             foreach ($cmsData as $key => $value) {
                 $OrderByID = $OrderByID.','.$value->entity_id;
                 $ContentID[] = $value->content_id;
@@ -379,23 +381,23 @@ class Restaurant_model extends CI_Model {
                 if($this->input->post('page_title') != ''){
                     $this->db->like('package.name', trim($this->input->post('page_title')));
                 } 
-                if($this->input->post('restaurant') != ''){
-                    $this->db->like('res.name', $this->input->post('restaurant'));
+                if($this->input->post('shop') != ''){
+                    $this->db->like('shop.name', $this->input->post('shop'));
                 } 
                 if($this->input->post('price') != ''){
                     $this->db->like('package.price', $this->input->post('price'));
                 } 
             }
         }  
-        $this->db->select('content_general_id,package.*,res.name as rname,res.currency_id');   
+        $this->db->select('content_general_id,package.*,shop.name as rname,shop.currency_id');   
         $this->db->join('content_general','package.content_id = content_general.content_general_id','left');
-        $this->db->join('restaurant as res','package.restaurant_id = res.entity_id','left');
+        $this->db->join('shop','package.shop_id = shop.entity_id','left');
         if($this->session->userdata('UserType') == 'Admin'){     
-            $this->db->where_in('package.restaurant_id',$this->session->userdata('restaurant'));
+            $this->db->where_in('package.shop_id',$this->session->userdata('shop'));
         } 
         if($sortFieldName != '')
             $this->db->order_by($sortFieldName, $sortOrder);
-        $cmdData = $this->db->get('restaurant_package as package')->result_array();           
+        $cmdData = $this->db->get('shop_package as package')->result_array();           
         $cmsLang = array();        
         if(!empty($cmdData)){
             foreach ($cmdData as $key => $value) {                
@@ -426,13 +428,13 @@ class Restaurant_model extends CI_Model {
         $this->db->where('phone_number',$phone_number);
         $this->db->where('entity_id !=',$entity_id);
         $this->db->where('content_id !=',$content_id);
-        return $this->db->get('restaurant')->num_rows();
+        return $this->db->get('shop')->num_rows();
     }
     public function checkEmailExist($email,$entity_id,$content_id){
         $this->db->where('email',$email);
         $this->db->where('entity_id !=',$entity_id);
         $this->db->where('content_id !=',$content_id);
-        return $this->db->get('restaurant')->num_rows();
+        return $this->db->get('shop')->num_rows();
     }
     //insert batch
     public function inserBatch($tblname,$data){
@@ -470,27 +472,27 @@ class Restaurant_model extends CI_Model {
         if($this->input->post('page_title') != ''){
             $this->db->like('menu.name', $this->input->post('page_title'));
         }
-        if($this->input->post('restaurant') != ''){
-            $this->db->like('res.name', $this->input->post('restaurant'));
+        if($this->input->post('shop') != ''){
+            $this->db->like('shop.name', $this->input->post('shop'));
         }
         if($this->input->post('price') != ''){
             $this->db->like('menu.price', $this->input->post('price'));
         } 
-        $this->db->select('menu.name as mname,res.name as rname,menu.entity_id,menu.status,res.currency_id');
-        $this->db->join('restaurant as res','menu.restaurant_id = res.entity_id','left');
+        $this->db->select('menu.name as mname,shop.name as rname,menu.entity_id,menu.status,shop.currency_id');
+        $this->db->join('shop','menu.shop_id = shop.entity_id','left');
         if($this->session->userdata('UserType') == 'Admin'){     
-            $this->db->where_in('menu.restaurant_id',$this->session->userdata('restaurant'));
+            $this->db->where_in('menu.shop_id',$this->session->userdata('shop'));
         }
         $this->db->where('is_deal',1); 
         $this->db->group_by('menu.content_id');
-        $result['total'] = $this->db->count_all_results('restaurant_menu_item as menu');
+        $result['total'] = $this->db->count_all_results('shop_menu_item as menu');
         
-        if($this->input->post('page_title')=="" && $this->input->post('restaurant') == '' && $this->input->post('price') == ''){
-            $this->db->select('content_general_id,menu.*,res.name as rname,res.currency_id');   
-            $this->db->join('restaurant_menu_item as menu','menu.content_id = content_general.content_general_id','left');
-            $this->db->join('restaurant as res','menu.restaurant_id = res.entity_id','left');
+        if($this->input->post('page_title')=="" && $this->input->post('shop') == '' && $this->input->post('price') == ''){
+            $this->db->select('content_general_id,menu.*,shop.name as rname,shop.currency_id');   
+            $this->db->join('shop_menu_item as menu','menu.content_id = content_general.content_general_id','left');
+            $this->db->join('shop','menu.shop_id = shop.entity_id','left');
             if($this->session->userdata('UserType') == 'Admin'){     
-                $this->db->where_in('menu.restaurant_id',$this->session->userdata('restaurant'));
+                $this->db->where_in('menu.shop_id',$this->session->userdata('shop'));
             } 
             $this->db->where('content_type','menu');
             $this->db->where('is_deal',1); 
@@ -510,25 +512,26 @@ class Restaurant_model extends CI_Model {
             if($this->input->post('page_title') != ''){
                 $this->db->like('menu.name', $this->input->post('page_title'));
             }   
-            if($this->input->post('restaurant') != ''){
-                $this->db->like('res.name', $this->input->post('restaurant'));
+            if($this->input->post('shop') != ''){
+                $this->db->like('shop.name', $this->input->post('shop'));
             } 
             if($this->input->post('price') != ''){
                 $this->db->like('menu.price', $this->input->post('price'));
             } 
-            $this->db->select('content_general_id,menu.*,res.name as rname,res.currency_id');   
-            $this->db->join('restaurant_menu_item as menu','menu.content_id = content_general.content_general_id','left');
-            $this->db->join('restaurant as res','menu.restaurant_id = res.entity_id','left');
+            $this->db->select('content_general_id,menu.*,shop.name as rname,shop.currency_id');   
+            $this->db->join('shop_menu_item as menu','menu.content_id = content_general.content_general_id','left');
+            $this->db->join('shop','menu.shop_id = shop.entity_id','left');
             if($this->session->userdata('UserType') == 'Admin'){     
-                $this->db->where_in('menu.restaurant_id',$this->session->userdata('restaurant'));
+                $this->db->where_in('menu.shop_id',$this->session->userdata('shop'));
             } 
             $this->db->where('content_type','menu');
             $this->db->where('is_deal',1); 
             $this->db->group_by('menu.content_id');
             if($displayLength>1)
                 $this->db->limit($displayLength,$displayStart);
-            $dataCmsOnly = $this->db->get('content_general')->result(); 
-            $ContentID = array();               
+            $cmsData = $this->db->get('content_general')->result(); 
+            $ContentID = array();
+            $OrderByID = "";               
             foreach ($cmsData as $key => $value) {
                 $OrderByID = $OrderByID.','.$value->entity_id;
                 $ContentID[] = $value->content_id;
@@ -540,24 +543,24 @@ class Restaurant_model extends CI_Model {
                 if($this->input->post('page_title') != ''){
                     $this->db->like('menu.name', trim($this->input->post('page_title')));
                 } 
-                if($this->input->post('restaurant') != ''){
-                    $this->db->like('res.name', $this->input->post('restaurant'));
+                if($this->input->post('shop') != ''){
+                    $this->db->like('shop.name', $this->input->post('shop'));
                 } 
                 if($this->input->post('price') != ''){
                     $this->db->like('menu.price', $this->input->post('price'));
                 } 
             }
         }  
-        $this->db->select('content_general_id,menu.*,res.name as rname,res.currency_id');   
+        $this->db->select('content_general_id,menu.*,shop.name as rname,shop.currency_id');   
         $this->db->join('content_general','menu.content_id = content_general.content_general_id','left');
-        $this->db->join('restaurant as res','menu.restaurant_id = res.entity_id','left');
+        $this->db->join('shop','menu.shop_id = shop.entity_id','left');
         $this->db->where('is_deal',1); 
         if($this->session->userdata('UserType') == 'Admin'){     
-            $this->db->where_in('menu.restaurant_id',$this->session->userdata('restaurant'));
+            $this->db->where_in('menu.shop_id',$this->session->userdata('shop'));
         }   
         if($sortFieldName != '')
             $this->db->order_by($sortFieldName, $sortOrder);
-        $cmdData = $this->db->get('restaurant_menu_item as menu')->result_array();           
+        $cmdData = $this->db->get('shop_menu_item as menu')->result_array();           
         $cmsLang = array();        
         if(!empty($cmdData)){
             foreach ($cmdData as $key => $value) {                
@@ -617,23 +620,23 @@ class Restaurant_model extends CI_Model {
         }
         return $this->db->get($tblname)->result();
     }
-    // get restaurant slug
-    public function getRestaurantSlug($content_id){
+    // get shop slug
+    public function getShopSlug($content_id){
         $this->db->select('shop_slug');
         $this->db->where('content_id',$content_id);
-        return $this->db->get('restaurant')->first_row();
+        return $this->db->get('shop')->first_row();
     }
     // get item slug
     public function getItemSlug($content_id){
         $this->db->select('item_slug');
         $this->db->where('content_id',$content_id);
-        return $this->db->get('restaurant_menu_item')->first_row();
+        return $this->db->get('shop_menu_item')->first_row();
     }
-    // get restaurants name
-    public function getRestaurantName($entity_id){
+    // get shops name
+    public function getshopName($entity_id){
         $this->db->select('name');
         $this->db->where('entity_id',$entity_id);
-        return $this->db->get('restaurant')->first_row();
+        return $this->db->get('shop')->first_row();
     }
     // get content id
     public function getContentId($entity_id,$tblname){
@@ -663,11 +666,11 @@ class Restaurant_model extends CI_Model {
         return $this->db->get('add_ons_category')->first_row();
     }
     // check addons category exist or not
-    public function getRestaurantId($name,$lang_slug){
+    public function getshopId($name,$lang_slug){
         $this->db->select('entity_id');
         $this->db->where('name',$name);
         $this->db->where('language_slug',$lang_slug);
-        return $this->db->get('restaurant')->first_row();
+        return $this->db->get('shop')->first_row();
     }
 }
 ?>

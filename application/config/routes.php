@@ -60,26 +60,26 @@ $route['how-to-order'] = 'cms/how_to_order';
 $route['legal-notice'] = 'cms/legal_notice';
 $route['terms-and-conditions'] = 'cms/terms_and_conditions';
 
-// Custom restaurant routes
+// Custom shop routes
 
 $db =& DB();
-$resto_query = $db->select('shop_slug')->get( 'restaurant' );
-$result = $resto_query->result();
+$shop_query = $db->select('shop_slug')->get( 'shop' );
+$result = $shop_query->result();
 foreach( $result as $res )
 {
-    $route[$res->shop_slug] = 'restaurant/restaurant-detail/'.$res->shop_slug;
+    $route[$res->shop_slug] = 'shop/shop-detail/'.$res->shop_slug;
 }
 
 // Custom store type routes
 
-$route['restaurant'] = '/';
+$route['shop'] = '/';
 $route['mobile.php'] = '/';
-$route['restaurants'] = 'home/restaurants';
+$route['shops'] = 'home/shops';
 
 $store_query = $db->select('entity_id')->get('store_type');
 $result = $store_query->result();
 foreach($result as $res)
 {
     $key = "order/".$res->entity_id;
-    $route[$key] = 'restaurant/index/'.$res->entity_id;
+    $route[$key] = 'shop/index/'.$res->entity_id;
 } 

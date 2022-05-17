@@ -47,12 +47,12 @@
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label class="control-label"><?php echo $this->lang->line('restaurant') ?><span class="required">*</span></label>
-                                                <select name="restaurant_id" id="restaurant_id" class="form-control required">
+                                                <label class="control-label"><?php echo $this->lang->line('shop') ?><span class="required">*</span></label>
+                                                <select name="shop_id" id="shop_id" class="form-control required">
                                                     <option value=""><?php echo $this->lang->line('select') ?></option>
 
-                                                    <?php if(!empty($restaurant)){
-                                                    foreach ($restaurant as $key => $value) { ?>
+                                                    <?php if(!empty($shop)){
+                                                    foreach ($shop as $key => $value) { ?>
                                                          <option value="<?php echo $value->entity_id ?>"><?php echo $value->name ?></option>
                                                     <?php  } } ?>                           
                                                 </select> 
@@ -285,7 +285,7 @@ function postGeocode(latitude, longitude, address){
 
 //get delivery charge
 function getDeliveryCharge(){
-    var resto_id = $('#restaurant_id option:selected').val();
+    var shop_id = $('#shop_id option:selected').val();
     var address = document.getElementById("address_area").value;
     if(address != '') {
         getGeocode(address).done(function(res) {
@@ -298,7 +298,7 @@ function getDeliveryCharge(){
                     type : "POST",
                     dataType :"html",
                     url : '<?php echo base_url().ADMIN_URL.'/order'?>/getDeliveryCharge',
-                    data : {'resto_id':resto_id, 'lat': lat, 'long': long},
+                    data : {'shop_id':shop_id, 'lat': lat, 'long': long},
                     success: function(response) {
                         if(response == "") {
                             $('#delivery_charge').val('No fee found');    
@@ -324,7 +324,7 @@ function getDeliveryCharge(){
                     type : "POST",
                     dataType :"html",
                     url : '<?php echo base_url().ADMIN_URL.'/order'?>/getDeliveryCharge',
-                    data : {'resto_id':resto_id, 'lat': lat, 'long': long},
+                    data : {'shop_id':shop_id, 'lat': lat, 'long': long},
                     success: function(response) {
                         if(response == "") {
                             $('#delivery_charge').val('No fee found');    

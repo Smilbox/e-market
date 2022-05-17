@@ -241,7 +241,7 @@ tr, td, th {
         <div class="div-thead">
           	<div>
           		<div class="div_1">#</div>
-	            <div class="div_6">Restaurant</div>
+	            <div class="div_6">Shop</div>
 	            <div class="div_3">User Name</div>
 	            <div class="div_3">Order Total</div>
 	            <div class="div_4">Order Delivery</div>

@@ -47,32 +47,32 @@ class Promotion_settings_model extends CI_Model {
         return $this->db->get('banner_settings')->first_row();
     }
 
-    public function getAllPromotionWithResto()
+    public function getAllPromotionWithShop()
     {
-        $this->db->select('promotion_settings.entity_id,promotion_settings.restaurant_id,promotion_settings.shown_promotion,promotion_settings.priority_order, promotion_settings.image, res.shop_slug');
-        $this->db->join('restaurant as res','promotion_settings.restaurant_id = res.entity_id','left');
+        $this->db->select('promotion_settings.entity_id,promotion_settings.shop_id,promotion_settings.shown_promotion,promotion_settings.priority_order, promotion_settings.image, res.shop_slug');
+        $this->db->join('shop as res','promotion_settings.shop_id = res.entity_id','left');
         return $this->db->get('promotion_settings')->result();  
     }
 
      //ajax view      
      public function getGridList($sortFieldName = '', $sortOrder = 'ASC', $displayStart = 0, $displayLength = 10)
      {
-         if($this->input->post('restaurant') != ''){
-             $this->db->like('res.name', $this->input->post('restaurant'));
+         if($this->input->post('shop') != ''){
+             $this->db->like('res.name', $this->input->post('shop'));
          }        
-         $this->db->select('promotion_settings.entity_id,promotion_settings.restaurant_id,promotion_settings.shown_promotion,promotion_settings.priority_order, promotion_settings.image');
-         $this->db->join('restaurant as res','promotion_settings.restaurant_id = res.entity_id','left');
+         $this->db->select('promotion_settings.entity_id,promotion_settings.shop_id,promotion_settings.shown_promotion,promotion_settings.priority_order, promotion_settings.image');
+         $this->db->join('shop as res','promotion_settings.shop_id = res.entity_id','left');
          $result['total'] = $this->db->count_all_results('promotion_settings');
          if($sortFieldName != '')
              $this->db->order_by($sortFieldName, $sortOrder);
  
          if($displayLength>1)
          $this->db->limit($displayLength,$displayStart);
-         if($this->input->post('restaurant') != ''){
-             $this->db->like('res.name', $this->input->post('restaurant'));
+         if($this->input->post('shop') != ''){
+             $this->db->like('res.name', $this->input->post('shop'));
          }  
-         $this->db->select('promotion_settings.entity_id,promotion_settings.restaurant_id,promotion_settings.shown_promotion,promotion_settings.priority_order, promotion_settings.image, res.name');
-         $this->db->join('restaurant as res','promotion_settings.restaurant_id = res.entity_id','left');
+         $this->db->select('promotion_settings.entity_id,promotion_settings.shop_id,promotion_settings.shown_promotion,promotion_settings.priority_order, promotion_settings.image, res.name');
+         $this->db->join('shop as res','promotion_settings.shop_id = res.entity_id','left');
          $result['data'] = $this->db->get('promotion_settings')->result();              
          return $result;
      } 

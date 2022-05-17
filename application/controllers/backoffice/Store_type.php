@@ -187,7 +187,7 @@ class Store_type extends CI_Controller {
         echo json_encode($this->store_type_model->getAll());
     }
 
-    // view restaurant menu
+    // view shop menu
     public function view(){
         $data['meta_title'] = $this->lang->line('store-type').' | '.$this->lang->line('site_title');
         $data['Languages'] = $this->common_model->getLanguages();

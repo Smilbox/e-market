@@ -1,21 +1,21 @@
 <?php
-class Restaurant_model extends CI_Model {
+class Shop_model extends CI_Model {
     function __construct()
     {
         parent::__construct();        
     }
-    // get restaurant details
-    public function getRestaurantDetail($content_id,$searchArray=NULL,$food=NULL,$price=NULL){ 
+    // get shop details
+    public function getShopDetail($content_id,$searchArray=NULL,$food=NULL,$price=NULL){ 
         $language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
-    	$this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,restaurant.store_type_id, restaurant.object_fit, restaurant.allow_24_delivery, restaurant.flat_rate_24, address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.phone_number,restaurant.shop_slug,restaurant.content_id,currencies.currency_symbol,currencies.currency_code");
-    	$this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
-        $this->db->where('restaurant.language_slug',$language_slug);
-        $this->db->where('restaurant.content_id',$content_id);
-        $this->db->group_by('restaurant.entity_id');
-    	$result['restaurant'] = $this->db->get_where('restaurant',array('status'=>1))->result_array();
-    	if (!empty($result['restaurant'])) {
-	    	foreach ($result['restaurant'] as $key => $value) {
+    	$this->db->select("shop.entity_id as shop_id,shop.name,shop.store_type_id, shop.object_fit, shop.allow_24_delivery, shop.flat_rate_24, address.address,address.landmark,address.latitude,address.longitude,shop.image,shop.featured_image,shop.timings,shop.phone_number,shop.shop_slug,shop.content_id,currencies.currency_symbol,currencies.currency_code");
+    	$this->db->join('shop_address as address','shop.entity_id = address.shop_entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
+        $this->db->where('shop.language_slug',$language_slug);
+        $this->db->where('shop.content_id',$content_id);
+        $this->db->group_by('shop.entity_id');
+    	$result['shop'] = $this->db->get_where('shop',array('status'=>1))->result_array();
+    	if (!empty($result['shop'])) {
+	    	foreach ($result['shop'] as $key => $value) {
 	            $timing = $value['timings'];
 	            if($timing){
 	               $timing =  unserialize(html_entity_decode($timing));
@@ -25,138 +25,138 @@ class Restaurant_model extends CI_Model {
 	                foreach($timing as $keys=>$values) {
 	                    $day = date("l");
 	                    if($keys == strtolower($day)){
-	                        $newTimingArr[strtolower($day)]['open'] = (!empty($values['open']))?date('g:i A',strtotime($values['open'])):'';
-	                        $newTimingArr[strtolower($day)]['close'] = (!empty($values['close']))?date('g:i A',strtotime($values['close'])):'';
-	                        $newTimingArr[strtolower($day)]['off'] = (!empty($values['open']) && !empty($values['close']))?'open':'close';
-	                        $newTimingArr[strtolower($day)]['closing'] = (!empty($values['close']) && !empty($values['open']))?(((date("H:m") < date("H:m",strtotime($values['close']))) && (date("H:m") >= date("H:m",strtotime($values['open']))))?'Open':'Closed'):'Closed';
+	                        $newTimingArr[strtolower($day)]['open'] = !empty($values['open']) ? date('g:i A',strtotime($values['open'])) : '';
+	                        $newTimingArr[strtolower($day)]['close'] = !empty($values['close']) ? date('g:i A',strtotime($values['close'])) : '';
+	                        $newTimingArr[strtolower($day)]['off'] = !empty($values['open']) && !empty($values['close']) ? 'open' : 'close';
+	                        $newTimingArr[strtolower($day)]['closing'] = (!empty($values['close']) && !empty($values['open']))?(((date("H:i") < date("H:i",strtotime($values['close']))) && (date("H:i") >= date("H:i",strtotime($values['open']))))?'Open':'Closed'):'Closed';
 	                        // $newTimingArr[strtolower($day)]['closing'] = 'Closed';
                         }
                         $allTimingArr[strtolower($keys)]['open'] = (!empty($values['open']))?date('g:i A',strtotime($values['open'])):'';
 	                    $allTimingArr[strtolower($keys)]['close'] = (!empty($values['close']))?date('g:i A',strtotime($values['close'])):'';
 	                    $allTimingArr[strtolower($keys)]['off'] = (!empty($values['open']) && !empty($values['close']))?'open':'close';
-	                    $allTimingArr[strtolower($keys)]['closing'] = (!empty($values['close']) && !empty($values['open']))?(((date("H:m") < date("H:m",strtotime($values['close']))) && (date("H:m") >= date("H:m",strtotime($values['open']))))?'Open':'Closed'):'Closed';
+	                    $allTimingArr[strtolower($keys)]['closing'] = (!empty($values['close']) && !empty($values['open']))?(((date("H:i") < date("H:i",strtotime($values['close']))) && (date("H:i") >= date("H:i",strtotime($values['open']))))?'Open':'Closed'):'Closed';
 	                }
 	            }
-	            $result['restaurant'][$key]['timings'] = $newTimingArr[strtolower($day)];
-	            $result['restaurant'][$key]['allTimings'] = $allTimingArr;
-	            $result['restaurant'][$key]['image'] = ($value['image'])?image_url.$value['image']:'';
-	            $result['restaurant'][$key]['featured_image'] = ($value['featured_image'])?image_url.$value['featured_image']:'';
+	            $result['shop'][$key]['timings'] = $newTimingArr[strtolower($day)];
+	            $result['shop'][$key]['allTimings'] = $allTimingArr;
+	            $result['shop'][$key]['image'] = ($value['image'])?image_url.$value['image']:'';
+	            $result['shop'][$key]['featured_image'] = ($value['featured_image'])?image_url.$value['featured_image']:'';
 	        }
     	} 
         $result['menu_items'] = array();
         $result['packages'] = array();
         $result['categories'] = array();
-        if (!empty($result['restaurant'])) {
-            $restaurant_id = $result['restaurant'][0]['restaurant_id'];
-            $this->db->select('restaurant_menu_item.*');
-            $this->db->where('restaurant_menu_item.restaurant_id',$restaurant_id);
+        if (!empty($result['shop'])) {
+            $shop_id = $result['shop'][0]['shop_id'];
+            $this->db->select('shop_menu_item.*');
+            $this->db->where('shop_menu_item.shop_id',$shop_id);
             if (!empty($searchArray)) {
                 $like_statementsOne = array();
                 $like_statementsTwo = array();
                 $like_statementsThree = array();
                 foreach($searchArray as $key => $value) {
-                    $like_statementsOne[] = "restaurant_menu_item.name LIKE '%" . $value . "%'";
+                    $like_statementsOne[] = "shop_menu_item.name LIKE '%" . $value . "%'";
                     $like_stringOne = "(" . implode(' OR ', $like_statementsOne) . ")";
-                    $like_statementsTwo[] = "restaurant_menu_item.menu_detail LIKE '%" . $value . "%'";
+                    $like_statementsTwo[] = "shop_menu_item.menu_detail LIKE '%" . $value . "%'";
                     $like_stringTwo = "(" . implode(' OR ', $like_statementsTwo) . ")";
-                    $like_statementsThree[] = "restaurant_menu_item.availability LIKE '%" . $value . "%'";
+                    $like_statementsThree[] = "shop_menu_item.availability LIKE '%" . $value . "%'";
                     $like_stringThree = "(" . implode(' OR ', $like_statementsThree) . ")";
                 }
                 $this->db->where('('.$like_stringOne.' OR '.$like_stringTwo.' OR '.$like_stringThree.')');
             }
             if ($price == "low") {
-                $this->db->order_by('restaurant_menu_item.price','asc');
+                $this->db->order_by('shop_menu_item.price','asc');
             }
             else
             {
-                $this->db->order_by('restaurant_menu_item.price','desc');
+                $this->db->order_by('shop_menu_item.price','desc');
             }
             if ($food == "non_veg") {
-                $this->db->where('restaurant_menu_item.is_veg',0);
+                $this->db->where('shop_menu_item.is_under_20_kg',0);
             }
             else if ($food == "veg") {
-                $this->db->where('restaurant_menu_item.is_veg',1);
+                $this->db->where('shop_menu_item.is_under_20_kg',1);
             }
-            $result['menu_items'] = $this->db->get_where('restaurant_menu_item',array('status'=>1))->result_array();
+            $result['menu_items'] = $this->db->get_where('shop_menu_item',array('status'=>1))->result_array();
             if (!empty($result['menu_items'])) {
                 foreach ($result['menu_items'] as $key => $value) {
                     $result['menu_items'][$key]['image'] = ($value['image'])?image_url.$value['image']:'';
                 }
             }
 
-            $this->db->select('restaurant_package.*');
-            $this->db->where('restaurant_package.restaurant_id',$restaurant_id);
+            $this->db->select('shop_package.*');
+            $this->db->where('shop_package.shop_id',$shop_id);
             if (!empty($searchArray)) {
                 $like_statementsOne = array();
                 $like_statementsTwo = array();
                 $like_statementsThree = array();
                 foreach($searchArray as $key => $value) {
-                    $like_statementsOne[] = "restaurant_package.name LIKE '%" . $value . "%'";
+                    $like_statementsOne[] = "shop_package.name LIKE '%" . $value . "%'";
                     $like_stringOne = "(" . implode(' OR ', $like_statementsOne) . ")";
-                    $like_statementsTwo[] = "restaurant_package.detail LIKE '%" . $value . "%'";
+                    $like_statementsTwo[] = "shop_package.detail LIKE '%" . $value . "%'";
                     $like_stringTwo = "(" . implode(' OR ', $like_statementsTwo) . ")";
-                    $like_statementsThree[] = "restaurant_package.availability LIKE '%" . $value . "%'";
+                    $like_statementsThree[] = "shop_package.availability LIKE '%" . $value . "%'";
                     $like_stringThree = "(" . implode(' OR ', $like_statementsThree) . ")";
                 }
                 $this->db->where('('.$like_stringOne.' OR '.$like_stringTwo.' OR '.$like_stringThree.')');
             }
-            $result['packages'] = $this->db->get_where('restaurant_package',array('status'=>1))->result_array();
+            $result['packages'] = $this->db->get_where('shop_package',array('status'=>1))->result_array();
             if (!empty($result['packages'])) {
                 foreach ($result['packages'] as $key => $value) {
                     $result['packages'][$key]['image'] = ($value['image'])?image_url.$value['image']:'';
                 }
             }
-            $this->db->select('restaurant_menu_item.category_id,category.name');
-            $this->db->join('category','restaurant_menu_item.category_id = category.entity_id','left');
-            $this->db->where('restaurant_menu_item.restaurant_id',$restaurant_id);
+            $this->db->select('shop_menu_item.category_id,category.name');
+            $this->db->join('category','shop_menu_item.category_id = category.entity_id','left');
+            $this->db->where('shop_menu_item.shop_id',$shop_id);
             if (!empty($searchArray)) {
                 $like_statementsOne = array();
                 $like_statementsTwo = array();
                 $like_statementsThree = array();
                 foreach($searchArray as $key => $value) {
-                    $like_statementsOne[] = "restaurant_menu_item.name LIKE '%" . $value . "%'";
+                    $like_statementsOne[] = "shop_menu_item.name LIKE '%" . $value . "%'";
                     $like_stringOne = "(" . implode(' OR ', $like_statementsOne) . ")";
-                    $like_statementsTwo[] = "restaurant_menu_item.menu_detail LIKE '%" . $value . "%'";
+                    $like_statementsTwo[] = "shop_menu_item.menu_detail LIKE '%" . $value . "%'";
                     $like_stringTwo = "(" . implode(' OR ', $like_statementsTwo) . ")";
-                    $like_statementsThree[] = "restaurant_menu_item.availability LIKE '%" . $value . "%'";
+                    $like_statementsThree[] = "shop_menu_item.availability LIKE '%" . $value . "%'";
                     $like_stringThree = "(" . implode(' OR ', $like_statementsThree) . ")";
                 }
                 $this->db->where('('.$like_stringOne.' OR '.$like_stringTwo.' OR '.$like_stringThree.')');
             }
             if ($price == "low") {
-                $this->db->order_by('restaurant_menu_item.price','asc');
+                $this->db->order_by('shop_menu_item.price','asc');
             }
             else
             {
-                $this->db->order_by('restaurant_menu_item.price','desc');
+                $this->db->order_by('shop_menu_item.price','desc');
             }
             if ($food == "non_veg") {
-                $this->db->where('restaurant_menu_item.is_veg',0);
+                $this->db->where('shop_menu_item.is_under_20_kg',0);
             }
             else if ($food == "veg") {
-                $this->db->where('restaurant_menu_item.is_veg',1);
+                $this->db->where('shop_menu_item.is_under_20_kg',1);
             }
-            $this->db->group_by('restaurant_menu_item.category_id');
-            $result['categories'] = $this->db->get_where('restaurant_menu_item',array('restaurant_menu_item.status'=>1))->result_array();
+            $this->db->group_by('shop_menu_item.category_id');
+            $result['categories'] = $this->db->get_where('shop_menu_item',array('shop_menu_item.status'=>1))->result_array();
             if (!empty($result['categories'])) {
                 foreach ($result['categories'] as $key => $value) {
-                    $this->db->select('restaurant_menu_item.*');
-                    $this->db->where('restaurant_menu_item.restaurant_id',$restaurant_id);
-                    $this->db->where('restaurant_menu_item.category_id',$value['category_id']);
+                    $this->db->select('shop_menu_item.*');
+                    $this->db->where('shop_menu_item.shop_id',$shop_id);
+                    $this->db->where('shop_menu_item.category_id',$value['category_id']);
                     if ($price == "low") {
-                        $this->db->order_by('restaurant_menu_item.price','asc');
+                        $this->db->order_by('shop_menu_item.price','asc');
                     }
                     else
                     {
-                        $this->db->order_by('restaurant_menu_item.price','desc');
+                        $this->db->order_by('shop_menu_item.price','desc');
                     }
                     if ($food == "non_veg") {
-                        $this->db->where('restaurant_menu_item.is_veg',0);
+                        $this->db->where('shop_menu_item.is_under_20_kg',0);
                     }
                     else if ($food == "veg") {
-                        $this->db->where('restaurant_menu_item.is_veg',1);
+                        $this->db->where('shop_menu_item.is_under_20_kg',1);
                     }
-                    $result[$value['name']] = $this->db->get_where('restaurant_menu_item',array('status'=>1))->result_array();
+                    $result[$value['name']] = $this->db->get_where('shop_menu_item',array('status'=>1))->result_array();
                     if (!empty($result[$value['name']])) {
                         foreach ($result[$value['name']] as $key => $mvalue) {
                             $result[$value['name']][$key]['image'] = ($mvalue['image'])?image_url.$mvalue['image']:'';
@@ -171,12 +171,12 @@ class Restaurant_model extends CI_Model {
         }
         return $result;
     }
-    // get restaurant reviews
-    public function getRestaurantReview($restaurant_id){
-        $this->db->select("review.restaurant_id,review.rating,review.review,users.first_name,users.last_name,users.image");
+    // get shop reviews
+    public function getShopReview($shop_id){
+        $this->db->select("review.shop_id,review.rating,review.review,users.first_name,users.last_name,users.image");
         $this->db->join('users','review.user_id = users.entity_id','left');
         $this->db->where('review.status',1);
-        $this->db->where('review.restaurant_id',$restaurant_id);
+        $this->db->where('review.shop_id',$shop_id);
         $result =  $this->db->get('review')->result();
         $avg_rating = 0;
         if (!empty($result)) {
@@ -189,35 +189,35 @@ class Restaurant_model extends CI_Model {
         }
         return $avg_rating;
     }
-    // get restaurant id
-    public function getRestaurantID($shop_slug){
+    // get shop id
+    public function getShopID($shop_slug){
         $this->db->select('entity_id');
-        return $this->db->get_where('restaurant',array('shop_slug'=>$shop_slug))->first_row();
+        return $this->db->get_where('shop',array('shop_slug'=>$shop_slug))->first_row();
     }
     // get content id from slug
     public function getContentID($shop_slug){
         $this->db->select('content_id');
-        return $this->db->get_where('restaurant',array('shop_slug'=>$shop_slug))->first_row();
+        return $this->db->get_where('shop',array('shop_slug'=>$shop_slug))->first_row();
     }
-    // get content id from restaurant id
-    public function getRestContentID($restaurant_id){
+    // get content id from shop id
+    public function getRestContentID($shop_id){
         $this->db->select('content_id');
-        return $this->db->get_where('restaurant',array('entity_id'=>$restaurant_id))->first_row();
+        return $this->db->get_where('shop',array('entity_id'=>$shop_id))->first_row();
     }
-    // get All Restaurants
-    public function getAllRestaurants($limit,$offset,$search_item=NULL)
+    // get All Shops
+    public function getAllShops($limit,$offset,$search_item=NULL)
     {
         $language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
-        $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.shop_slug");
-        $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
-        $this->db->join('restaurant_menu_item','restaurant.entity_id = restaurant_menu_item.restaurant_id AND restaurant_menu_item.language_slug = "'.$language_slug.'"','left');
-        $this->db->where('restaurant.language_slug',$language_slug);
-        $this->db->group_by('restaurant.content_id');
+        $this->db->select("shop.entity_id as shop_id,shop.name,address.address,address.landmark,address.latitude,address.longitude,shop.image,shop.featured_image,shop.timings,shop.shop_slug");
+        $this->db->join('shop_address as address','shop.entity_id = address.shop_entity_id','left');
+        $this->db->join('shop_menu_item','shop.entity_id = shop_menu_item.shop_id AND shop_menu_item.language_slug = "'.$language_slug.'"','left');
+        $this->db->where('shop.language_slug',$language_slug);
+        $this->db->group_by('shop.content_id');
         if (!empty($search_item)) {
-            $this->db->where("restaurant.name LIKE '%".$search_item."%' OR restaurant_menu_item.name LIKE '%".$search_item."%'");
+            $this->db->where("shop.name LIKE '%".$search_item."%' OR shop_menu_item.name LIKE '%".$search_item."%'");
         }
         $this->db->limit($limit,$offset);
-        $result['data'] = $this->db->get_where('restaurant',array('restaurant.status'=>1))->result_array();
+        $result['data'] = $this->db->get_where('shop',array('shop.status'=>1))->result_array();
 
         if (!empty($result['data'])) {
             foreach ($result['data'] as $key => $value) {
@@ -242,84 +242,45 @@ class Restaurant_model extends CI_Model {
             }
         } 
         // total count
-        $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.shop_slug");
-        $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
-        $this->db->join('restaurant_menu_item','restaurant.entity_id = restaurant_menu_item.restaurant_id AND restaurant_menu_item.language_slug = "'.$language_slug.'"','left');
-        $this->db->where('restaurant.language_slug',$language_slug);
-        $this->db->group_by('restaurant.content_id');
+        $this->db->select("shop.entity_id as shop_id,shop.name,address.address,address.landmark,address.latitude,address.longitude,shop.image,shop.featured_image,shop.timings,shop.shop_slug");
+        $this->db->join('shop_address as address','shop.entity_id = address.shop_entity_id','left');
+        $this->db->join('shop_menu_item','shop.entity_id = shop_menu_item.shop_id AND shop_menu_item.language_slug = "'.$language_slug.'"','left');
+        $this->db->where('shop.language_slug',$language_slug);
+        $this->db->group_by('shop.content_id');
         if (!empty($search_item)) {
-            $this->db->where("restaurant.name LIKE '%".$search_item."%' OR restaurant_menu_item.name LIKE '%".$search_item."%'");
+            $this->db->where("shop.name LIKE '%".$search_item."%' OR shop_menu_item.name LIKE '%".$search_item."%'");
         }
-        $result['count'] =  $this->db->get_where('restaurant',array('restaurant.status'=>1))->num_rows();
+        $result['count'] =  $this->db->get_where('shop',array('shop.status'=>1))->num_rows();
         return $result;
     }
-    //get ratings and reviews of a restaurant
-    public function getReviewsRatings($restaurant_id){
+    //get ratings and reviews of a shop
+    public function getReviewsRatings($shop_id){
         $this->db->select('review.*,users.first_name,users.last_name,users.image');
         $this->db->join('users','review.user_id = users.entity_id','left');
-        $this->db->where('review.restaurant_id',$restaurant_id);
+        $this->db->where('review.shop_id',$shop_id);
         return $this->db->get_where('review',array('review.status'=>1))->result_array();
     }
     //check booking availability
-    public function getBookingAvailability($date,$people,$restaurant_id){
-        $date = date('Y-m-d H:i:s',strtotime($date));
-        $datetime = date($date,strtotime('+1 hours'));
-        $this->db->select('capacity,timings');
-        $this->db->where('entity_id',$restaurant_id);
-        $capacity =  $this->db->get('restaurant')->first_row();
-        
-        if ($capacity) {
-            $timing = $capacity->timings;
-            if($timing){
-                $timing =  unserialize(html_entity_decode($timing));
-                $newTimingArr = array();
-                $day = date('l', strtotime($date));
-                foreach($timing as $keys=>$values) {
-                    $day = date('l', strtotime($date));
-                    if($keys == strtolower($day)){
-                        $newTimingArr[strtolower($day)]['open'] = (!empty($values['open']))?date('g:i A',strtotime($values['open'])):'';
-                        $newTimingArr[strtolower($day)]['close'] = (!empty($values['close']))?date('g:i A',strtotime($values['close'])):'';
-                        $newTimingArr[strtolower($day)]['off'] = (!empty($values['open']) && !empty($values['close']))?'open':'close';
-                        $newTimingArr[strtolower($day)]['closing'] = (!empty($values['close']))?($values['close'] <= date('H:m'))?'close':'open':'close';
-                    }
-                }
-            }
-            $capacity->timings = $newTimingArr[strtolower($day)];
-            //for booking
-            $this->db->select('IFNULL(SUM(no_of_people),0) as people');
-            $this->db->where('booking_date',$datetime);
-            $this->db->where('restaurant_id',$restaurant_id);
-            $event = $this->db->get('event')->first_row();
-            //get event booking
-            $peopleCount = $capacity->capacity - $event->people;       
-            if($peopleCount >= $people && (date('H:i',strtotime($capacity->timings['close'])) > date('H:i',strtotime($date))) && (date('H:i',strtotime($capacity->timings['open'])) < date('H:i',strtotime($date)))){
-                return true;
-            }else{ 
-                return false;
-            }
-        }
-        else
-        {   
-            return false;
-        }
+    public function getBookingAvailability($date,$people,$shop_id){
+        return false;
     }
     //get tax
-    public function getRestaurantTax($tblname,$restaurant_id,$flag){
+    public function getShopTax($tblname,$shop_id,$flag){
         if($flag == 'order'){
-            $this->db->select('restaurant.name,restaurant.image,restaurant.phone_number,restaurant.email,restaurant.amount_type,restaurant.amount,restaurant_address.address,restaurant_address.landmark,restaurant_address.zipcode,restaurant_address.city,restaurant_address.latitude,restaurant_address.longitude,currencies.currency_symbol,currencies.currency_code');
-            $this->db->join('restaurant_address','restaurant.entity_id = restaurant_address.resto_entity_id','left');
-            $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
+            $this->db->select('shop.name,shop.image,shop.phone_number,shop.email,shop.amount_type,shop.amount,shop_address.address,shop_address.landmark,shop_address.zipcode,shop_address.city,shop_address.latitude,shop_address.longitude,currencies.currency_symbol,currencies.currency_code');
+            $this->db->join('shop_address','shop.entity_id = shop_address.shop_entity_id','left');
+            $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
         }else{
-            $this->db->select('restaurant.name,restaurant.image,restaurant_address.address,restaurant_address.landmark,restaurant_address.zipcode,restaurant_address.city,restaurant.amount_type,restaurant.amount,restaurant_address.latitude,restaurant_address.longitude');
-            $this->db->join('restaurant_address','restaurant.entity_id = restaurant_address.resto_entity_id','left');
-            $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
+            $this->db->select('shop.name,shop.image,shop_address.address,shop_address.landmark,shop_address.zipcode,shop_address.city,shop.amount_type,shop.amount,shop_address.latitude,shop_address.longitude');
+            $this->db->join('shop_address','shop.entity_id = shop_address.shop_entity_id','left');
+            $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
         }
-        $this->db->where('restaurant.entity_id',$restaurant_id);
+        $this->db->where('shop.entity_id',$shop_id);
         return $this->db->get($tblname)->first_row();
     }
-    // get number of restaurant reviews
-    public function getReviewsNumber($restaurant_id,$rating){
-        $this->db->where('restaurant_id',$restaurant_id);
+    // get number of shop reviews
+    public function getReviewsNumber($shop_id,$rating){
+        $this->db->where('shop_id',$shop_id);
         $ratingPlus = $rating + 1;
         $this->db->where('(rating >= '.$rating.' AND rating < '.$ratingPlus.')');
         $this->db->group_by('entity_id');
@@ -344,33 +305,33 @@ class Restaurant_model extends CI_Model {
         return array_values($res);
     }
 
-    // get restaurants with pagination
-    public function getRestaurantsForOrder($limit,$offset,$resdish=NULL,$latitude=NULL,$longitude=NULL,$minimum_range=NULL,$maximum_range=NULL,$food_veg=NULL,$food_non_veg=NULL,$pagination=NULL, $store_type=NULL, $store_filter = []){
+    // get shops with pagination
+    public function getShopsForOrder($limit,$offset,$resdish=NULL,$latitude=NULL,$longitude=NULL,$minimum_range=NULL,$maximum_range=NULL,$food_veg=NULL,$food_non_veg=NULL,$pagination=NULL, $store_type=NULL, $store_filter = []){
         $language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
-        $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.shop_slug,restaurant.status,restaurant.object_fit,restaurant.content_id,restaurant.language_slug,restaurant.store_type_id,restaurant.sub_store_type_id");
-        $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
-        $this->db->join('restaurant_menu_item','restaurant.entity_id = restaurant_menu_item.restaurant_id AND restaurant_menu_item.status = 1','left');
+        $this->db->select("shop.entity_id as shop_id,shop.name,address.address,address.landmark,address.latitude,address.longitude,shop.image,shop.featured_image,shop.timings,shop.shop_slug,shop.status,shop.object_fit,shop.content_id,shop.language_slug,shop.store_type_id,shop.sub_store_type_id");
+        $this->db->join('shop_address as address','shop.entity_id = address.shop_entity_id','left');
+        $this->db->join('shop_menu_item','shop.entity_id = shop_menu_item.shop_id AND shop_menu_item.status = 1','left');
         if (!empty($resdish)) {
-            $this->db->where("restaurant_menu_item.name LIKE '%".$resdish."%' OR restaurant.name LIKE '%".$resdish."%' OR address.address LIKE '%".$resdish."%' OR address.landmark LIKE '%".$resdish."%'");
+            $this->db->where("shop_menu_item.name LIKE '%".$resdish."%' OR shop.name LIKE '%".$resdish."%' OR address.address LIKE '%".$resdish."%' OR address.landmark LIKE '%".$resdish."%'");
         }
         if ($food_veg == 1 && $food_non_veg == 0) {
-            $this->db->where('restaurant_menu_item.is_veg',1);
+            $this->db->where('shop_menu_item.is_under_20_kg',1);
         }
         if ($food_veg == 0 && $food_non_veg == 1) {
-            $this->db->where('restaurant_menu_item.is_veg',0);
+            $this->db->where('shop_menu_item.is_under_20_kg',0);
         }
         if($store_type !== 0 ) {
-            $this->db->where('restaurant.store_type_id', $store_type);
+            $this->db->where('shop.store_type_id', $store_type);
         }
         /*if(!empty($store_filter)) {
             $store_filter_text = implode(',', $store_filter);
-            $this->db->where("restaurant.sub_store_type_id LIKE '%".$store_filter_text."%'");
+            $this->db->where("shop.sub_store_type_id LIKE '%".$store_filter_text."%'");
         }*/
-        // $this->db->where('restaurant.status',1);
+        // $this->db->where('shop.status',1);
 
-        $this->db->group_by('restaurant.content_id');
-        // $this->db->group_by('restaurant.name');
-        $result = $this->db->get_where('restaurant', array('restaurant.status' => 1))->result_array();
+        $this->db->group_by('shop.content_id');
+        // $this->db->group_by('shop.name');
+        $result = $this->db->get_where('shop', array('shop.status' => 1))->result_array();
 
         // Another layer of filter
         if($store_type !== 0 ) {
@@ -401,7 +362,7 @@ class Restaurant_model extends CI_Model {
                 }
                 $result[$key]['timings'] = $newTimingArr[strtolower($day)];
                 $result[$key]['image'] = ($value['image'])?image_url.$value['image']:'';
-                $restaurantLng[$key]['featured_image'] = ($value['featured_image'])?image_url.$value['featured_image']:'';
+                $shopLng[$key]['featured_image'] = ($value['featured_image'])?image_url.$value['featured_image']:'';
             }
             $content_id = array();
             $RestDataArr = array();
@@ -410,68 +371,67 @@ class Restaurant_model extends CI_Model {
                 $RestDataArr[$value['content_id']] = array(
                     'content_id' =>$value['content_id'],
                     'shop_slug' =>$value['shop_slug'],
-                    'restaurant_id'=>$value['restaurant_id']
+                    'shop_id'=>$value['shop_id']
                 );
             }    
             if(!empty($content_id)){
-                $this->db->select("restaurant.entity_id as restaurant_id,restaurant.name,address.address,address.landmark,address.latitude,address.longitude,restaurant.image,restaurant.featured_image,restaurant.timings,restaurant.status,restaurant.object_fit,restaurant.shop_slug,restaurant.content_id,restaurant.language_slug, restaurant.store_type_id, restaurant.sub_store_type_id");
-                $this->db->join('restaurant_address as address','restaurant.entity_id = address.resto_entity_id','left');
-                $this->db->join('restaurant_menu_item','restaurant.entity_id = restaurant_menu_item.restaurant_id AND restaurant_menu_item.status = 1','left');
-                $this->db->where_in('restaurant.content_id',$content_id);
-                $this->db->where('restaurant.language_slug',$language_slug);
+                $this->db->select("shop.entity_id as shop_id,shop.name,address.address,address.landmark,address.latitude,address.longitude,shop.image,shop.featured_image,shop.timings,shop.status,shop.object_fit,shop.shop_slug,shop.content_id,shop.language_slug, shop.store_type_id, shop.sub_store_type_id");
+                $this->db->join('shop_address as address','shop.entity_id = address.shop_entity_id','left');
+                $this->db->join('shop_menu_item','shop.entity_id = shop_menu_item.shop_id AND shop_menu_item.status = 1','left');
+                $this->db->where_in('shop.content_id',$content_id);
+                $this->db->where('shop.language_slug',$language_slug);
                 if($store_type !== 0 ) {
-                    $this->db->where('restaurant.store_type_id', $store_type);
+                    $this->db->where('shop.store_type_id', $store_type);
                 }
                 if (!empty($resdish)) {
-                    $this->db->where("restaurant_menu_item.name LIKE '%".$resdish."%' OR restaurant.name LIKE '%".$resdish."%' OR address.address LIKE '%".$resdish."%' OR address.landmark LIKE '%".$resdish."%'");
+                    $this->db->where("shop_menu_item.name LIKE '%".$resdish."%' OR shop.name LIKE '%".$resdish."%' OR address.address LIKE '%".$resdish."%' OR address.landmark LIKE '%".$resdish."%'");
                 }
                 if ($food_veg == 1 && $food_non_veg == 0) {
-                    $this->db->where('restaurant_menu_item.is_veg',1);
+                    $this->db->where('shop_menu_item.is_under_20_kg',1);
                 }
                 if ($food_veg == 0 && $food_non_veg == 1) {
-                    $this->db->where('restaurant_menu_item.is_veg',0);
+                    $this->db->where('shop_menu_item.is_under_20_kg',0);
                 }
                 /*if(!empty($store_filter)) {
                     $store_filter_text = implode(',', $store_filter);
-                    $this->db->where("restaurant.sub_store_type_id LIKE '%".$store_filter_text."%'");
+                    $this->db->where("shop.sub_store_type_id LIKE '%".$store_filter_text."%'");
                 }*/
-                $this->db->where('restaurant.status',1);
+                $this->db->where('shop.status',1);
                 
-                $this->db->order_by('restaurant.entity_id');
+                $this->db->order_by('shop.entity_id');
                 
                 if (!empty($resdish)) {
-                    $restoLng = $this->db->get('restaurant')->result_array();
-                    // $restoLng = $this->db->get_where('restaurant', array('restaurant.status' => "1"))->result_array();
-                    $restoFiltered = array_filter($restoLng, function($resto) use ($language_slug) {
-                        return $resto['language_slug'] == $language_slug && $resto['status'] == "1";
+                    $shopLng = $this->db->get('shop')->result_array();
+                    $shopFiltered = array_filter($shopLng, function($shop) use ($language_slug) {
+                        return $shop['language_slug'] == $language_slug && $shop['status'] == "1";
                     });
-                    $restaurantLng = $this->group_by_uniq('content_id', $restoFiltered);
+                    $shopLng = $this->group_by_uniq('content_id', $shopFiltered);
                 } else {
-                    $this->db->group_by('restaurant.content_id');
-                    // $restaurantLng = $this->db->get('restaurant')->result_array();
-                    $restaurantLng = $this->db->get_where('restaurant', array('restaurant.status' => 1))->result_array();
+                    $this->db->group_by('shop.content_id');
+                    // $shopLng = $this->db->get('shop')->result_array();
+                    $shopLng = $this->db->get_where('shop', array('shop.status' => 1))->result_array();
                 }
 
                 // Another layer of filter
                 if($store_type !== 0 ) {
-                    $restaurantLng = array_filter($restaurantLng, function($res) use ($store_type) {
+                    $shopLng = array_filter($shopLng, function($res) use ($store_type) {
                         return $res['store_type_id'] == $store_type;
                     });
                 }
                 
                 if(!empty($store_filter)) {
                     // $store_filter_text = implode(',', $store_filter);
-                    $filteredSubByStore = array_filter($restaurantLng, function($resto) use ($store_filter) {
-                        if(isset($resto)) {
-                            $asArray = explode(',', $resto['sub_store_type_id']);
+                    $filteredSubByStore = array_filter($shopLng, function($shop) use ($store_filter) {
+                        if(isset($shop)) {
+                            $asArray = explode(',', $shop['sub_store_type_id']);
                             $exist = array_intersect($store_filter, $asArray);
                             return !empty($exist); 
                         } else { return false; }
                     });
 
-                    $restaurantLng = $filteredSubByStore;
+                    $shopLng = $filteredSubByStore;
                 }
-                foreach ($restaurantLng as $key => $value) {
+                foreach ($shopLng as $key => $value) {
                     $timing = $value['timings'];
                     if($timing){
                        $timing =  unserialize(html_entity_decode($timing));
@@ -487,13 +447,13 @@ class Restaurant_model extends CI_Model {
                             }
                         }
                     }
-                    $restaurantLng[$key]['timings'] = $newTimingArr[strtolower($day)];
-                    $restaurantLng[$key]['image'] = ($value['image'])?image_url.$value['image']:'';
-                    $restaurantLng[$key]['featured_image'] = ($value['featured_image'])?image_url.$value['featured_image']:'';
+                    $shopLng[$key]['timings'] = $newTimingArr[strtolower($day)];
+                    $shopLng[$key]['image'] = ($value['image'])?image_url.$value['image']:'';
+                    $shopLng[$key]['featured_image'] = ($value['featured_image'])?image_url.$value['featured_image']:'';
                 }                
-                foreach ($restaurantLng as $key => $value) {
+                foreach ($shopLng as $key => $value) {
                     $finalData[$value['content_id']] = array(
-                        'MainRestaurantID'=> $value['restaurant_id'],
+                        'MainShopID'=> $value['shop_id'],
                         'name'=> $value['name'],
                         'address'=> $value['address'],
                         'object_fit'=>$value['object_fit'],
@@ -506,7 +466,7 @@ class Restaurant_model extends CI_Model {
                         'language_slug'=> $value['language_slug'],
                         'content_id' =>$RestDataArr[$value['content_id']]['content_id'],
                         'shop_slug' =>$RestDataArr[$value['content_id']]['shop_slug'],
-                        'restaurant_id'=>$RestDataArr[$value['content_id']]['restaurant_id'],
+                        'shop_id'=>$RestDataArr[$value['content_id']]['shop_id'],
                     );
                 }
             }
@@ -547,11 +507,11 @@ class Restaurant_model extends CI_Model {
                 }
             }
         }
-        $finalRestaurants = $finalData;
+        $finalShops = $finalData;
         if (!empty($pagination)) {
-            $finalRestaurants = array_slice($finalData, $offset, $limit);
+            $finalShops = array_slice($finalData, $offset, $limit);
         }
-        return $finalRestaurants;
+        return $finalShops;
     }
     //get item discount
     public function getItemDiscount($where){
@@ -566,21 +526,21 @@ class Restaurant_model extends CI_Model {
         return $result;
     }
     //get menu items
-    public function getMenuItem($entity_id,$restaurant_id){
+    public function getMenuItem($entity_id,$shop_id){
         $language_slug = ($this->session->userdata('language_slug'))?$this->session->userdata('language_slug'):'en';
         $ItemDiscount = $this->getItemDiscount(array('status'=>1,'coupon_type'=>'discount_on_items'));
         $couponAmount = $ItemDiscount['couponAmount'];
         $ItemDiscount = (!empty($ItemDiscount['itemDetail']))?array_column($ItemDiscount['itemDetail'], 'item_id'):array();
 
-        $this->db->select('menu.restaurant_id,menu.is_deal,menu.entity_id as menu_id,menu.status,menu.name,menu.price,menu.menu_detail,menu.image,menu.is_veg,menu.recipe_detail,availability,c.name as category,c.entity_id as category_id,add_ons_master.add_ons_name,add_ons_master.add_ons_price,add_ons_category.name as addons_category,menu.check_add_ons,add_ons_category.entity_id as addons_category_id,add_ons_master.add_ons_id,add_ons_master.is_multiple,deal_category.deal_category_name,add_ons_master.deal_category_id');
+        $this->db->select('menu.shop_id,menu.is_deal,menu.entity_id as menu_id,menu.status,menu.name,menu.price,menu.menu_detail,menu.image,menu.is_under_20_kg,menu.recipe_detail,availability,c.name as category,c.entity_id as category_id,add_ons_master.add_ons_name,add_ons_master.add_ons_price,add_ons_category.name as addons_category,menu.check_add_ons,add_ons_category.entity_id as addons_category_id,add_ons_master.add_ons_id,add_ons_master.is_multiple,deal_category.deal_category_name,add_ons_master.deal_category_id');
         $this->db->join('category as c','menu.category_id = c.entity_id','left');
         $this->db->join('add_ons_master','menu.entity_id = add_ons_master.menu_id AND menu.check_add_ons = 1','left');
         $this->db->join('add_ons_category','add_ons_master.category_id = add_ons_category.entity_id','left');
         $this->db->join('deal_category','add_ons_master.deal_category_id = deal_category.deal_category_id','left');
-        $this->db->where('menu.restaurant_id',$restaurant_id);
+        $this->db->where('menu.shop_id',$shop_id);
         $this->db->where('menu.language_slug',$language_slug);
         $this->db->where('menu.entity_id',$entity_id);
-        $result = $this->db->get('restaurant_menu_item as menu')->result();
+        $result = $this->db->get('shop_menu_item as menu')->result();
 
         $menu = array();
         if (!empty($result)) {
@@ -609,7 +569,7 @@ class Restaurant_model extends CI_Model {
                 if($value->check_add_ons == 1){
                     if(!isset($menu[$value->category_id]['items'][$value->menu_id])){
                        $menu[$value->category_id]['items'][$value->menu_id] = array();
-                       $menu[$value->category_id]['items'][$value->menu_id] = array('restaurant_id'=>$value->restaurant_id,'menu_id'=>$value->menu_id,'name' => $value->name,'price' => $value->price,'offer_price'=>$offer_price,'menu_detail' => $value->menu_detail,'image'=>$image,'recipe_detail'=>$value->recipe_detail,'availability'=>$value->availability,'is_veg'=>$value->is_veg,'is_customize'=>$value->check_add_ons,'is_deal'=>$value->is_deal,'status'=>$value->status);
+                       $menu[$value->category_id]['items'][$value->menu_id] = array('shop_id'=>$value->shop_id,'menu_id'=>$value->menu_id,'name' => $value->name,'price' => $value->price,'offer_price'=>$offer_price,'menu_detail' => $value->menu_detail,'image'=>$image,'recipe_detail'=>$value->recipe_detail,'availability'=>$value->availability,'is_under_20_kg'=>$value->is_under_20_kg,'is_customize'=>$value->check_add_ons,'is_deal'=>$value->is_deal,'status'=>$value->status);
                     }
                     if($value->is_deal == 1){
                         if(!isset($menu[$value->category_id]['items'][$value->menu_id]['addons_category_list'][$value->deal_category_id])){
@@ -633,7 +593,7 @@ class Restaurant_model extends CI_Model {
                         $i++;
                     }
                 }else{
-                    $menu[$value->category_id]['items'][]  = array('restaurant_id'=>$value->restaurant_id,'menu_id'=>$value->menu_id,'name' => $value->name,'price' =>$value->price,'offer_price'=>$offer_price,'menu_detail' => $value->menu_detail,'image'=>$image,'recipe_detail'=>$value->recipe_detail,'availability'=>$value->availability,'is_veg'=>$value->is_veg,'is_customize'=>$value->check_add_ons,'is_deal'=>$value->is_deal,'status'=>$value->status);
+                    $menu[$value->category_id]['items'][]  = array('shop_id'=>$value->shop_id,'menu_id'=>$value->menu_id,'name' => $value->name,'price' =>$value->price,'offer_price'=>$offer_price,'menu_detail' => $value->menu_detail,'image'=>$image,'recipe_detail'=>$value->recipe_detail,'availability'=>$value->availability,'is_under_20_kg'=>$value->is_under_20_kg,'is_customize'=>$value->check_add_ons,'is_deal'=>$value->is_deal,'status'=>$value->status);
                 }
             }
         }
@@ -665,18 +625,18 @@ class Restaurant_model extends CI_Model {
         return $finalArray;     
     }
     // get total orders of a user
-    public function getTotalOrders($user_id,$restaurant_id){
+    public function getTotalOrders($user_id,$shop_id){
         $this->db->select('entity_id');
         $this->db->where('user_id',$user_id);
-        $this->db->where('restaurant_id',$restaurant_id);
+        $this->db->where('shop_id',$shop_id);
         $this->db->where('(order_master.order_status = "delivered" OR order_master.order_status = "complete")');
         return $this->db->get('order_master')->num_rows();
     }
     // get total reviews of a user
-    public function getTotalReviews($user_id,$restaurant_id){
+    public function getTotalReviews($user_id,$shop_id){
         $this->db->select('entity_id');
         $this->db->where('user_id',$user_id);
-        $this->db->where('restaurant_id',$restaurant_id);
+        $this->db->where('shop_id',$shop_id);
         return $this->db->get('review')->num_rows();
     }
 }

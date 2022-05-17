@@ -80,10 +80,10 @@ $usertypes = getUserTypeList();
                                     </div>
                                     <?php } ?>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">Restaurant Name<span class="required">*</span></label>
+                                        <label class="control-label col-md-3">Shop Name<span class="required">*</span></label>
                                         <div class="col-md-8">
-                                            <select name="RestaurantID" id="RestaurantID" class="form-control">
-                                                <option value="">Select Restaurant</option>
+                                            <select name="ShopID" id="ShopID" class="form-control">
+                                                <option value="">Select Shop</option>
                                             </select>
                                         </div>
                                     </div> 

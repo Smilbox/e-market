@@ -13,7 +13,7 @@ if($this->input->post()){
     $$key = @htmlspecialchars($this->input->post($key));
   } 
 } else {
-  $FieldsArray = array('content_id','entity_id','name','phone_number','email','capacity','no_of_table','no_of_hall','hall_capacity','object_fit','address','landmark','latitude','longitude','state','country','city','zipcode', 'store_type_id','amount_type','amount','enable_hours','timings','image','is_veg','driver_commission','currency_id','shop_slug', 'allow_24_delivery', 'flat_rate_24', 'featured_image', 'sub_store_type_id');
+  $FieldsArray = array('content_id','entity_id','name','phone_number','email','owner_name', 'nif', 'stat', 'rcs','object_fit','address','landmark','latitude','longitude','state','country','city','zipcode', 'store_type_id','amount_type','amount','enable_hours','timings','image','is_under_20_kg','driver_commission','currency_id','shop_slug', 'allow_24_delivery', 'flat_rate_24', 'featured_image', 'sub_store_type_id');
   foreach ($FieldsArray as $key) {
     $$key = @htmlspecialchars($edit_records->$key);
   }
@@ -163,27 +163,27 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('owner_name') ?><span class="required">*</span></label>
+                                        <label class="control-label col-md-3"><?php echo $this->lang->line('owner_name') ?></label>
                                         <div class="col-md-4">
-                                            <input type="text" name="capacity" id="capacity" value="<?php echo $capacity ?>" maxlength="20" data-required="1" class="form-control"/>
+                                            <input type="text" name="owner_name" id="owner_name" value="<?php echo $owner_name ?>" data-required="1" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3"><?php echo $this->lang->line('nif') ?><span class="required">*</span></label>
+                                        <label class="control-label col-md-3"><?php echo $this->lang->line('nif') ?></label>
                                         <div class="col-md-4">
-                                            <input type="text" name="no_of_table" id="no_of_table" value="<?php echo $no_of_table ?>" maxlength="20" data-required="1" class="form-control"/>
+                                            <input type="text" name="nif" id="nif" value="<?php echo $nif ?>" data-required="1" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-3"><?php echo $this->lang->line('stat') ?></label>
                                         <div class="col-md-4">
-                                            <input type="text" name="no_of_hall" id="no_of_hall"  value="<?php echo $no_of_hall ?>" maxlength="20" data-required="1" class="form-control"/>
+                                            <input type="text" name="stat" id="stat"  value="<?php echo $stat ?>"  data-required="1" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-3"><?php echo $this->lang->line('rcs') ?></label>
                                         <div class="col-md-4">
-                                            <input type="text"  name="hall_capacity" id="hall_capacity" value="<?php echo $hall_capacity ?>" maxlength="20" data-required="1" class="form-control"/>
+                                            <input type="text"  name="rcs" id="rcs" value="<?php echo $rcs ?>" data-required="1" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -298,8 +298,8 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                     <div class="form-group">
                                         <label class="control-label col-md-3"><?php echo $this->lang->line('product_type') ?><span class="required">*</span></label>
                                         <div class="col-md-8">
-                                            <input type="radio" name="is_veg" id="is_veg" value="1" checked="" <?php echo ($is_veg)?($is_veg == '1')?'checked':'':'checked' ?>><?php echo $this->lang->line('under_20_kg') ?>
-                                            <input type="radio" name="is_veg" id="non-veg" value="0" <?php echo ($is_veg == '0')?'checked':'' ?>><?php echo $this->lang->line('plus_20_kg') ?>
+                                            <input type="radio" name="is_under_20_kg" id="is_under_20_kg" value="1" checked="" <?php echo ($is_under_20_kg)?($is_under_20_kg == '1')?'checked':'':'checked' ?>><?php echo $this->lang->line('is_under_20_kg') ?>
+                                            <input type="radio" name="is_under_20_kg" id="non-veg" value="0" <?php echo ($is_under_20_kg == '0')?'checked':'' ?>><?php echo $this->lang->line('plus_20_kg') ?>
                                         </div>
                                     </div> 
                                     <div class="form-group">
@@ -749,7 +749,7 @@ function checkExist(phone_number){
     var content_id = $('#content_id').val();
     $.ajax({
     type: "POST",
-    url: BASEURL+"<?php echo ADMIN_URL ?>/restaurant/checkExist",
+    url: BASEURL+"<?php echo ADMIN_URL ?>/shop/checkExist",
     data: 'phone_number=' + phone_number +'&entity_id='+entity_id +'&content_id='+content_id,
     cache: false,
     success: function(html) {
@@ -774,7 +774,7 @@ function checkEmail(email,entity_id){
   var content_id = $('#content_id').val();
   $.ajax({
     type: "POST",
-    url: BASEURL+"<?php echo ADMIN_URL ?>/restaurant/checkEmailExist",
+    url: BASEURL+"<?php echo ADMIN_URL ?>/shop/checkEmailExist",
     data: 'email=' + email +'&entity_id='+entity_id+'&content_id='+content_id,
     cache: false,
     success: function(html) {

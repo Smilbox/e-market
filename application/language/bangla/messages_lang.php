@@ -23,17 +23,9 @@ $lang['title_admin_usersadd'] = 'এড্ য হারকারী';
 $lang['title_admin_usersedit'] = 'ইসড্ট য হারকারী';
 $lang['title_admin_commission'] = 'কসমশন';
 
-$lang['title_admin_restaurant'] = 'গরসটবরে';
-$lang['title_admin_restaurantadd'] = 'এড্ গরসটবরে';
-$lang['title_admin_restaurantedit'] = 'ইসড্ট গরসটবরে';
-
 $lang['title_admin_shop_menu'] = 'গমনু';
 $lang['title_admin_shop_menu_add'] = 'এড্ গমনু';
 $lang['title_admin_shop_menu_edit'] = 'ইসড্ট গমনু';
-
-$lang['title_admin_restaurantPackage'] = 'পযাবকজ';
-$lang['title_admin_restaurantPackageadd'] = 'এড্ পযাবকজ';
-$lang['title_admin_restaurantPackageEdit'] = 'ইসড্ট পযাবকজ';
 
 $lang['title_admin_userAddressAdd'] = 'এড্';
 $lang['title_admin_userAddressEdit'] = 'ইসড্ট';
@@ -180,8 +172,8 @@ $lang['open'] = 'খোলা';
 $lang['select'] = 'সন ডাচন করা';
 $lang['list'] = 'তাসেকা';
 $lang['no_file'] = 'গকাবনা ফাইে পেন্দ করা হইসন';
-//restaurant module
-$lang['restaurant'] = 'গরসটবরে';
+//shop module
+$lang['shop'] = 'গরসটবরে';
 $lang['manage_res'] = 'গরবস্তাাঁরা পসরচােনা';
 $lang['menu'] = 'খাদযতাসেকা';
 $lang['package'] = 'পযাবকজ';
@@ -190,10 +182,6 @@ $lang['phone_number'] = 'গফান নম্বর';
 $lang['email'] = 'ইবমইে';
 $lang['image'] = 'েস';
 $lang['selected_image'] = 'আপসন আবে সন ডাচন কবরবেন';
-$lang['capacity'] = 'কযাপাসসটট (মানুষ)';
-$lang['no_of_table'] = 'গটস বের নিং';
-$lang['no_of_hall'] = 'হবের নিং';
-$lang['hall_capacity'] = 'হে কযাপাসসটট';
 $lang['address'] = 'টিকানা';
 $lang['landmark'] = 'ব সশষ্টয';
 $lang['latitude'] = 'অোিংশ';
@@ -339,7 +327,7 @@ $lang['accept'] = 'গ্রহণ করুন';
 $lang['order_type'] = 'অড্ডার ধরন';
 //dahsboard
 $lang['statistics'] = 'পসরসিংখযান';
-$lang['total_restaurant'] = 'গমাট গরবস্তাাঁরা';
+$lang['total_shop'] = 'গমাট গরবস্তাাঁরা';
 $lang['view_more'] = 'আবরা গদখুন';
 $lang['total_user'] = 'গমাট য হারকারী';
 $lang['total_order'] = 'গমাট অড্ডার';

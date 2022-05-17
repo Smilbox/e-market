@@ -13,7 +13,7 @@ if($this->input->post()){
     $$key = @htmlspecialchars($this->input->post($key));
   } 
 } else {
-  $FieldsArray = array('entity_id','name','no_of_people','booking_date','restaurant_id','user_id','end_date');
+  $FieldsArray = array('entity_id','name','no_of_people','booking_date','shop_id','user_id','end_date');
   foreach ($FieldsArray as $key) {
     $$key = @htmlspecialchars($edit_records->$key);
   }
@@ -102,16 +102,15 @@ $array  = array(); foreach ($booked_date as $key => $value) {
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">Restaurant<span class="required">*</span></label>
+                                        <label class="control-label col-md-3">Shop<span class="required">*</span></label>
                                         <div class="col-md-4">
-                                            <select name="restaurant_id" class="form-control" id="restaurant_id" onchange="getDetail(this.id)">
-                                                <option value="">Select Restaurant</option>  
-                                                <?php if(!empty($restaurant)){
-                                                    foreach ($restaurant as $key => $value) { ?>
-                                                        <option value="<?php echo $value->entity_id ?>" off="<?php echo $value->timings['off'] ?>" close = "<?php echo $value->timings['close'] ?>" open = "<?php echo $value->timings['open'] ?>" capacity="<?php echo $value->capacity ?>" <?php echo ($value->entity_id == $restaurant_id)?"selected":"" ?>><?php echo $value->name ?></option>    
+                                            <select name="shop_id" class="form-control" id="shop_id" onchange="getDetail(this.id)">
+                                                <option value="">Select Shop</option>  
+                                                <?php if(!empty($shop)){
+                                                    foreach ($shop as $key => $value) { ?>
+                                                        <option value="<?php echo $value->entity_id ?>" off="<?php echo $value->timings['off'] ?>" close = "<?php echo $value->timings['close'] ?>" open = "<?php echo $value->timings['open'] ?>" <?php echo ($value->entity_id == $shop_id)?"selected":"" ?>><?php echo $value->name ?></option>    
                                                 <?php } } ?>
                                             </select>
-                                            <label class="capacity"></label>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -204,10 +203,5 @@ $(function() {
         startDate: dt
     });
 });
-function getDetail(id){
-    var element = $('#'+id).find('option:selected'); 
-    var myTag = element.attr("capacity");
-    $('.capacity').html('Total Capacity: '+myTag);
-}
 </script>
 <?php $this->load->view(ADMIN_URL.'/footer');?>

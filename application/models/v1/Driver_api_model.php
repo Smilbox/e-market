@@ -63,13 +63,13 @@ class Driver_api_model extends CI_Model {
     public function getallOrder($user_id){
         $currentDateTime = date('Y-m-d H:i:s');
         //current
-        $this->db->select('order_detail.restaurant_detail,order_detail.order_id,order_driver_map.driver_map_id,order_master.order_status,order_master.total_rate,order_master.subtotal,order_master.created_date,order_detail.user_detail,order_detail.item_detail,users.mobile_number,users.image,restaurant_address.latitude,restaurant_address.longitude,currencies.currency_symbol,currencies.currency_code');
+        $this->db->select('order_detail.shop_detail,order_detail.order_id,order_driver_map.driver_map_id,order_master.order_status,order_master.total_rate,order_master.subtotal,order_master.created_date,order_detail.user_detail,order_detail.item_detail,users.mobile_number,users.image,shop_address.latitude,shop_address.longitude,currencies.currency_symbol,currencies.currency_code');
         $this->db->join('order_detail','order_master.entity_id = order_detail.order_id','left');
         $this->db->join('order_driver_map','order_master.entity_id = order_driver_map.order_id','left');
         $this->db->join('users','order_master.user_id = users.entity_id','left');
-        $this->db->join('restaurant_address','order_master.restaurant_id = restaurant_address.resto_entity_id','left');
-        $this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
+        $this->db->join('shop_address','order_master.shop_id = shop_address.shop_entity_id','left');
+        $this->db->join('shop','order_master.shop_id = shop.entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
         $this->db->where('order_driver_map.driver_id',$user_id);
         $this->db->where('(order_master.order_status != "delivered" AND order_master.order_status != "cancel")');
         $this->db->where('order_master.order_delivery','Delivery');
@@ -84,13 +84,13 @@ class Driver_api_model extends CI_Model {
                     $current[$value->order_id] = array();
                 }
                 if(isset($value->order_id)){
-                    $restaurant_detail = unserialize($value->restaurant_detail);
+                    $shop_detail = unserialize($value->shop_detail);
                     $user_detail = unserialize($value->user_detail);
                     $item_detail = unserialize($value->item_detail);
-                    $current[$value->order_id]['name'] = $restaurant_detail->name;
-                    $current[$value->order_id]['res_phone_number'] = $restaurant_detail->phone_number;
-                    $current[$value->order_id]['res_address'] = $restaurant_detail->address;
-                    $current[$value->order_id]['image'] = ($restaurant_detail->image)?image_url.$restaurant_detail->image:'';
+                    $current[$value->order_id]['name'] = $shop_detail->name;
+                    $current[$value->order_id]['res_phone_number'] = $shop_detail->phone_number;
+                    $current[$value->order_id]['res_address'] = $shop_detail->address;
+                    $current[$value->order_id]['image'] = ($shop_detail->image)?image_url.$shop_detail->image:'';
                     $current[$value->order_id]['res_latitude'] = $value->latitude;
                     $current[$value->order_id]['res_longitude'] = $value->longitude;
                     $current[$value->order_id]['order_id'] = $value->order_id;
@@ -118,13 +118,13 @@ class Driver_api_model extends CI_Model {
         }
         $data['current'] = $finalArray;
         //past
-        $this->db->select('order_detail.restaurant_detail,order_detail.order_id,order_driver_map.driver_map_id,order_master.order_status,order_driver_map.cancel_reason,order_master.total_rate,order_master.subtotal,order_master.created_date,order_detail.user_detail,order_detail.item_detail,users.mobile_number,users.image,restaurant_address.latitude,restaurant_address.longitude,currencies.currency_symbol,currencies.currency_code');
+        $this->db->select('order_detail.shop_detail,order_detail.order_id,order_driver_map.driver_map_id,order_master.order_status,order_driver_map.cancel_reason,order_master.total_rate,order_master.subtotal,order_master.created_date,order_detail.user_detail,order_detail.item_detail,users.mobile_number,users.image,shop_address.latitude,shop_address.longitude,currencies.currency_symbol,currencies.currency_code');
         $this->db->join('order_detail','order_master.entity_id = order_detail.order_id','left');
         $this->db->join('order_driver_map','order_master.entity_id = order_driver_map.order_id','left');
         $this->db->join('users','order_master.user_id = users.entity_id','left');
-		$this->db->join('restaurant_address','order_master.restaurant_id = restaurant_address.resto_entity_id','left');
-        $this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
+		$this->db->join('shop_address','order_master.shop_id = shop_address.shop_entity_id','left');
+        $this->db->join('shop','order_master.shop_id = shop.entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
         $this->db->where('order_driver_map.driver_id',$user_id);
         $this->db->where('order_driver_map.is_accept',1);
         $this->db->where('(order_master.order_status = "delivered" OR order_master.order_status = "cancel")');
@@ -138,13 +138,13 @@ class Driver_api_model extends CI_Model {
                     $past[$value->order_id] = array();
                 }
                 if(isset($value->order_id)){
-                    $restaurant_detail = unserialize($value->restaurant_detail);
+                    $shop_detail = unserialize($value->shop_detail);
                     $user_detail = unserialize($value->user_detail);
                     $item_detail = unserialize($value->item_detail);
-                    $past[$value->order_id]['name'] = $restaurant_detail->name;
-                    $past[$value->order_id]['res_phone_number'] = $restaurant_detail->phone_number;
-                    $past[$value->order_id]['res_address'] = $restaurant_detail->address;
-                    $past[$value->order_id]['image'] = ($restaurant_detail->image)?image_url.$restaurant_detail->image:'';
+                    $past[$value->order_id]['name'] = $shop_detail->name;
+                    $past[$value->order_id]['res_phone_number'] = $shop_detail->phone_number;
+                    $past[$value->order_id]['res_address'] = $shop_detail->address;
+                    $past[$value->order_id]['image'] = ($shop_detail->image)?image_url.$shop_detail->image:'';
                     $past[$value->order_id]['res_latitude'] = $value->latitude;
                     $past[$value->order_id]['res_longitude'] = $value->longitude;
                     $past[$value->order_id]['order_id'] = $value->order_id;
@@ -186,10 +186,10 @@ class Driver_api_model extends CI_Model {
         }
         $this->db->set('order_status',$status)->where('entity_id', $order_id)->update('order_master');
         //get users to send notifcation
-        $this->db->select('users.entity_id,users.device_id,users.language_slug,users.first_name,users.last_name,users.mobile_number,order_detail.user_detail,restaurant_address.latitude,restaurant_address.longitude');
+        $this->db->select('users.entity_id,users.device_id,users.language_slug,users.first_name,users.last_name,users.mobile_number,order_detail.user_detail,shop_address.latitude,shop_address.longitude');
         $this->db->join('order_master','users.entity_id = order_master.user_id','left');
         $this->db->join('order_detail','order_master.entity_id = order_detail.order_id','left');
-        $this->db->join('restaurant_address','order_master.restaurant_id = restaurant_address.resto_entity_id','left');
+        $this->db->join('shop_address','order_master.shop_id = shop_address.shop_entity_id','left');
         $this->db->where('order_master.entity_id',$order_id);
         $device = $this->db->get('users')->first_row();
         
@@ -257,10 +257,10 @@ class Driver_api_model extends CI_Model {
             } 
         }
 
-        $this->db->select('item_detail,user_detail,currencies.currency_symbol,currencies.currency_code,order_master.restaurant_id');
+        $this->db->select('item_detail,user_detail,currencies.currency_symbol,currencies.currency_code,order_master.shop_id');
         $this->db->join('order_master','order_detail.order_id = order_master.entity_id','left');
-        $this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
+        $this->db->join('shop','order_master.shop_id = shop.entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
         $this->db->where('order_id',$order_id);
         $detail =  $this->db->get('order_detail')->first_row();
         $info = array();
@@ -288,7 +288,7 @@ class Driver_api_model extends CI_Model {
             $message = $this->lang->line('push_order_delived');
             $fields['to'] = $device->device_id; // only one user to send push notification
             $fields['notification'] = array ('body'  => $message,'sound'=>'default');
-            $fields['data'] = array ('screenType'=>'delivery','restaurant_id'=>$detail->restaurant_id);
+            $fields['data'] = array ('screenType'=>'delivery','shop_id'=>$detail->shop_id);
            
             $headers = array (
                 'Authorization: key=' . Driver_FCM_KEY,
@@ -312,10 +312,10 @@ class Driver_api_model extends CI_Model {
     public function getCommissionList($user_id)
     {
         //last order
-        $this->db->select('order_master.total_rate,order_master.order_status,order_status.time,order_detail.restaurant_detail,order_detail.user_detail,order_driver_map.order_id,order_driver_map.driver_id,order_driver_map.commission,order_master.order_status,order_master.total_rate,currencies.currency_symbol,currencies.currency_code');
+        $this->db->select('order_master.total_rate,order_master.order_status,order_status.time,order_detail.shop_detail,order_detail.user_detail,order_driver_map.order_id,order_driver_map.driver_id,order_driver_map.commission,order_master.order_status,order_master.total_rate,currencies.currency_symbol,currencies.currency_code');
         
-        $this->db->join('restaurant','order_master.restaurant_id = restaurant.entity_id','left');
-        $this->db->join('currencies','restaurant.currency_id = currencies.currency_id','left');
+        $this->db->join('shop','order_master.shop_id = shop.entity_id','left');
+        $this->db->join('currencies','shop.currency_id = currencies.currency_id','left');
         $this->db->join('order_driver_map','order_master.entity_id = order_driver_map.order_id','left');
         $this->db->join('order_status','order_driver_map.order_id = order_status.order_id','left');
         $this->db->join('order_detail','order_master.entity_id = order_detail.order_id','left');
@@ -335,18 +335,18 @@ class Driver_api_model extends CI_Model {
                 }
                 if(isset($value->order_id)){
                     $address = unserialize($value->user_detail);
-                    $restaurant_detail = unserialize($value->restaurant_detail);
+                    $shop_detail = unserialize($value->shop_detail);
                     $last_address[$value->order_id]['time'] = ($value->time)?date('h:i A',strtotime($value->time)):'';
                     $last_address[$value->order_id]['date'] =  ($value->time)?date('l j M',strtotime($value->time)):'';
                     $last_address[$value->order_id]['order_status'] = ucfirst($value->order_status);
                     $last_address[$value->order_id]['total_rate'] = $value->total_rate;
                     $last_address[$value->order_id]['order_id'] = $value->order_id;
                     $last_address[$value->order_id]['commission'] = ($value->commission)?$value->commission:'';
-                    $last_address[$value->order_id]['name'] = $restaurant_detail->name;
-                    $last_address[$value->order_id]['image'] = ($restaurant_detail->image)?image_url.$restaurant_detail->image:'';
+                    $last_address[$value->order_id]['name'] = $shop_detail->name;
+                    $last_address[$value->order_id]['image'] = ($shop_detail->image)?image_url.$shop_detail->image:'';
                     $last_address[$value->order_id]['address'] = $address['address'].' '.$address['landmark'].' '.$address['zipcode'].' '.$address['city'];
-                    $last_address[$value->order_id]['currency_symbol'] = $restaurant_detail->currency_symbol;
-                    $last_address[$value->order_id]['currency_code'] = $restaurant_detail->currency_code;
+                    $last_address[$value->order_id]['currency_symbol'] = $shop_detail->currency_symbol;
+                    $last_address[$value->order_id]['currency_code'] = $shop_detail->currency_code;
                 }
             }
             foreach ($last_address as $key => $val) {
@@ -356,7 +356,7 @@ class Driver_api_model extends CI_Model {
        
         $data['last'] = $finalArray;
         //previous order
-        $this->db->select('order_master.total_rate,order_master.order_status,order_status.time,order_detail.restaurant_detail,order_detail.user_detail,order_driver_map.order_id,order_driver_map.driver_id,order_driver_map.commission,order_master.order_status,order_master.total_rate');
+        $this->db->select('order_master.total_rate,order_master.order_status,order_status.time,order_detail.shop_detail,order_detail.user_detail,order_driver_map.order_id,order_driver_map.driver_id,order_driver_map.commission,order_master.order_status,order_master.total_rate');
         $this->db->join('order_driver_map','order_master.entity_id = order_driver_map.order_id','left');
         $this->db->join('order_status','order_driver_map.order_id = order_status.order_id','left');
         $this->db->join('order_detail','order_master.entity_id = order_detail.order_id','left');
@@ -377,18 +377,18 @@ class Driver_api_model extends CI_Model {
                 }
                 if(isset($value->order_id)){
                     $address = unserialize($value->user_detail);
-                    $restaurant_detail = unserialize($value->restaurant_detail);
+                    $shop_detail = unserialize($value->shop_detail);
                     $user_address[$value->order_id]['time'] = ($value->time)?date('h:i A',strtotime($value->time)):'';
                     $user_address[$value->order_id]['date'] =  ($value->time)?date('l j M',strtotime($value->time)):'';
                     $user_address[$value->order_id]['order_status'] = ucfirst($value->order_status);
                     $user_address[$value->order_id]['total_rate'] = $value->total_rate;
                     $user_address[$value->order_id]['order_id'] = $value->order_id;
                     $user_address[$value->order_id]['commission'] = ($value->commission)?$value->commission:'';
-                    $user_address[$value->order_id]['name'] = $restaurant_detail->name;
-                    $user_address[$value->order_id]['image'] = ($restaurant_detail->image)?image_url.$restaurant_detail->image:'';
+                    $user_address[$value->order_id]['name'] = $shop_detail->name;
+                    $user_address[$value->order_id]['image'] = ($shop_detail->image)?image_url.$shop_detail->image:'';
                     $user_address[$value->order_id]['address'] = $address['address'].' '.$address['landmark'].' '.$address['zipcode'].' '.$address['city'];
-                    $user_address[$value->order_id]['currency_symbol'] = $restaurant_detail->currency_symbol;
-                    $user_address[$value->order_id]['currency_code'] = $restaurant_detail->currency_code;
+                    $user_address[$value->order_id]['currency_symbol'] = $shop_detail->currency_symbol;
+                    $user_address[$value->order_id]['currency_code'] = $shop_detail->currency_code;
                 }
             }
             foreach ($user_address as $key => $val) {

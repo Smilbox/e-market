@@ -1,8 +1,8 @@
-<?php if (!empty($restaurants)) {
-	foreach ($restaurants as $key => $value) { ?>
+<?php if (!empty($shops)) {
+	foreach ($shops as $key => $value) { ?>
 		<div class="col-sm-12 col-md-6 col-lg-3">
 			<div class="popular-rest-box">
-				<a href="<?php echo base_url().'restaurant/event-booking-detail/'.$value['shop_slug'];?>">
+				<a href="<?php echo base_url().'shop/event-booking-detail/'.$value['shop_slug'];?>">
 					<div class="popular-rest-img">
 						<img src="<?php echo ($value['image'])?$value['image']:default_img;?>" alt="<?php echo $value['name']; ?>">
 						<?php echo ($value['ratings'] > 0)?'<strong>'.$value['ratings'].'</strong>':'<strong class="newres">NEW</strong>'; ?> 

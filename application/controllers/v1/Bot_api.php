@@ -33,35 +33,35 @@ class Bot_api extends REST_Controller {
     }
     
     // RESTAURANT OPERATION
-    public function getAllRestaurantRecords_get($store_type, $lat, $long)
+    public function getAllShopRecords_get($store_type, $lat, $long)
     {
-        $datas = $this->bot_api_model->getRestaurantRecords($store_type);
+        $datas = $this->bot_api_model->getShopRecords($store_type);
         $datas_with_fees = array();
         foreach($datas as $key => $data)
         {
-            $datas[$key]->delivery_fee = $this->getDeliveryByDistance($data->latitude."~".$data->longitude, $lat."~".$long, $data->restaurant_id);
-             // = $this->checkGeoFence($lat, $long, $price_charge = true, $data->restaurant_id);
+            $datas[$key]->delivery_fee = $this->getDeliveryByDistance($data->latitude."~".$data->longitude, $lat."~".$long, $data->shop_id);
+             // = $this->checkGeoFence($lat, $long, $price_charge = true, $data->shop_id);
         }
         $this->response(['datas'=>$datas,'status' => 1,'message' => $this->lang->line('record_found')], REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
 
-    public function searchRestaurants_post()
+    public function searchShops_post()
     {
         $requestBody = json_decode($this->input->raw_input_stream, true);
-        $datas = $this->bot_api_model->searchRestaurants($requestBody['searchText'], "fr", $requestBody["store_type"]);
+        $datas = $this->bot_api_model->searchShops($requestBody['searchText'], "fr", $requestBody["store_type"]);
         $this->response(['datas'=>$datas,'status' => 1,'message' => $this->lang->line('record_found')], REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
     
-    public function getMenuRecords_get($restaurant_id)
+    public function getMenuRecords_get($shop_id)
     {
-        $datas = $this->bot_api_model->getMenuRecords($restaurant_id, 1);
+        $datas = $this->bot_api_model->getMenuRecords($shop_id, 1);
         $this->response(['datas'=>$datas,'status' => 1,'message' => $this->lang->line('record_found')], REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
     
     public function searchMenus_post()
     {
         $requestBody = json_decode($this->input->raw_input_stream, true);
-        $datas = $this->bot_api_model->searchMenuRecords($requestBody['restaurant_id'], $requestBody['searchText']);
+        $datas = $this->bot_api_model->searchMenuRecords($requestBody['shop_id'], $requestBody['searchText']);
         $this->response(['datas'=>$datas,'status' => 1,'message' => $this->lang->line('record_found')], REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
     }
 
@@ -220,12 +220,12 @@ class Bot_api extends REST_Controller {
         $user_id = $requestBody['user_id'];
         $tokenres = $this->bot_api_model->checkToken($token, $user_id);
         if($tokenres){
-            $taxdetail = $this->api_model->getRestaurantTax('restaurant',$requestBody['restaurant_id'],$flag="order");
+            $taxdetail = $this->api_model->getShopTax('shop',$requestBody['shop_id'],$flag="order");
             $total = 0;
             $subtotal = $requestBody['subtotal'];   
             $add_data = array(              
                 'user_id'=>$requestBody['user_id'],
-                'restaurant_id' =>$requestBody['restaurant_id'],
+                'shop_id' =>$requestBody['shop_id'],
                 'address_id' =>$requestBody['address_id'],
                 // 'coupon_id' =>$requestBody['coupon_id'],
                 'order_status' =>'placed',
@@ -276,7 +276,7 @@ class Bot_api extends REST_Controller {
                 'order_id'=>$order_id,
                 'user_detail' => serialize($user_detail),
                 'item_detail' => serialize($add_item),
-                'restaurant_detail' => serialize($taxdetail),
+                'shop_detail' => serialize($taxdetail),
             );
             $this->api_model->addRecord('order_detail',$order_detail);
             $verificationCode = random_string('alnum',25);            
@@ -305,7 +305,7 @@ class Bot_api extends REST_Controller {
             $order_status = 'placed';
             $message = $this->lang->line('success_add');
             
-            $this->response(['restaurant_detail'=>$taxdetail,'order_id' => $order_id,'order_status'=>$order_status,'order_date'=>date('Y-m-d H:i:s',strtotime($requestBody['order_date'])),'status'=>1,'message' => $message], REST_Controller::HTTP_OK); // OK */
+            $this->response(['shop_detail'=>$taxdetail,'order_id' => $order_id,'order_status'=>$order_status,'order_date'=>date('Y-m-d H:i:s',strtotime($requestBody['order_date'])),'status'=>1,'message' => $message], REST_Controller::HTTP_OK); // OK */
         }else{
             $this->response([
                 'status' => -1,
@@ -316,9 +316,9 @@ class Bot_api extends REST_Controller {
 
 
     //check lat long exist in area
-    public function checkGeoFence($latitude,$longitude,$price_charge,$restaurant_id)
+    public function checkGeoFence($latitude,$longitude,$price_charge,$shop_id)
     {
-        $result = $this->checkout_model->checkGeoFence($restaurant_id); 
+        $result = $this->checkout_model->checkGeoFence($shop_id); 
         $latlongs =  array($latitude,$longitude);
         $coordinatesArr = array();
         if (!empty($result)) {
@@ -363,11 +363,11 @@ class Bot_api extends REST_Controller {
 	    return $oddNodes;
     }
 
-    public function getDeliveryByDistance($originLatLong, $destinationLatLong, $restaurant_id)
+    public function getDeliveryByDistance($originLatLong, $destinationLatLong, $shop_id)
     {
         if(!$originLatLong)
         {
-            $address = $this->common_model->getRestoLatLong($restaurant_id);
+            $address = $this->common_model->getShopLatLong($shop_id);
             $originLatLong = $address->latitude."~".$address->longitude;
         }
         $origin = explode("~", $originLatLong);
@@ -380,7 +380,7 @@ class Bot_api extends REST_Controller {
 		}
         if($distance != null)
         {
-            return $this->getFeeAccordingDistance($distance, $restaurant_id);
+            return $this->getFeeAccordingDistance($distance, $shop_id);
         }
         else
         {
@@ -432,9 +432,9 @@ class Bot_api extends REST_Controller {
         }
     } */
 
-    public function getFeeAccordingDistance($distance, $restaurant_id)
+    public function getFeeAccordingDistance($distance, $shop_id)
     {
-        $allDeliveryCharge = $this->common_model->getMultipleRows("delivery_charge", "restaurant_id", $restaurant_id);
+        $allDeliveryCharge = $this->common_model->getMultipleRows("delivery_charge", "shop_id", $shop_id);
         $deliveryFee = "";
         if(!empty($allDeliveryCharge))
         {
@@ -460,7 +460,7 @@ class Bot_api extends REST_Controller {
 	public function addReview_post(){
         $requestBody = json_decode($this->input->raw_input_stream, true);
 		$add_data = array(                   
-	        'restaurant_id'=>$requestBody['restaurant_id'],
+	        'shop_id'=>$requestBody['shop_id'],
 	        'user_id'=>$requestBody['user_id'],
 	        'review'=> $requestBody['review'],
 	        'rating'=>$requestBody['note'],

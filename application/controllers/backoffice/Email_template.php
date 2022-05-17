@@ -149,7 +149,7 @@ class Email_template extends CI_Controller {
     }
     public function ajaxDeleteAll(){
         $content_id = ($this->input->post('content_id') != '')?$this->input->post('content_id'):'';
-        $this->restaurant_model->ajaxDeleteAll('email_template',$content_id);
+        $this->shop_model->ajaxDeleteAll('email_template',$content_id);
     }
     public function templateVariables(){
         $data['MetaTitle'] = $this->lang->line('titleadmin_email_template').' | '.$this->lang->line('site_title');        

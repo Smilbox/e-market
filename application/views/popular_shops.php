@@ -3,14 +3,14 @@ $langKey = 'nearby_store';
 //!empty($storeTypeId) && $langKey = "{$langKey}_{$storeTypeId}";
 $nearbyTitle = !empty($storeType) && ($this->lang->line('current_lang') == "en") ? $this->lang->line('nearby').' '.$storeType->name_en : $storeType->name_fr.' '.$this->lang->line('nearby');
 ?>
-<section class="popular-restaurants">
+<section class="popular-shops">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="heading-title">
                     <h2><?php echo $nearbyTitle ?></h2>
-                    <?php if (!empty($nearbyRestaurants)) {
-					    if(count($nearbyRestaurants) > 5){ ?>
+                    <?php if (!empty($nearbyShops)) {
+					    if(count($nearbyShops) > 5){ ?>
 					        <a href="<?php echo base_url() . 'order/'.$storeType->entity_id; ?>"><div class="view-all btn"> <?php echo $this->lang->line('view_all'); ?></div> </a>
 					    <?php }
 					}?>
@@ -18,15 +18,15 @@ $nearbyTitle = !empty($storeType) && ($this->lang->line('current_lang') == "en")
 			</div>
 		</div>
 		<div class="row rest-box-row main-rest-box-row">
-			<?php if (!empty($nearbyRestaurants)) {
-				foreach ($nearbyRestaurants as $key => $value) {
+			<?php if (!empty($nearbyShops)) {
+				foreach ($nearbyShops as $key => $value) {
                     $featured_image = !empty($value['featured_image']) ? $value['featured_image'] : (!empty($value['image']) ? $value['image']: default_img);
                     if($key > 5) {
                         break;
                     } ?>
                     <div class="col-sm-12 col-md-6 col-lg-4">
                         <div class="popular-rest-box">
-                            <a href="<?php echo base_url().'restaurant/restaurant-detail/'.$value['shop_slug'];?>">
+                            <a href="<?php echo base_url().'shop/shop-detail/'.$value['shop_slug'];?>">
                                 <div class="popular-rest-img">
                                     <img style="object-fit:<?php echo $value['object_fit'] ?>" src="<?php echo $featured_image;?>" alt="<?php echo $value['name']; ?>">
                                     <div class="middle">

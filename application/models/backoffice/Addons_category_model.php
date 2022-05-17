@@ -48,7 +48,8 @@ class Addons_category_model extends CI_Model {
             if($displayLength>1)
                 $this->db->limit($displayLength,$displayStart);
             $cmsData = $this->db->get('add_ons_category')->result();                      
-            $ContentID = array();               
+            $ContentID = array();   
+            $OrderByID = "";            
             foreach ($cmsData as $key => $value) {
                 $OrderByID = $OrderByID.','.$value->entity_id;
                 $ContentID[] = $value->content_id;
