@@ -392,7 +392,7 @@
 			<!-- Modal Header -->
 			<div class="modal-header">
 				<h4 class="modal-title"><?php echo $this->lang->line('order_confirmation') ?></h4>
-				<button type="button" class="close" data-dismiss="modal" onclick="document.location.href='<?php echo base_url(); ?>shop';"><i class="iicon-icon-23"></i></button>
+				<button type="button" class="close" data-dismiss="modal" onclick="document.location.href='<?php echo base_url(); ?>myprofile';"><i class="iicon-icon-23"></i></button>
 			</div>
 
 			<!-- Modal body -->

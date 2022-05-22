@@ -64,7 +64,7 @@
 	<?php $lang_slug = ($this->session->userdata('language_slug')) ? $this->session->userdata('language_slug') : 'en' ;
 	$cmsPages = $this->common_model->getCmsPages($lang_slug);  ?>
 	<body class="<?php echo $lang_class; ?>">
-		<?php if ($current_page != "Login" && $current_page != "Registration") { ?>
+		<?php if (isset($current_page) && $current_page != "Login" && $current_page != "Registration") { ?>
 			<header class="header-area">
 			<?php if(isset($banner_settings) && $banner_settings->show_banner == '1') {?>
 				<div class="header-notif">

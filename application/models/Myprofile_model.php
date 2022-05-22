@@ -120,6 +120,7 @@ class Myprofile_model extends CI_Model {
                 $items[$value->order_id]['order_date'] = date('Y-m-d H:i:s',strtotime($value->order_date));
                 $item_detail = unserialize($value->item_detail);
                 $value1 = array();
+                $count = 0;
                 if(!empty($item_detail)){
                     $data1 = array();
                     $count = 0;

@@ -22,7 +22,7 @@
 						if (!empty($cmsPages)) {
 							foreach ($cmsPages as $key => $value) { 
 								if($value->CMSSlug == "privacy-policy") { ?>
-									<li class="<?php echo ($current_page == 'PrivacyPolicy') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'privacy-policy'; ?>"><i class="iicon-icon-06"></i></a></li>
+									<li class="<?php echo (isset($current_page) && $current_page == 'PrivacyPolicy') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'privacy-policy'; ?>"><i class="iicon-icon-06"></i></a></li>
 								<?php }
 							}
 						} ?> -->
@@ -34,7 +34,7 @@
 			<div class="col-sm-12">
 				<div class="footer-links">
 					<ul>
-						<li class="<?php echo ($current_page == 'HomePage') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url(); ?>"><?php echo $this->lang->line('home') ?></a></li>
+						<li class="<?php echo (isset($current_page) && $current_page == 'HomePage') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url(); ?>"><?php echo $this->lang->line('home') ?></a></li>
 
 						<?php $lang_slug = ($this->session->userdata('language_slug')) ? $this->session->userdata('language_slug') : 'en' ;
 						$cmsPages = $this->common_model->getCmsPages($lang_slug); 
@@ -42,19 +42,19 @@
 						if (!empty($cmsPages)) {
 							foreach ($cmsPages as $key => $value) { 
 								if($value->CMSSlug == "legal-notice") { ?>
-									<li class="<?php echo ($current_page == 'LegalNotice') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'legal-notice'; ?>"><?php echo $this->lang->line('legal_notice') ?></a></li>
+									<li class="<?php echo (isset($current_page) && $current_page == 'LegalNotice') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'legal-notice'; ?>"><?php echo $this->lang->line('legal_notice') ?></a></li>
 								<?php }
 								else if($value->CMSSlug == "terms-and-conditions") { ?>
-									<li class="<?php echo ($current_page == 'TermsAndConditions') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'terms-and-conditions'; ?>"> <?php echo $this->lang->line('terms_and_conditions')?> </a></li>
+									<li class="<?php echo (isset($current_page) && $current_page == 'TermsAndConditions') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'terms-and-conditions'; ?>"> <?php echo $this->lang->line('terms_and_conditions')?> </a></li>
 								<?php }
 								else if($value->CMSSlug == "privacy-policy") { ?>
-									<li class="<?php echo ($current_page == 'PrivacyPolicy') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'privacy-policy'; ?>"> <?php echo $this->lang->line('privacy_policy')?> </a></li>
+									<li class="<?php echo (isset($current_page) && $current_page == 'PrivacyPolicy') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'privacy-policy'; ?>"> <?php echo $this->lang->line('privacy_policy')?> </a></li>
 								<?php }
 								else if ($value->CMSSlug == "about-us") { ?>
-									<li class="<?php echo ($current_page == 'AboutUs') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'about-us'; ?>"><?php echo $this->lang->line('about_us') ?></a></li>
+									<li class="<?php echo (isset($current_page) && $current_page == 'AboutUs') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'about-us'; ?>"><?php echo $this->lang->line('about_us') ?></a></li>
 								<?php }
 								else if($value->CMSSlug == "contact-us") { ?>
-									<li class="<?php echo ($current_page == 'ContactUs') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'contact-us'; ?>"><?php echo $this->lang->line('contact_us') ?></a></li>
+									<li class="<?php echo (isset($current_page) && $current_page == 'ContactUs') ? 'current_page_item' : ''; ?>"><a href="<?php echo base_url() . 'contact-us'; ?>"><?php echo $this->lang->line('contact_us') ?></a></li>
 								<?php }
 							}
 						} ?>

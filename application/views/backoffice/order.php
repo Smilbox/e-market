@@ -381,7 +381,7 @@ jQuery(document).ready(function() {
             },
             "bServerSide": true, // server side processing
             "sAjaxSource": "ajaxview", // ajax source
-            "aaSorting": [[ 5, "desc" ]] // set first column as a default sort by asc
+            "aaSorting": [[ 1, "desc" ]] // set second column as a default sort by desc,
         }
     });            
     $('#datatable_ajax_filter').addClass('hide');

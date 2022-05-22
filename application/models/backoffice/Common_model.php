@@ -452,5 +452,88 @@ class Common_model extends CI_Model {
         $this->db->group_by("map.driver_id");
         return $this->db->get('driver_traking_map as map')->result();
     }
+
+    public function getOrderCreatedDate($order_id) {
+        $this->db->select("created_date");
+        return $this->db->get_where('order_master', array('entity_id' => $order_id))->first_row();
+    }
+
+    public function getAirtelMoneyBearerAccessToken()
+	{
+		$headers = array(
+			'Content-Type: application/json'
+		);
+		$fields = array(
+			"client_id" => AIRTEL_MONEY_CLIENT_ID,
+			"client_secret" => AIRTEL_MONEY_CLIENT_SECRET,
+			"grant_type" => "client_credentials"
+		);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, 'https://openapiuat.airtel.africa/auth/oauth2/token');
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 5); //timeout in seconds
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+		$result = curl_exec($ch);
+		curl_close($ch);
+		if ($result === false || $result === null) {
+			echo json_encode(array('airtel_error'=> 'failed to contact airtel please refresh the page.'));
+			return;
+		}
+		$json = json_decode($result);
+		return $json->{'access_token'};
+	}
+
+    // check and update airtel money's orders
+	public function checkAndUpdateAirtelMoneyOrders() {
+		$this->db->select("entity_id, created_date");
+		$this->db->where("payment_option LIKE 'AIRTEL_MONEY' AND order_status NOT LIKE 'TS'");
+		$orders = $this->db->get('order_master')->result();
+		$bearerToken = $this->common_model->getAirtelMoneyBearerAccessToken();
+		$headers = array(
+			'Content-Type: application/json',
+			'X-Country: MG',
+			'X-Currency: MGA',
+			'Authorization: Bearer ' . $bearerToken
+		);
+		foreach ($orders as $order) {
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, AIRTEL_URL_API . '/standard/v1/payments/'.$this->generateAirtelTransactionId($order->created_date));
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			$result = curl_exec($ch);
+			curl_close($ch);
+
+			if($result === false || $result === null) {
+				echo json_encode(array('airtel_error'=> 'failed to contact airtel please refresh the page.'));
+				return;
+			}
+
+			$json = json_decode($result);
+			$success = $json->{'status'}->{'success'};
+			if($success === false) {
+				echo json_encode(array('airtel_error'=> 'failed to fetch transaction for order no '.$order->entity_id));
+				return;
+			}
+
+			$data_status = $json->{'data'}->{'transaction'}->{'status'};
+			if($data_status === "TS") { // TS = TRANSFER SUCCESS, TIP = TRANSACTION IN PROGRESS, TF = TRANSACTION FAILED
+				$data = array(
+					'order_status' => 'paid',
+				);
+				$this->db->where('entity_id',$order->entity_id);
+				$this->db->update('order_master', $data);    
+			}
+		}
+	}
+
+    // get created_date
+    public function generateAirtelTransactionId($created_date) {
+        return "emarket".strtotime($created_date);
+    }
 }
 ?>

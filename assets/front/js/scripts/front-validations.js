@@ -1592,15 +1592,16 @@ $( "#checkout_form" ).on("submit", function( event ) {
       },   
       success: function(response) {
               $('#quotes-main-loader').hide();
+              console.log(response);
               if (response.result == "success") {
                 $('#track_order').html(response.order_id);
-                console.log(response);
                 $('#order-confirmation').modal('show');
                 // setTimeout(location.reload.bind(location), 300000);
               }
       },
-      error: function(XMLHttpRequest, textStatus, errorThrown) {     
-        console.log(XMLHttpRequest);      
+      error: function(XMLHttpRequest, textStatus, errorThrown) { 
+        $('#quotes-main-loader').hide();    
+        console.log("lait",XMLHttpRequest);      
         alert(errorThrown);
       }
       });

@@ -23,6 +23,7 @@ class Order extends CI_Controller {
     	$data['meta_title'] = $this->lang->line('title_admin_order').' | '.$this->lang->line('site_title');
         $data['shop'] = $this->order_model->getShopList();
         $data['drivers'] = $this->order_model->getDrivers();
+        $this->common_model->checkAndUpdateAirtelMoneyOrders();
         $this->load->view(ADMIN_URL.'/order',$data);
     }
     // add order

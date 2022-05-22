@@ -10,12 +10,14 @@ class Myprofile extends CI_Controller {
         }  
 		$this->load->library('form_validation');
 		$this->load->model(ADMIN_URL.'/common_model');  
+		$this->load->model(ADMIN_URL.'/order_model');  
 		$this->load->model('/home_model');     
 		$this->load->model('/myprofile_model');    
 	}
 	// my profile index page
 	public function index()
 	{	
+		$this->common_model->checkAndUpdateAirtelMoneyOrders();
 		$data['page_title'] = $this->lang->line('my_profile').' | '.$this->lang->line('site_title');
 		$data['current_page'] = 'MyProfile';
 		$data['selected_tab'] = ""; 
