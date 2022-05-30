@@ -487,12 +487,41 @@ class Common_model extends CI_Model {
 		return $json->{'access_token'};
 	}
 
+    public function get()
+	{
+		$headers = array(
+			'Content-Type: application/json'
+		);
+		$fields = array(
+			"client_id" => AIRTEL_MONEY_CLIENT_ID,
+			"client_secret" => AIRTEL_MONEY_CLIENT_SECRET,
+			"grant_type" => "client_credentials"
+		);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, AIRTEL_URL_API.'/auth/oauth2/token');
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 5); //timeout in seconds
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+		$result = curl_exec($ch);
+		curl_close($ch);
+		if ($result === false || $result === null) {
+			echo json_encode(array('airtel_error'=> 'failed to contact airtel please refresh the page.'));
+			return;
+		}
+		$json = json_decode($result);
+		return $json->{'access_token'};
+	}
+
     // check and update airtel money's orders
 	public function checkAndUpdateAirtelMoneyOrders() {
 		$this->db->select("entity_id, created_date");
 		$this->db->where("payment_option LIKE 'AIRTEL_MONEY' AND order_status NOT LIKE 'TS'");
 		$orders = $this->db->get('order_master')->result();
-		$bearerToken = $this->common_model->getAirtelMoneyBearerAccessToken();
+		$bearerToken = $this->getAirtelMoneyBearerAccessToken();
 		$headers = array(
 			'Content-Type: application/json',
 			'X-Country: MG',
@@ -501,7 +530,7 @@ class Common_model extends CI_Model {
 		);
 		foreach ($orders as $order) {
 			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, AIRTEL_URL_API . '/standard/v1/payments/'.$this->generateAirtelTransactionId($order->created_date));
+			curl_setopt($ch, CURLOPT_URL, AIRTEL_URL_API . '/standard/v1/payments/'.$this->generateAirtelMvolaTransactionId($order->created_date));
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -532,8 +561,47 @@ class Common_model extends CI_Model {
 	}
 
     // get created_date
-    public function generateAirtelTransactionId($created_date) {
+    public function generateAirtelMvolaTransactionId($created_date) {
         return "emarket".strtotime($created_date);
     }
+
+    public function updateOrderStatusMvola($transactionStatus, $transactionReference) {
+        $order_status = $transactionStatus === "completed" ? "paid" : "paymentFailed";
+        date_default_timezone_set("UTC");
+        $splitted = explode("emarket", $transactionReference);
+        $timestamp = intval($splitted[1]);
+        $date_formated = date("Y-m-d H:i:s", $timestamp);
+        $this->db->where('created_date', $date_formated);
+        $data = array(
+            'order_status' => $order_status,
+        );
+        return $this->db->update('order_master', $data);
+    }
+
+    public function getMvolaBearerAccessToken()
+	{
+		$headers = array(
+			'Content-Type: application/x-www-form-urlencoded',
+            'Authorization: Basic '.base64_encode(MVOLA_CONSUMER_KEY.':'.MVOLA_CONSUMER_SECRET)
+		);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, MVOLA_URL_API.'/token');
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 5); //timeout in seconds
+		curl_setopt($ch, CURLOPT_POSTFIELDS, "grant_type=client_credentials&scope=EXT_INT_MVOLA_SCOPE");
+		$result = curl_exec($ch);
+		curl_close($ch);
+		if ($result === false || $result === null) {
+			echo json_encode(array('mvola_error'=> 'failed to contact mvola please refresh the page.'));
+			return;
+		}
+		$json = json_decode($result);
+		return $json->{'access_token'};
+	}
+
 }
 ?>

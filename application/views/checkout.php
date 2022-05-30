@@ -329,6 +329,18 @@
 																		</div>
 																	</div>
 																</div>
+																<div id="mvola_phone_number_container" class="card mt-5 display-no">
+																	<div>
+																		<div class="current-location">
+																			<h5><?php echo $this->lang->line('mvola_phone_number') ?></h5>
+																		</div>
+																		<div>
+																			<div class="form-group">
+																				<input type="text" name="mvola_phone_number" id="mvola_phone_number" class="form-control" value="<?php echo $this->session->userdata('userPhone') ?>" placeholder="" required>
+																			</div>
+																		</div>
+																	</div>
+																</div>
 															</div>
 														</div>
 													</div>
@@ -544,8 +556,10 @@
 		$(".mobile-money-logo").removeClass("selected");
 		$("#mobile_money_option").val(solution);
 		handleDisplay('airtel_money_phone_number_container', 'none');
+		handleDisplay('mvola_phone_number_container', 'none');
 		if (solution === "MVOLA") {
 			$("#mvola_logo").addClass("selected");
+			handleDisplay('mvola_phone_number_container', 'block');
 		} else if (solution === "AIRTEL_MONEY") {
 			$("#airtel_money_logo").addClass("selected");
 			handleDisplay('airtel_money_phone_number_container', 'block');

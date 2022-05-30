@@ -74,6 +74,13 @@ define('QUARTERS', $quarter);
 define('AIRTEL_MONEY_CLIENT_ID', '7860e969-72e3-454b-b46b-c1bad14fe747');
 define('AIRTEL_MONEY_CLIENT_SECRET', '3f975913-60df-4385-a651-a2a5e49bd9c8');
 define('AIRTEL_URL_API', 'https://openapiuat.airtel.africa');
+// MVOLA info
+define('MVOLA_URL_API', 'https://devapi.mvola.mg');
+define('MVOLA_CONSUMER_KEY', 'F1ECS3aZTh_kytUfrVwZJhHbJ5wa');
+define('MVOLA_CONSUMER_SECRET', 'pzy6ub0nkZvPA60T47QlY6ieHkwa');
+define('MVOLA_EMARKET_MERCHANT_NUMBER', '0343500004');
+define('MVOLA_CALLBACK_URL', 'http://localhost/e-market/test/mvola');
+define('MVOLA_PARTNER_NAME', 'Madajob');
 /*
 |--------------------------------------------------------------------------
 | Index File

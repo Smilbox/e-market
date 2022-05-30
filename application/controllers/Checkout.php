@@ -1,4 +1,7 @@
 <?php
+
+use LDAP\Result;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Checkout extends CI_Controller
@@ -742,8 +745,9 @@ class Checkout extends CI_Controller
 
 		if ($mobileMoneyOption === "AIRTEL_MONEY") {
 			$created_date = $this->common_model->getOrderCreatedDate($order_id)->created_date;
+			$airtel_transaction_id = $this->common_model->generateAirtelMvolaTransactionId($created_date);
+
 			$airtel_phone_number = $this->input->post('airtel_money_phone_number');
-			$airtel_transaction_id = "emarket" . strtotime($created_date);
 
 			if ($airtel_phone_number === null || empty($airtel_phone_number)) {
 				return $this->output
@@ -790,20 +794,87 @@ class Checkout extends CI_Controller
 			curl_close($ch);
 
 			$json = json_decode($result);
-			if ($json == false || $json == null) {
-				echo json_encode(array("error_transaction_payment" => $result));
+			if ($result == false || $result == null) {
+				echo json_encode(array("server_error" => 'Cannot reach airtel! Please try again.'));
 				return;
 			}
 
 			$response_code = $json->{'status'}->{'response_code'};
 			if ($response_code !== "DP00800001006") {
-				echo json_encode(array('result' => 'fail', 'message' => 'Something went wrong! Please try again later or contact the support if it repeats again.', 'airtel_repsonse_json' => $json));
+				echo json_encode(array('result' => 'fail', 'message' => 'Airtel transaction failed!'));
 				return;
 			}
 
 			$this->common_model->updateData('order_master', array(
-				'order_status' => 'waitingForPayment',
+				'order_status' => 'waitingPayment',
 				'airtel_transaction_id' => $airtel_transaction_id
+			), 'entity_id', $order_id);
+		} else if($mobileMoneyOption === "MVOLA") {
+			$bearerToken = $this->common_model->getMvolaBearerAccessToken();
+
+			$created_date = $this->common_model->getOrderCreatedDate($order_id)->created_date;
+			$mvola_transaction_id = $this->common_model->generateAirtelMvolaTransactionId($created_date);
+
+			$headers = array(
+				'Content-Type: application/json',
+				'Version: 1.0',
+				'X-CorrelationID: '.$mvola_transaction_id,
+				'UserLanguage: MG',
+				'UserAccountIdentifier: msisdn;'.MVOLA_EMARKET_MERCHANT_NUMBER,
+				'partnerName: '.MVOLA_PARTNER_NAME,
+				'Cache-Control: no-cache',
+				'X-Callback-URL: '.MVOLA_CALLBACK_URL,
+				'Authorization: Bearer ' . $bearerToken
+			);
+
+			date_default_timezone_set("UTC");
+			$mvola_phone_number = $this->input->post('mvola_phone_number');
+
+			$fields = array(
+				"amount" => (string)$this->session->userdata('total_price'),
+				"currency" => 'Ar',
+				"descriptionText" => "Emarket transaction",
+				"requestingOrganisationTransactionReference" => $mvola_transaction_id,
+				"requestDate" => date("Y-m-d\TH:i:s.000", strtotime('now')).'Z',
+				"debitParty" => array(
+					array(
+						'key' => 'msisdn',
+						'value' => $mvola_phone_number
+					)
+				),
+				"creditParty" => array(
+					array(
+						'key' => 'msisdn',
+						'value' => MVOLA_EMARKET_MERCHANT_NUMBER
+					)
+				),
+				"metadata" => array(
+					array(
+						'key' => 'partnerName',
+						'value' => MVOLA_PARTNER_NAME
+					)
+				)
+			);
+
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, MVOLA_URL_API . '/mvola/mm/transactions/type/merchantpay/1.0.0/');
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 5); //timeout in seconds
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+			$result = curl_exec($ch);
+			curl_close($ch);
+
+			if ($result === false || $result === null) {
+				echo json_encode(array("server_error" => 'Cannot reach telma! Please try again.'));
+				return;
+			}
+
+			$this->common_model->updateData('order_master', array(
+				'order_status' => 'waitingPayment'
 			), 'entity_id', $order_id);
 		}
 

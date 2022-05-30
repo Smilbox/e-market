@@ -187,18 +187,12 @@ function event_status($lang_slug){
   return $event_status;
 }
 function order_status($lang_slug){
-    if($lang_slug == "bn"){
+
+    if($lang_slug == "fr"){
         $order_status = array(
-            'placed'=>'স্থাপিত',
-            'preparing'=>'প্রস্তুতি',
-            'delivered'=>'নিষ্কৃত',
-            'onGoing'=>'চলছে',
-            'complete'=>'সম্পূর্ণ',
-            'cancel'=>'বাতিল'
-        );
-    }
-    else if($lang_slug == "fr"){
-        $order_status = array(
+            'waitingPayment'=>'Waiting Payment',
+            'paid'=>'Paid',
+            'paymentFailed'=>'Payment Failed',
             'placed'=>'Mis',
             'preparing'=>'En train de préparer',
             'delivered'=>'Livré',
@@ -206,20 +200,12 @@ function order_status($lang_slug){
             'complete'=>'Achevée',
             'cancel'=>'Annuler'
         );
-    }
-    else if($lang_slug == "ar"){
-        $order_status = array(
-            'placed'=>'وضعت',
-            'preparing'=>'خطة',
-            'delivered'=>'تم التوصيل',
-            'onGoing'=>'جاري التنفيذ',
-            'complete'=>'اكتمال',
-            'cancel'=>'إلغاء'
-        );
-    }
-    else
+    }else
     {
         $order_status = array(
+            'waitingPayment'=>'Attente de paiement',
+            'paid'=>'Payé',
+            'paymentFailed'=>'Paiement échoué',
             'placed'=>'Placed',
             'preparing'=>'Preparing',
             'delivered'=>'Delivered',

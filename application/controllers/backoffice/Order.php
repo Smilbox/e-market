@@ -225,6 +225,15 @@ class Order extends CI_Controller {
             if($val->ostatus == "pending"){
                 $ostatuslng = $this->lang->line('pending');
             }
+            if($val->ostatus == "waitingPayment"){
+                $ostatuslng = $this->lang->line('waitingPayment');
+            }
+            if($val->ostatus == "paid"){
+                $ostatuslng = $this->lang->line('paid');
+            }
+            if($val->ostatus == "paymentFailed"){
+                $ostatuslng = $this->lang->line('paymentFailed');
+            }
             if($val->order_delivery == "Delivery"){
                 $order_delivery = $this->lang->line('delivery');
             }
@@ -325,7 +334,7 @@ class Order extends CI_Controller {
 	                'time'=>date('Y-m-d H:i:s'),
 	                'status_created_by'=>'Admin'
 	            );
-	            $order_id = $this->order_model->addData('order_status',$addData);
+	            $this->order_model->addData('order_status',$addData);
 	            // adding notification for website
 	            $order_status = 'order_preparing';
 	            if ($order_status != '') {

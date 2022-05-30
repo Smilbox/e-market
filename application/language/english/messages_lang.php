@@ -760,3 +760,7 @@ $lang['rcs'] = 'RCS';
 $lang['product_type'] = 'Product type';
 $lang['is_under_20_kg'] = 'Less than 20kg';
 $lang['plus_20_kg'] = 'More than 20kg';
+$lang['waitingPayment'] = 'Waiting payment';
+$lang['paid'] = 'Paid';
+$lang['paymentFailed'] = 'Payment failed';
+$lang['mvola_phone_number'] = "MVola phone number";
