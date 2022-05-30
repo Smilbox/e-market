@@ -38,6 +38,7 @@ mysql -u jobmadam_zoopia -p
 8. Create the database and disconnect:
 ```
 CREATE DATABASE jobmadam_zoopia;
+\q
 ```
 9. Open your local phpmyadmin, choose `jobmadam_zoopia` and import the data we previously exported.
 10. Open http://localhost/e-market
