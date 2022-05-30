@@ -19,7 +19,6 @@ class Test extends CI_Controller
 
     public function index()
     {
-        date_default_timezone_set("UTC");
-        print_r(date("Y-m-d\TH:i:s.000", strtotime('now')));
+        echo CI_VERSION;
     }
 }
