@@ -44,4 +44,4 @@ CREATE DATABASE jobmadam_zoopia;
 
 ## Note
 - Inside `index.php` in the root of the project, you may wonder why we don't show any error even though we are in development case.
-It is because of deprecated code which shows a lot of warnings inside of Codeigniter 3 Core. These warnings are returned with the response when a resource is asked and it sometimes freeze the server even locally. It is why we shall use XDebug for debugging purposes.
+It is because of deprecated code which shows a lot of warnings inside of Codeigniter 3 Core. These warnings are returned with the response when a resource is asked and it sometimes freeze the server even locally. It is why a migration to CodeIgniter 4 is recommended as it perfectly matches php 7.3+
