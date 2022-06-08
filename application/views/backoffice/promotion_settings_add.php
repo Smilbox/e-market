@@ -85,7 +85,7 @@ if(isset($edit_records) && $edit_records !="")
                                     <div class="form-group">
                                         <label class="control-label col-md-3"><?php echo $this->lang->line('show_promotion') ?><span class="required">*</span></label>
                                         <div class="col-md-4">
-                                            <input type="radio" <?php echo ($shown_promotion)?($shown_promotion == '1')?'checked':'':'checked' ?>  name="shown_promotion" class="show_promotion" id="radioTrue" value="1"> <label for="radioTrue"><?php echo $this->lang->line('yes') ?></label>
+                                            <input type="radio" <?php echo ($shown_promotion) ? (($shown_promotion == '1')?'checked':'') :'checked' ?>  name="shown_promotion" class="show_promotion" id="radioTrue" value="1"> <label for="radioTrue"><?php echo $this->lang->line('yes') ?></label>
                                             <input type="radio" <?php echo ($shown_promotion == '0')?'checked':'' ?>  name="shown_promotion" class="show_promotion" id="radioFalse" value="0"> <label for="radioFalse"><?php echo $this->lang->line('no') ?></label>
                                         </div>
                                     </div>

@@ -87,7 +87,7 @@
                 <li>
                     <?php $count = $this->common_model->getNotificationCount(); ?>
                     <div class="notification">
-                        <a href="<?php echo base_url().ADMIN_URL ?>/order/view" onclick="changeViewStatus();"><span><i class="fa fa-bell"></i><span class="count"><?php echo (!empty($count))?($count->order_count >= 100)?'99+':$count->order_count:'0' ?></span></span></a>
+                        <a href="<?php echo base_url().ADMIN_URL ?>/order/view" onclick="changeViewStatus();"><span><i class="fa fa-bell"></i><span class="count"><?php echo (!empty($count)) ? (($count->order_count >= 100)?'99+':$count->order_count) :'0' ?></span></span></a>
                     </div>
                 </li>
                 <li class="dropdown dropdown-user">

@@ -268,7 +268,7 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                     <div class="form-group">
                                         <label class="control-label col-md-3"><?php echo $this->lang->line('allow_24') ?><span class="required">*</span></label>
                                         <div class="col-md-4">
-                                            <input type="radio" <?php echo ($allow_24_delivery)?($allow_24_delivery == '1')?'checked':'':'checked' ?>  name="allow_24_delivery" class="allow_24_delivery" id="radioTrue" value="1"> <label for="radioTrue"><?php echo $this->lang->line('yes') ?></label>
+                                            <input type="radio" <?php echo ($allow_24_delivery)? (($allow_24_delivery == '1')?'checked':'') :'checked' ?>  name="allow_24_delivery" class="allow_24_delivery" id="radioTrue" value="1"> <label for="radioTrue"><?php echo $this->lang->line('yes') ?></label>
                                             <input type="radio" <?php echo ($allow_24_delivery == '0')?'checked':'' ?>  name="allow_24_delivery" class="allow_24_delivery" id="radioFalse" value="0"> <label for="radioFalse"><?php echo $this->lang->line('no') ?></label>
                                         </div>
                                     </div> 
@@ -298,14 +298,14 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                     <div class="form-group">
                                         <label class="control-label col-md-3"><?php echo $this->lang->line('product_type') ?><span class="required">*</span></label>
                                         <div class="col-md-8">
-                                            <input type="radio" name="is_under_20_kg" id="is_under_20_kg" value="1" checked="" <?php echo ($is_under_20_kg)?($is_under_20_kg == '1')?'checked':'':'checked' ?>><?php echo $this->lang->line('is_under_20_kg') ?>
+                                            <input type="radio" name="is_under_20_kg" id="is_under_20_kg" value="1" checked="" <?php echo ($is_under_20_kg)? (($is_under_20_kg == '1')?'checked':''):'checked' ?>><?php echo $this->lang->line('is_under_20_kg') ?>
                                             <input type="radio" name="is_under_20_kg" id="non-veg" value="0" <?php echo ($is_under_20_kg == '0')?'checked':'' ?>><?php echo $this->lang->line('plus_20_kg') ?>
                                         </div>
                                     </div> 
                                     <div class="form-group">
                                         <label class="control-label col-md-3"><?php echo $this->lang->line('enable_hours') ?><span class="required">*</span></label>
                                         <div class="col-md-4">
-                                            <input type="radio" <?php echo ($enable_hours)?($enable_hours == '1')?'checked':'':'checked' ?>  name="enable_hours" id="radioTrue" value="1" class="company-hours"> <label for="radioTrue"><?php echo $this->lang->line('yes') ?></label>
+                                            <input type="radio" <?php echo ($enable_hours)? (($enable_hours == '1')?'checked':'') :'checked' ?>  name="enable_hours" id="radioTrue" value="1" class="company-hours"> <label for="radioTrue"><?php echo $this->lang->line('yes') ?></label>
                                             <input type="radio" <?php echo ($enable_hours == '0')?'checked':'' ?>  name="enable_hours" id="radioFalse" value="0" class="company-hours"> <label for="radioFalse"><?php echo $this->lang->line('no') ?></label>
                                         </div>
                                     </div> 

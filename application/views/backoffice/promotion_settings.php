@@ -51,7 +51,7 @@
                                                     <div class="form-group">
                                                         <label class="control-label"><?php echo $this->lang->line('show_banner') ?></label>
                                                         <br />
-                                                        <input type="radio" <?php echo ($banner_settings->show_banner)?($banner_settings->show_banner == '1')?'checked':'':'checked' ?>  name="show_banner" class="show_banner" id="radioTrue" value="1"> <label for="radioTrue"><?php echo $this->lang->line('yes') ?></label>
+                                                        <input type="radio" <?php echo ($banner_settings->show_banner)? (($banner_settings->show_banner == '1')?'checked':'') :'checked' ?>  name="show_banner" class="show_banner" id="radioTrue" value="1"> <label for="radioTrue"><?php echo $this->lang->line('yes') ?></label>
                                                         <input type="radio" <?php echo ($banner_settings->show_banner == '0')?'checked':'' ?>  name="show_banner" class="show_banner" id="radioFalse" value="0"> <label for="radioFalse"><?php echo $this->lang->line('no') ?></label>
                                                     </div>
                                                 </div>

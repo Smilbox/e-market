@@ -227,7 +227,7 @@ $usertypes = getUserTypeList($this->session->userdata('language_slug'));
                                     <div class="form-group">
                                         <label class="control-label col-md-3"><?php echo $this->lang->line('food_type'); ?><span class="required">*</span></label>
                                         <div class="col-md-8">
-                                            <input type="radio" name="is_under_20_kg" id="is_under_20_kg" value="1" checked="" <?php echo ($is_under_20_kg)?($is_under_20_kg== '1')?'checked':'':'checked' ?>>Veg
+                                            <input type="radio" name="is_under_20_kg" id="is_under_20_kg" value="1" checked="" <?php echo ($is_under_20_kg)? (($is_under_20_kg== '1')?'checked':'') :'checked' ?>>Veg
                                             <input type="radio" name="is_under_20_kg" id="non-veg" value="0" <?php echo ($is_under_20_kg == '0')?'checked':'' ?>>Non veg
                                         </div>
                                     </div>    
@@ -360,7 +360,7 @@ function readURL(input){
 //repeater 
 $('.repeater_wrap').repeater({
     <?php if($entity_id == ''){ ?>            
-    isFirstItemUndeletable: true,
+        isFirstItemUndeletable: true,
     <?php } ?>
     show: function () {
         var count = $('.outer-repeater').length;

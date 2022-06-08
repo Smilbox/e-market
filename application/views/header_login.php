@@ -178,7 +178,7 @@
 								<?php if ($this->session->userdata('is_user_login')) {?>
 									<div class="header-user">
 										<div class="user-img">
-											<?php $image = ($this->session->userdata('userImage')) ? strpos($this->session->userdata('userImage'), "https") == 0 ? $this->session->userdata('userImage') : (base_url() . 'uploads/' . $this->session->userdata('userImage')) : (base_url() . 'assets/front/images/user-login.png');?>
+											<?php $image = ($this->session->userdata('userImage')) ? (strpos($this->session->userdata('userImage'), "https") == 0 ? $this->session->userdata('userImage') : (base_url() . 'uploads/' . $this->session->userdata('userImage'))): (base_url() . 'assets/front/images/user-login.png');?>
                         					<img src="<?php echo $image; ?>">
 										</div>
 										<span class="user-menu-btn"><?php echo $this->session->userdata('userFirstname'); ?></span>

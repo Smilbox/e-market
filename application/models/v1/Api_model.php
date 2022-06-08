@@ -118,7 +118,7 @@ class Api_model extends CI_Model {
                         $newTimingArr[strtolower($day)]['open'] = (!empty($values['open']))?date('g:i A',strtotime($values['open'])):'';
                         $newTimingArr[strtolower($day)]['close'] =(!empty($values['close']))?date('g:i A',strtotime($values['close'])):'';
                         $newTimingArr[strtolower($day)]['off'] = (!empty($values['open']) && !empty($values['close']))?'open':'close';
-                        $newTimingArr[strtolower($day)]['closing'] = (!empty($values['close']))?($values['close'] <= date('H:m'))?'close':'open':'close';
+                        $newTimingArr[strtolower($day)]['closing'] = (!empty($values['close']))? (($values['close'] <= date('H:m'))?'close':'open') :'close';
                     }
                 }
             }
@@ -178,7 +178,7 @@ class Api_model extends CI_Model {
                         $newTimingArr[strtolower($day)]['open'] = (!empty($values['open']))?date('g:i A',strtotime($values['open'])):'';
                         $newTimingArr[strtolower($day)]['close'] = (!empty($values['close']))?date('g:i A',strtotime($values['close'])):'';
                         $newTimingArr[strtolower($day)]['off'] = (!empty($values['open']) && !empty($values['close']))?'open':'close';
-                        $newTimingArr[strtolower($day)]['closing'] = (!empty($values['close']))?($values['close'] <= date('H:m'))?'close':'open':'close';
+                        $newTimingArr[strtolower($day)]['closing'] = (!empty($values['close'])) ? (($values['close'] <= date('H:m'))?'close':'open') : 'close';
                     }
                     $allTimingArr[strtolower($keys)]['open'] = (!empty($values['open']))?date('H:i',strtotime($values['open'])):'';
                     $allTimingArr[strtolower($keys)]['close'] = (!empty($values['close']))?date('H:i',strtotime($values['close'])):'';
@@ -413,7 +413,7 @@ class Api_model extends CI_Model {
                         $newTimingArr[strtolower($day)]['open'] = (!empty($values['open']))?date('g:i A',strtotime($values['open'])):'';
                         $newTimingArr[strtolower($day)]['close'] = (!empty($values['close']))?date('g:i A',strtotime($values['close'])):'';
                         $newTimingArr[strtolower($day)]['off'] = (!empty($values['open']) && !empty($values['close']))?'open':'close';
-                        $newTimingArr[strtolower($day)]['closing'] = (!empty($values['close']))?($values['close'] <= date('H:m'))?'close':'open':'close';
+                        $newTimingArr[strtolower($day)]['closing'] = (!empty($values['close'])) ? (($values['close'] <= date('H:m'))?'close':'open') :'close';
                     }
                 }
             }
@@ -742,7 +742,7 @@ class Api_model extends CI_Model {
                             $newTimingArr[strtolower($day)]['open'] = (!empty($values['open']))?date('g:i A',strtotime($values['open'])):'';
                             $newTimingArr[strtolower($day)]['close'] = (!empty($values['close']))?date('g:i A',strtotime($values['close'])):'';
                             $newTimingArr[strtolower($day)]['off'] = (!empty($values['open']) && !empty($values['close']))?'open':'close';
-                            $newTimingArr[strtolower($day)]['closing'] = (!empty($values['close']))?($values['close'] <= date('H:m'))?'close':'open':'close';
+                            $newTimingArr[strtolower($day)]['closing'] = (!empty($values['close']))? (($values['close'] <= date('H:m'))?'close':'open') :'close';
                         }
                     }
                     $items[$value->order_id]['timings'] = $newTimingArr[strtolower($day)];
