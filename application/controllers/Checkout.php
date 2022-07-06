@@ -67,7 +67,7 @@ class Checkout extends CI_Controller
 						// remember ME
 						$cookie_name = "adminAuth";
 						if ($this->input->post('rememberMe') == 1) {
-							$this->input->set_cookie($cookie_name, 'usr=' . $phone_number . '&hash=' . $password, 60 * 60 * 24 * 5); // 5 days
+							$this->input->set_cookie($cookie_name, 'usr=' . $phone_number . '&hash=' . $enc_pass, 60 * 60 * 24 * 5); // 5 days
 						} else {
 							delete_cookie($cookie_name);
 						}
@@ -322,7 +322,7 @@ class Checkout extends CI_Controller
 					$cart_shop = $this->input->post('shop_id');
 					$array_view = array(
 						'check' => $check ? $check : '',
-						'ajax_order_summary' => $order_summary
+						'ajax_order_summary' => isset($order_summary) ? $order_summary : null
 					);
 					//echo '<pre>'; print_r($array_view); exit;
 					return json_encode($array_view);
@@ -662,7 +662,7 @@ class Checkout extends CI_Controller
 		if (!($this->session->userdata('is_user_login') == 1 && !empty($this->session->userdata('UserID')) && !empty($cart_shop))) {
 			$arrdata = array('result' => 'fail', 'message' => 'not logged in!');
 			echo json_encode($arrdata);
-			return; 
+			exit;
 		}
 
 
@@ -693,22 +693,24 @@ class Checkout extends CI_Controller
 		// Proceed to payment before anything else
 		if ($this->input->post('payment_option') === "payment_via_mobile_money") {
 			if ($mobileMoneyOption === null && empty($mobileMoneyOption) || ($mobileMoneyOption !== "MVOLA" && $mobileMoneyOption !== "AIRTEL_MONEY" && $mobileMoneyOption !== "ORANGE_MONEY")) {
-				return $this->output
+				$this->output
 					->set_content_type('application/json')
 					->set_status_header(406)
 					->set_output(json_encode(array(
 						"error_message" => "Unknown or undefined payment option.",
 						"mobile_money_option" => $mobileMoneyOption
 					)));
+					exit;
 			}
 
 			if ($this->session->userdata('total_price') === null || $this->session->userdata('total_price') === 0 || empty($this->session->userdata('total_price'))) {
-				return $this->output
+				$this->output
 					->set_content_type('application/json')
 					->set_status_header(406)
 					->set_output(json_encode(array(
 						"error_message" => "No amount for payment was received."
 					)));
+					exit;
 			}
 
 			if ($mobileMoneyOption === "MVOLA") {
@@ -750,12 +752,13 @@ class Checkout extends CI_Controller
 			$airtel_phone_number = $this->input->post('airtel_money_phone_number');
 
 			if ($airtel_phone_number === null || empty($airtel_phone_number)) {
-				return $this->output
+				$this->output
 					->set_content_type('application/json')
 					->set_status_header(400)
 					->set_output(json_encode(array(
 						"error_message" => "No Airtel money phone number given"
 					)));
+				exit;
 			}
 
 			$bearerToken = $this->common_model->getAirtelMoneyBearerAccessToken();
@@ -796,13 +799,13 @@ class Checkout extends CI_Controller
 			$json = json_decode($result);
 			if ($result == false || $result == null) {
 				echo json_encode(array("server_error" => 'Cannot reach airtel! Please try again.'));
-				return;
+				exit;
 			}
 
 			$response_code = $json->{'status'}->{'response_code'};
 			if ($response_code !== "DP00800001006") {
 				echo json_encode(array('result' => 'fail', 'message' => 'Airtel transaction failed!'));
-				return;
+				exit;
 			}
 
 			$this->common_model->updateData('order_master', array(
@@ -870,7 +873,7 @@ class Checkout extends CI_Controller
 
 			if ($result === false || $result === null) {
 				echo json_encode(array("server_error" => 'Cannot reach telma! Please try again.'));
-				return;
+				exit;
 			}
 
 			$this->common_model->updateData('order_master', array(
@@ -1009,6 +1012,12 @@ class Checkout extends CI_Controller
 			$arrdata = array('result' => 'fail', 'order_id' => '');
 		}
 		// // $arrdata = array('result' => 'fail', 'order_id' => '');
-		echo json_encode($arrdata);
+		// echo json_encode($arrdata);
+		$this->output
+        ->set_status_header(200)
+        ->set_content_type('application/json', 'utf-8')
+        ->set_output(json_encode($arrdata, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES))
+        ->_display();
+		exit;
 	}
 }

@@ -1,2 +1,0 @@
-[02-Dec-2019 12:32:49 Asia/Calcutta] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home3/taaakenbitesc/public_html/system/libraries/Session/drivers/Session_files_driver.php on line 212
-[02-Dec-2019 12:50:58 UTC] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in /home3/taaakenbitesc/public_html/system/libraries/Session/drivers/Session_files_driver.php on line 212
